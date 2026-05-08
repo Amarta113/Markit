@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import logoImg from '../../assets/markit-logo.jpg'
 import styles from '../../styles/styles'
-import { categoriesData, productData } from "../../static/data.js";
+import { categoriesData, productData } from "../../static/data";
 import { AiOutlineSearch,AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai'
 import {IoIosArrowDown, IoIosArrowForward} from 'react-icons/io'
 import {LayoutGrid} from 'lucide-react'
