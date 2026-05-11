@@ -6,7 +6,7 @@ import CountDown from "./CountDown.jsx"
 export default function EventCard(){
 
     return(
-        <div className={`w-full block bg-white rounded-lg lg:flex p-2`}>
+        <div className={`w-full block bg-white rounded-lg lg:flex p-2 mb-12`}>
             <div className='w-full lg:w-[50%] m-auto mr-3'>
                 <img src={mobile} alt="product" />
             </div>
