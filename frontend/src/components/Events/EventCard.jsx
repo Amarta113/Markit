@@ -3,10 +3,10 @@ import mobile from "../../assets/mobile-img.jpg"
 import styles from '../../styles/styles'
 import CountDown from "./CountDown.jsx"
 
-export default function EventCard(){
+export default function EventCard({active}){
 
     return(
-        <div className={`w-full block bg-white rounded-lg lg:flex p-2 mb-12`}>
+        <div className={`w-full block bg-white ${active? "unset": "mb-12"} rounded-lg lg:flex p-2`}>
             <div className='w-full lg:w-[50%] m-auto mr-3'>
                 <img src={mobile} alt="product" />
             </div>
