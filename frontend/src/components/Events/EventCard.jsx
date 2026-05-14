@@ -5,31 +5,41 @@ import CountDown from "./CountDown.jsx"
 
 export default function EventCard({active}){
 
-    return(
-        <div className={`w-full block bg-white ${active? "unset": "mb-12"} rounded-lg lg:flex p-2`}>
-            <div className='w-full lg:w-[50%] m-auto mr-3'>
-                <img src={mobile} alt="product" />
+    return (
+        <div className={`w-full block bg-white rounded-lg ${
+        active ? "unset" : "mb-12"
+      } lg:flex p-14`}
+        >
+            <div className="mb-8 flex w-full shrink-0 justify-center lg:mb-0 lg:w-[46%] lg:justify-end">
+                <img
+                    src={mobile}
+                    alt="iPhone 17 Pro Max"
+                    className="max-h-[320px] w-auto max-w-full object-contain lg:max-h-[380px]"
+                />
             </div>
-            <div className='w-full lg:[w-50%] m-auto flex flex-col justify-center'>
+            <div className="flex w-full flex-col justify-center gap-1 lg:w-[54%] lg:max-w-xl lg:pl-2">
                 <h2 className={`${styles.productTitle}`}>Iphone 17pro Max</h2>
-                <p className="text-gray-600 text-md">
-                    Experience the pinnacle of smartphone innovation with the iPhone 17 Pro Max. 
-                    <br/>Featuring a stunning Super Retina XDR display, next-gen A19 Pro chip, and a 
-                    revolutionary camera system, this device redefines what a phone can do. 
-                    <br/>Available for a limited time at an exclusive event price — don't miss out!
+                <p className="mt-3 text-base leading-relaxed text-gray-600">
+                    Experience the pinnacle of smartphone innovation with the iPhone 17 Pro
+                    Max.
+                    <br />
+                    Featuring a stunning Super Retina XDR display, next-gen A19 Pro chip, and a
+                    revolutionary camera system, this device redefines what a phone can do.
+                    <br />
+                    Available for a limited time at an exclusive event price — don&apos;t miss
+                    out!
                 </p>
-                <div className="flex py-2 justify-between">
-                    <h5 className="font-[500] text-[18px] text-[#d55b45] pr-3 line-through">
+                <div className="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2">
+                    <h5 className="font-[500] text-[18px] text-[#d55b45] line-through">
                         1099$
                     </h5>
-                    <h5 className='font-bold text-[20px] text-[#333] font-Roboto'>999$</h5>
+                    <h5 className="font-Roboto text-[20px] font-bold text-[#333]">999$</h5>
+                    <span className="font-[400] text-[17px] text-[#44a55e]">120 Sold</span>
                 </div>
-                <span className='pr-3 font-[400] text-[17px] text-[#44a55e]'>
-                    120 Sold
-                </span>
-                <CountDown/>
+                <div className="mt-6">
+                    <CountDown />
+                </div>
             </div>
-            
         </div>
     )
 }
