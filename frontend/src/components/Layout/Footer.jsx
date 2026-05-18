@@ -21,7 +21,7 @@ export default function Footer(){
             </div>
             <footer className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:px-8 py-16 sm:text-center">
                 <ul className='px-5 text-center sm:text-start flex sm:block flex-col items-center'>
-                    <img src={logo} alt="logo" style={{filter: "brightness(0) invert(1)"}}/>
+                    <h1 className='text-bold text-3xl text-heading tracking-widest font-bold bg-white/50 rounded px-4 py-4 font-italic'>Markit</h1>
                     <br/>
                     <p>The home and elements needed to create beautiful product.</p>
                     <div className="flex items-center mt-[15px]">
@@ -85,7 +85,7 @@ export default function Footer(){
             </footer>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 text-center pt-2 text-gray-400 text-md pb-8">
                 <span>
-                &copy; {new Date().getFullYear()} ShopO. All rights reserved.
+                &copy; {new Date().getFullYear()}Markit. All rights reserved.
                 </span>
                 <span>Terms.Private Policy</span>
                 <div className="sm:block flex items-center justify-center w-full">
