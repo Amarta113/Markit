@@ -5,12 +5,13 @@ import styles from '../../styles/styles'
 import { categoriesData, productData } from "../../static/data";
 import { AiOutlineSearch, AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai'
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
-import { LayoutGrid } from 'lucide-react'
+import { LayoutGrid, TreeDeciduous } from 'lucide-react'
 import { CgProfile } from 'react-icons/cg'
 import DropDown from "./DropDown.jsx"
 import Navbar from "./Navbar.jsx"
 import { useSelector } from "react-redux"
 import { backend_url } from '../../server.js';
+import Cart from '../Cart/Cart.jsx';
 
 export default function Header({ activeHeading }) {
     const { isAuthenticated, user, loading } = useSelector(state => state.user)
@@ -18,6 +19,8 @@ export default function Header({ activeHeading }) {
     const [searchData, setSearchData] = useState(null)
     const [active, setActive] = useState(false)
     const [dropDown, setDropDown] = useState(false)
+    const [openCart, setOpenCart] = useState(false)
+    const [openWishlist, setOpenWishlist] = useState(false)
 
     const handleSearchChange = async (e) => {
         const term = e.target.value;
@@ -65,7 +68,7 @@ export default function Header({ activeHeading }) {
                         />
                         {
                             searchData && searchData.length !== 0 ? (
-                                <div className='absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4'>
+                                <div className='absolute min-h-[30vh] bg-slate-70 shadow-sm-2 z-[9] p-4'>
                                     {searchData && searchData.map((i, index) => {
                                         const d = i.name
                                         const Product_name = d.replace(/\s+/g, "-")
@@ -83,9 +86,9 @@ export default function Header({ activeHeading }) {
                                 </div>
                             ) : null}
                     </div>
-                    <div className="bg-gradient-to-r from-gray-500 to-blue-600 hover:from-dark-blue-600 hover:to-dark-blue px-6 py-3 rounded-lg shadow-lg transition-all duration-300">
+                    <div className="bg-black text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300">
                         <Link to="/seller">
-                            <h1 className='text-white flex items-center'>
+                            <h1 className='text-white font-bold font-italic flex items-center'>
                                 Become Seller
                                 <IoIosArrowForward className='ml-1' />
                             </h1>
@@ -121,7 +124,7 @@ export default function Header({ activeHeading }) {
                     <div className={`${styles.normalFlex}`}>
                         <Navbar active={activeHeading} />
                     </div>
-                    <div className="flex">
+                    <div className={`${styles.normalFlex}`}>
                         <div className={`${styles.normalFlex}`}>
                             <div className="relative cursor-pointer mr-[15px]">
                                 <AiOutlineHeart size={30}
@@ -129,8 +132,11 @@ export default function Header({ activeHeading }) {
                                 <span className="absolute -top-1 -right-1 rounded-full bg-[#40d132] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">1</span>
                             </div>
                         </div>
-                        <div className="relative cursor-pointer mr-[15px]">
-                            <AiOutlineShoppingCart size={30}
+                        <div className="relative cursor-pointer mr-[15px]"
+                        onClick={() => setOpenCart(true)}>
+                            <AiOutlineShoppingCart 
+                                size={30}
+                                className='cursor-pointer'
                                 color='rgb(255, 255, 255 / 83%)' />
                             <span className="absolute -top-1 -right-1 rounded-full bg-[#40d132] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">1</span>
                         </div>
@@ -156,12 +162,18 @@ export default function Header({ activeHeading }) {
                                         <img
                                             src={`${user?.avatar?.url}`}
                                             alt="Image"
-                                            className="w-[60px] rounded-full h-[60px] border-[3px] border-[#14febc] cursor-pointer"
+                                            className="w-[60px] rounded-full h-[60px] border-[3px] border-white cursor-pointer"
                                         />
                                     </Link>
                                 </div>
                             )}
                         </div>
+                        {/* cart popup */}
+                        {
+                        openCart? (
+                            <Cart setOpenCart={setOpenCart}/>
+                        ) : null
+                        }
                     </div>
                 </div>
             </div>
