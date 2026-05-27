@@ -54,6 +54,7 @@ export default function Cart({ setOpenCart }) {
                         })}
                     </div>
                 </div>
+            </div>
                 <div className="px-5 mb-3">
                     {/*Checkout buttons*/}
                     <Link to="/checkout">
@@ -63,7 +64,6 @@ export default function Cart({ setOpenCart }) {
                     </Link>
                 </div>
             </div>
-        </div>
     )
 }
 
