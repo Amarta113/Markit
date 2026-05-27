@@ -50,9 +50,9 @@ export default function Wishlist({ setOpenWishlist }) {
                     </div>
                     {/* cart single item*/}
                     <br />
-                    <div className="w-full border-t">
+                    <div className="w-full border">
                         {cartData && cartData.map((i, index) => {
-                            return <CartSingle key={index} data={i} />
+                            return <WishlistCartSingle key={index} data={i} />
                         })}
                     </div>
                 </div>
@@ -61,7 +61,7 @@ export default function Wishlist({ setOpenWishlist }) {
     )
 }
 
-const CartSingle = ({ data }) => {
+const WishlistCartSingle = ({ data }) => {
     const [value, setValue] = useState(1)
     const totalPrice = data.price * value;
 
