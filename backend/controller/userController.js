@@ -39,7 +39,7 @@ export const register = catchAsyncError(async(req, res, next) => {
         }
 
         const activationTokens = createActivationTokens(userData)
-        const activationURL = `${process.env.FRONTEND_URL}/activation/${activationTokens}`;
+        const activationURL = `http://localhost:5173/activation/${activationTokens}`;
         await sendEmail({
                 email: userData.email,
                 subject: "Activate your account",
@@ -57,7 +57,7 @@ export const register = catchAsyncError(async(req, res, next) => {
 })
 
 function createActivationTokens(user) {
-    return jwt.sign(user, process.env.ACTIVATION_SECRET, {
+    return jwt.sign(user, process.env.JWT_SECRET, {
         expiresIn: "10m"
     })
 }
@@ -109,14 +109,14 @@ function generateEmailTemplate(activationURL, name) {
 
 export const activateUser = catchAsyncError(async(req, res, next) => {
     try{
-        const { activationToken } = req.body
-        if(!activationToken){
+        const activation_token = req.body?.activation_token || req.body?.activationToken
+        if(!activation_token){
             return next(new ErrorHandler("Activation token is required", 400))
         }
-        if(!process.env.ACTIVATION_SECRET){
+        if(!process.env.JWT_SECRET){
             return next(new ErrorHandler("Server configuration error", 500))
         }
-        const user = jwt.verify(activationToken, process.env.ACTIVATION_SECRET)
+        const user = jwt.verify(activation_token, process.env.JWT_SECRET)
         if(!user){
             return next(new ErrorHandler("Invalid token", 400))
         }
