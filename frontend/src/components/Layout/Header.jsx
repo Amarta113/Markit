@@ -78,7 +78,7 @@ export default function Header({ activeHeading }) {
                                                             const d = i.name
                                                             const Product_name = d.replace(/\s+/g, "-")
                                                             return (
-                                                                <Link to={`/product/${Product_name}`} key={index}>
+                                                                <Link to={`/products/${Product_name}`} key={index}>
                                                                     <div className="w-full flex items-start py-3">
                                                                         <img src={i.image_Url?.[0]?.url} alt='product img'
                                                                             className='w-[40px] h-[40px] mr-[10px]'
@@ -246,7 +246,7 @@ export default function Header({ activeHeading }) {
                                             <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
                                                 {searchData.map((prod, i) => {
                                                     return (
-                                                        <Link to={`/product/${prod._id}`} key={prod._id || i}>
+                                                        <Link to={`/products/${prod._id}`} key={prod._id || i}>
                                                             <div className="flex items-center cursor-pointer">
                                                                 <img src={prod?.images?.[0]?.url}
                                                                     alt="product img"
