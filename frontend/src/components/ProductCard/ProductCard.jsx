@@ -14,14 +14,14 @@ const ProductCard = ({data}) => {
         <div className='bg-white shadow w-full h-[370px] rounded-lg shadow-sm p-3 relative cursor-pointer'>
             <div className="flex justify-end">
             </div>
-            <Link to={`/product/${product_name}`}>
+            <Link to={`/products/${product_name}`}>
             <img src={data.image_Url[0].url} alt=""
             className='w-full h-[170px] object-contain'/>
             </Link>
             <Link to="/">
                 <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
             </Link>
-            <Link to={`/product/${product_name}`}>
+            <Link to={`/products/${product_name}`}>
                 <h4 className='pb-3 font-[500]'>
                     {data.name.length > 40? data.name.slice(0, 40) + "...." : data.name}
                 </h4>
