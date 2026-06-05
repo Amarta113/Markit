@@ -4,6 +4,7 @@ import Footer from "../components/Layout/Footer"
 import Header from '../components/Layout/Header'
 import ProductDetails from "../components/UserComponents/ProductDetails";
 import { productData } from '../static/data'
+import SuggestedProduct from '../components/UserComponents/SuggestedProduct.jsx'
 
 const ProductDetailsPage = () => {
     const {name} = useParams()
@@ -17,6 +18,9 @@ const ProductDetailsPage = () => {
         <div>
             <Header />
             <ProductDetails data={data} />
+            {
+             data && <SuggestedProduct data={data} />   
+            }
             <Footer />
         </div>
     )
