@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { backend_url } from '../../server'
 import { useSelector } from 'react-redux'
-import { AiOutlineCamera } from 'react-icons/ai'
+import { AiOutlineArrowRight, AiOutlineCamera } from 'react-icons/ai'
 import styles from '../../styles/styles'
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import { DataGrid } from "@mui/x-data-grid";
 
 const ProfileContent = ({ active }) => {
     const { user } = useSelector((state) => state.user)
@@ -16,6 +19,7 @@ const ProfileContent = ({ active }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
     }
+
     return (
         <div className='w-full'>
             {/* Profile page */}
@@ -131,8 +135,76 @@ const ProfileContent = ({ active }) => {
 }
 
 const AllOrders = () => {
+    const { orders } = useSelector(state => state.orders);
+    const { user } = useSelector(state => state.user);
+    const columns = [
+    {
+      field: "id",
+      headerName: "Order ID",
+      minWidth: 150,
+      flex: 0.7,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      minWidth: 130,
+      flex: 0.7,
+      cellClassName: params =>
+        params.row.status === "Delivered" ? "greenColor" : "redColor",
+    },
+    {
+      field: "itemsQty",
+      headerName: "Items Qty",
+      type: "number",
+      minWidth: 130,
+      flex: 0.7,
+    },
+    {
+      field: "total",
+      headerName: "Total",
+      type: "number",
+      minWidth: 130,
+      flex: 0.8,
+    },
+    {
+      field: "actions",
+      headerName: "",
+      sortable: false,
+      minWidth: 150,
+      flex: 1,
+      renderCell: params => (
+        <Link to={`/user/order/${params.id}`}>
+          <Button>
+            <AiOutlineArrowRight size={20} />
+          </Button>
+        </Link>
+      ),
+    },
+]
+    const row = [];
+    orders && orders.forEach((item) => {
+        row.push({
+            id: item._id,
+            itemsQty: item.orderItems.length,
+            total: "US$ " + orders.totalPrice,
+            status: item.orderStatus
+        })
+    })
+    
     return (
-        <div className="pl-8 pt-l"></div>
+        <div className="pl-8 pt-l flex flex-col min-h-[200px] max-h-[600px]">
+            <DataGrid
+                row = {row}
+                columns = {columns}
+                pageSizeOptions={[10]}
+                initialState={{
+                    pagination: {paginationModel: {pageSize: 10, page: 0}}
+                }}
+                disableRowSelectionOnClick
+                sx={{flexGrow: 1}}
+                />
+        </div>
     )
 }
+
 export default ProfileContent
