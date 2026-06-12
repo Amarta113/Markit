@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import AllRefundOrders from './AllRefundOrders'
+import TrackOrder from './TrackOrder.jsx'
 
 const ProfileContent = ({ active }) => {
     const { user } = useSelector((state) => state.user)
@@ -136,6 +137,14 @@ const ProfileContent = ({ active }) => {
                 active === 3 && (
                     <div>
                         <AllRefundOrders />
+                    </div>
+                )
+            }
+             {/* Track Order page */}
+            {
+                active === 5 && (
+                    <div>
+                        <TrackOrder />
                     </div>
                 )
             }
