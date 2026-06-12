@@ -6,6 +6,7 @@ import styles from '../../styles/styles'
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
+import AllRefundOrders from './AllRefundOrders'
 
 const ProfileContent = ({ active }) => {
     const { user } = useSelector((state) => state.user)
@@ -130,6 +131,14 @@ const ProfileContent = ({ active }) => {
                     </div>
                 )
             }
+            {/*All refund Order page*/}
+            {
+                active === 3 && (
+                    <div>
+                        <AllRefundOrders />
+                    </div>
+                )
+            }
         </div>
     )
 }
@@ -186,7 +195,7 @@ const AllOrders = () => {
         row.push({
             id: item._id,
             itemsQty: item.orderItems.length,
-            total: "US$ " + orders.totalPrice,
+            total: "US$ " + item.totalPrice,
             status: item.orderStatus
         })
     })
