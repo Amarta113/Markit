@@ -1,6 +1,6 @@
 import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import {LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FaqPage} from "./Routes.jsx"
+import {LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FaqPage, ProfilePage} from "./Routes.jsx"
 import {ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
 import store from '../redux/store.js';
@@ -29,6 +29,7 @@ export default function App () {
         <Route path='/checkout' element={<CheckoutPage/>}/>
         <Route path='/payment' element={<PaymentPage/>}/>
         <Route path="/order/success/:id" element={<OrderSuccessPage/>}/>
+        <Route path='/profile' element={<ProfilePage/>} />
       </Routes>
       <ToastContainer
           position="top-right"
