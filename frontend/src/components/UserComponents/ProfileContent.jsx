@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import AllRefundOrders from './AllRefundOrders'
 import TrackOrder from './TrackOrder.jsx'
+import PaymentMethod from './PaymentMethod.jsx'
 
 const ProfileContent = ({ active }) => {
     const { user } = useSelector((state) => state.user)
@@ -24,7 +25,7 @@ const ProfileContent = ({ active }) => {
 
     return (
         <div className='w-full'>
-            {/* Profile page */}
+            {/* Profile  */}
             {
                 active === 1 && (
                     <div className="flex justify-center w-full">
@@ -124,7 +125,7 @@ const ProfileContent = ({ active }) => {
                     </div>
                 )
             }
-            {/*Order page*/}
+            {/* Order */}
             {
                 active === 2 && (
                     <div>
@@ -132,7 +133,7 @@ const ProfileContent = ({ active }) => {
                     </div>
                 )
             }
-            {/*All refund Order page*/}
+            {/* All refund Order */}
             {
                 active === 3 && (
                     <div>
@@ -140,11 +141,19 @@ const ProfileContent = ({ active }) => {
                     </div>
                 )
             }
-             {/* Track Order page */}
+             {/* Track Order */}
             {
                 active === 5 && (
                     <div>
                         <TrackOrder />
+                    </div>
+                )
+            }
+            {/* Payment */}
+            {
+                active === 6 && (
+                    <div>
+                        <PaymentMethod />
                     </div>
                 )
             }
