@@ -180,3 +180,19 @@ export const loadUser = catchAsyncError(async(req, res, next) => {
         return next(new ErrorHandler(error.message, 500))
     }
 })
+
+// log out user
+export const logoutUser = catchAsyncError(async(req, res, next) => {
+    try{
+        res.cookie("token", null, {
+            expires: new Date(Date.now()),
+            httpOnly: true
+        })  
+        res.status(201).json({
+            success: true,
+            message: "Logout successfully!"
+        })     
+    } catch(error){
+        return next(new ErrorHandler(error.message, 500))
+    }
+}) 
