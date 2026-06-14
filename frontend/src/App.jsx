@@ -9,8 +9,11 @@ import ProductDetailsPage from "./pages/ProductDetailsPage.jsx";
 import CheckoutPage from './pages/CheckoutPage.jsx';
 import PaymentPage from './pages/PaymentPage.jsx'
 import OrderSuccessPage from './pages/OrderSuccessPage.jsx'
+import { useSelector } from 'react-redux';
+import ProtectedRoute from './ProtectedRoute.js';
 
 export default function App () {
+  const {loading, isAuthenticated} = useSelector((state) => state.user)
   useEffect(() => {
    store.dispatch(loadUser())
   }, [])
@@ -29,7 +32,12 @@ export default function App () {
         <Route path='/checkout' element={<CheckoutPage/>}/>
         <Route path='/payment' element={<PaymentPage/>}/>
         <Route path="/order/success/:id" element={<OrderSuccessPage/>}/>
-        <Route path='/profile' element={<ProfilePage/>} />
+        <Route path='/profile' element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ProfilePage/>
+          </ProtectedRoute>
+
+        } />
       </Routes>
       <ToastContainer
           position="top-right"
