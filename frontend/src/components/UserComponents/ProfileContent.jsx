@@ -9,6 +9,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import AllRefundOrders from './AllRefundOrders'
 import TrackOrder from './TrackOrder.jsx'
 import PaymentMethod from './PaymentMethod.jsx'
+import Address from './Address.jsx'
 
 const ProfileContent = ({ active }) => {
     const { user } = useSelector((state) => state.user)
@@ -41,8 +42,8 @@ const ProfileContent = ({ active }) => {
                         <br />
                         <div className="w-full px-5">
                             <form onSubmit={handleSubmit} aria-required={true}>
-                                <div className="w-full flex pb-3">
-                                    <div className="w-[50%]">
+                                <div className="w-full 800px:flex block pb-5">
+                                    <div className="w-[100%] 800px:w-[50%]">
                                         <label className='block pb-2'>
                                             Full name
                                         </label>
@@ -52,7 +53,7 @@ const ProfileContent = ({ active }) => {
                                             onChange={(e) => setName(e.target.value)}
                                         />
                                     </div>
-                                    <div className="w-[50%]">
+                                    <div className="w-[100%] 800px:w-[50%]">
                                         <label className='block pb-2'>
                                             Email
                                         </label>
@@ -65,8 +66,8 @@ const ProfileContent = ({ active }) => {
                                         />
                                     </div>
                                 </div>
-                                <div className="w-full flex pb-3">
-                                    <div className="w-[50%]">
+                                <div className="w-full 800px:flex block pb-5">
+                                    <div className="w-[100%] 800px:w-[50%]">
                                         <label className='block pb-2'>
                                             Phone Number
                                         </label>
@@ -77,7 +78,7 @@ const ProfileContent = ({ active }) => {
                                             onChange={(e) => setPhoneNumber(e.target.value)}
                                         />
                                     </div>
-                                    <div className="w-[50%]">
+                                    <div className="w-[100%] 800px:w-[50%]">
                                         <label className='block pb-2'>
                                             Zip Code
                                         </label>
@@ -90,8 +91,8 @@ const ProfileContent = ({ active }) => {
                                         />
                                     </div>
                                 </div>
-                                <div className="w-full flex pb-3">
-                                    <div className="w-[50%]">
+                                <div className="w-full 800px:flex block pb-5">
+                                    <div className="w-[100%] 800px:w-[50%]">
                                         <label className='block pb-2'>
                                             Address 1
                                         </label>
@@ -102,7 +103,7 @@ const ProfileContent = ({ active }) => {
                                             onChange={(e) => setAddress1(e.target.value)}
                                         />
                                     </div>
-                                    <div className="w-[50%]">
+                                    <div className="w-[100%] 800px:w-[50%]">
                                         <label className='block pb-2'>
                                             Address2
                                         </label>
@@ -154,6 +155,14 @@ const ProfileContent = ({ active }) => {
                 active === 6 && (
                     <div>
                         <PaymentMethod />
+                    </div>
+                )
+            }
+            {/* User Address */}
+            {
+                active === 7 && (
+                    <div>
+                        <Address />
                     </div>
                 )
             }
