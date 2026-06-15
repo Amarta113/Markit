@@ -47,19 +47,19 @@ const ProfileContent = ({ active }) => {
                                         <label className='block pb-2'>
                                             Full name
                                         </label>
-                                        <input type="text" className={`${styles.input} !w-[95%]`}
+                                        <input type="text" className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
                                             required
                                             value={user.name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
                                     </div>
-                                    <div className="w-[100%] 800px:w-[50%]">
+                                    <div className="w-[100%] 800px:w-[50%] mb-4 800px:mb-0">
                                         <label className='block pb-2'>
                                             Email
                                         </label>
                                         <input
                                             type="email"
-                                            className={`${styles.input} !w-[95%]`}
+                                            className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
                                             required
                                             value={user.email}
                                             onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +72,7 @@ const ProfileContent = ({ active }) => {
                                             Phone Number
                                         </label>
                                         <input type="number"
-                                            className={`${styles.input} !w-[95%]`}
+                                            className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
                                             required
                                             value={phoneNumber}
                                             onChange={(e) => setPhoneNumber(e.target.value)}
@@ -84,20 +84,20 @@ const ProfileContent = ({ active }) => {
                                         </label>
                                         <input
                                             type="number"
-                                            className={`${styles.input} !w-[95%]`}
+                                            className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
                                             required
                                             value={zipCode}
                                             onChange={(e) => setZipCode(e.target.value)}
                                         />
                                     </div>
                                 </div>
-                                <div className="w-full 800px:flex block pb-5">
+                                <div className="w-full 800px:flex block pb-3">
                                     <div className="w-[100%] 800px:w-[50%]">
                                         <label className='block pb-2'>
                                             Address 1
                                         </label>
                                         <input type="address"
-                                            className={`${styles.input} !w-[95%]`}
+                                            className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
                                             required
                                             value={address1}
                                             onChange={(e) => setAddress1(e.target.value)}
@@ -109,7 +109,7 @@ const ProfileContent = ({ active }) => {
                                         </label>
                                         <input
                                             type="address"
-                                            className={`${styles.input} !w-[95%]`}
+                                            className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
                                             required
                                             value={address2}
                                             onChange={(e) => setAddress2(e.target.value)}
