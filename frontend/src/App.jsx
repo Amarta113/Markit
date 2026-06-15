@@ -1,6 +1,6 @@
 import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import {LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FaqPage, ProfilePage} from "./Routes.jsx"
+import {LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage} from "./Routes.jsx"
 import {ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
 import store from '../redux/store.js';
@@ -29,7 +29,11 @@ export default function App () {
         <Route path='/best-selling' element={<BestSellingPage/>}/>
         <Route path='/events' element={<EventsPage/>}/>
         <Route path='/faq' element={<FaqPage/>}/>
-        <Route path='/checkout' element={<CheckoutPage/>}/>
+        <Route path='/checkout' element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <CheckoutPage/>
+          </ProtectedRoute>
+        }/>
         <Route path='/payment' element={<PaymentPage/>}/>
         <Route path="/order/success/:id" element={<OrderSuccessPage/>}/>
         <Route path='/profile' element={
@@ -38,6 +42,8 @@ export default function App () {
           </ProtectedRoute>
 
         } />
+        <Route path='/shop-create' element={<ShopCreatePage/>}/>
+
       </Routes>
       <ToastContainer
           position="top-right"
