@@ -92,7 +92,7 @@ export default function Header({ activeHeading }) {
                                         ) : null}
                                 </div>
                                 <div className="bg-black text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300">
-                                    <Link to="/seller">
+                                    <Link to="/shop-create">
                                         <h1 className='text-white font-bold font-italic flex items-center'>
                                             Become Seller
                                             <IoIosArrowForward className='ml-1' />
@@ -261,7 +261,7 @@ export default function Header({ activeHeading }) {
                                     </div>
                                     <Navbar active={activeHeading} mobile={true}/>
                                     <div className={`${styles.button} ml-4 rounded-xl text-[20px]`}>
-                                        <Link to="/seller">
+                                        <Link to="/shop-create">
                                             Become Seller
                                         </Link>
                                     </div>
@@ -287,7 +287,7 @@ export default function Header({ activeHeading }) {
                                                 <Link to={"/profile"}>
                                                     <img
                                                         src={`${user?.avatar?.url}`}
-                                                        alt="Image "
+                                                        alt="Image"
                                                         className="w-[60px] rounded-full h-[60px] border-[3px] border-[#14febc] cursor-pointer"
                                                     />
                                                 </Link>
