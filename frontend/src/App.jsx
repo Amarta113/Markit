@@ -1,6 +1,6 @@
 import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import {LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage} from "./Routes.jsx"
+import {LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage} from "./Routes.jsx"
 import {ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
 import store from '../redux/store.js';
@@ -10,7 +10,7 @@ import CheckoutPage from './pages/CheckoutPage.jsx';
 import PaymentPage from './pages/PaymentPage.jsx'
 import OrderSuccessPage from './pages/OrderSuccessPage.jsx'
 import { useSelector } from 'react-redux';
-import ProtectedRoute from './ProtectedRoute.js';
+import ProtectedRoute from './ProtectedRoute';
 
 export default function App () {
   const {loading, isAuthenticated} = useSelector((state) => state.user)
@@ -24,6 +24,7 @@ export default function App () {
         <Route path='/login' element={<LoginPage/>} />
         <Route path='/sign-up' element={<SignupPage/>} />
         <Route path='/activation/:activation_token' element={<ActivationPage/>} />
+        <Route path='/seller/activation/:activation_token' element={<SellerActivationPage/>} />
         <Route path="/products" element={<ProductsPage/>}/>
         <Route path="/products/:name" element={<ProductDetailsPage/>}/>
         <Route path='/best-selling' element={<BestSellingPage/>}/>
@@ -40,10 +41,8 @@ export default function App () {
           <ProtectedRoute isAuthenticated={isAuthenticated}>
             <ProfilePage/>
           </ProtectedRoute>
-
         } />
         <Route path='/shop-create' element={<ShopCreatePage/>}/>
-
       </Routes>
       <ToastContainer
           position="top-right"
