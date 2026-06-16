@@ -8,6 +8,7 @@ import EventsPage from '../src/pages/EventsPage'
 import FaqPage from '../src/pages/FaqPage.jsx'
 import ProfilePage from '../src/pages/ProfilePage.jsx'
 import ShopCreatePage from './pages/ShopCreatePage.jsx'
+import SellerActivationPage from './pages/SellerActivationPage.jsx'
 
 export {
     LoginPage,
@@ -19,5 +20,6 @@ export {
     EventsPage,
     FaqPage,
     ProfilePage,
-    ShopCreatePage
+    ShopCreatePage,
+    SellerActivationPage
 }
