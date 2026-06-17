@@ -106,14 +106,14 @@ function generateEmailTemplate(activationURL, name) {
 export const activateSeller = catchAsyncError(async(req, res, next) => {
     try{
         const {url} = req.body
-        const activation_token = req.body?.activation_token || req.body?.activationToken
-        if(!activation_token){
+        const seller_token = req.body?.seller_token || req.body?.activationToken
+        if(!seller_token){
             return next(new ErrorHandler("Activation token is required", 400))
         }
         if(!process.env.JWT_SECRET){
             return next(new ErrorHandler("Server configuration error", 500))
         }
-        const seller = jwt.verify(activation_token, process.env.JWT_SECRET)
+        const seller = jwt.verify(seller_token, process.env.JWT_SECRET)
         if(!seller){
             return next(new ErrorHandler("Invalid seller token", 400))
         }
@@ -159,7 +159,7 @@ export const loginSeller = catchAsyncError(async(req, res, next) => {
         if(!isPasswordMatched){
             return next(new ErrorHandler("Invalid email or password", 401))
         }
-        sendShopTokens(user, 200, res)
+        sendShopTokens(seller, 200, res)
     } catch(error){
         next(error)
     }
@@ -167,9 +167,9 @@ export const loginSeller = catchAsyncError(async(req, res, next) => {
 
 export const loadSeller = catchAsyncError(async(req, res, next) => {
     try{
-        const seller = await Shop.findById(req.user.id)
+        const seller = await Shop.findById(req.seller._id)
         if(!seller){
-            return next(new ErrorHandler("User not found", 404))
+            return next(new ErrorHandler("Seller not found", 404))
         }
         res.status(200).json({
             success: true,
