@@ -19,3 +19,21 @@ export const isAuthenticated = catchAsyncError(async(req, res, next) => {
         return next(new ErrorHandler("Invalid token", 401))
     }
 })
+
+export async function isSeller(req, res, next) {
+  try {
+    const { seller_token } = req.cookies;
+    if (!seller_token) {
+      return res.status(401).json({ message: "Unauthorized. Login Required!" });
+    }
+    const decoded = jwt.verify(seller_token, process.env.JWT_SECRET);
+    req.seller = await Shop.findById(decoded.id);
+    if (!req.seller) {
+      return res.status(404).json({ message: "Seller not found" });
+    }
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
