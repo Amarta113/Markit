@@ -5,7 +5,7 @@ const initialState = {
   isLoading: true
 }
 
-export const userReducer = createReducer(initialState, (builder) => {
+export const sellerReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadSeller.pending, (state) => {
       state.isLoading = true
