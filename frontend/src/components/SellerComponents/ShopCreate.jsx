@@ -30,7 +30,7 @@ export default function ShopCreate() {
             formData.append("phoneNumber", phoneNumber);
             formData.append("zipCode", zipCode);
             formData.append("address", address);
-            formData.append("file", avatar);
+            formData.append("avatar", avatar);
 
             const { data } = await axios.post(
                 `${server}/seller/create-seller`,
@@ -68,8 +68,8 @@ export default function ShopCreate() {
     }
 
     function handleFileInputChange(e) {
-        const file = e.target.files[0]
-        setAvatar(file)
+        const avatar = e.target.files[0]
+        setAvatar(avatar)
     }
     return (
         <div className="min-h-screen bg-slate-700 flex flex-col justify-center py-12 sm:px-6 lg-px-8">
@@ -185,9 +185,9 @@ export default function ShopCreate() {
                                             (<RxAvatar className='h-8 w-8' />)
                                     }
                                 </span>
-                                <label htmlFor='file-input' className='ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-md text-sm font-medium text-gray-700 bg:white hover:bg-gray-50 '>
+                                <label htmlFor='avatar' className='ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-md text-sm font-medium text-gray-700 bg:white hover:bg-gray-50 '>
                                     <span>Upload a file</span>
-                                    <input type='file' name='avatar' id='file-input' accept='.jpg, .jpeg, .png'
+                                    <input type='file' name='avatar' id='avatar' accept='.jpg, .jpeg, .png'
                                         onChange={handleFileInputChange}
                                         className='sr-only '
                                     />
