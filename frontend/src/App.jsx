@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import {Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage, ShopLoginPage } from "./Routes.jsx"
 import { ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import ProtectedRoute from './ProtectedRoute';
 import {ShopHomePage} from './ShopRoutes.jsx'
 import SellerProtectedRoute from './SellerProtectedRoute.jsx';
+import { loadSeller } from '../redux/actions/sellerActions.js';
 
 
 export default function App() {
@@ -25,7 +26,7 @@ export default function App() {
     store.dispatch(loadSeller())
   }, [])
   return (
-    <BrowserRouter>
+    <>
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<LoginPage />} />
@@ -70,6 +71,6 @@ export default function App() {
         theme="dark"
         transition={Bounce}
       />
-    </BrowserRouter>)
+    </>)
 }
 
