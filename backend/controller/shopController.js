@@ -105,8 +105,7 @@ function generateEmailTemplate(activationURL, name) {
 
 export const activateSeller = catchAsyncError(async(req, res, next) => {
     try{
-        const {url} = req.body
-        const seller_token = req.body?.seller_token || req.body?.activationToken
+        const seller_token = req.body?.activation_token || req.body?.seller_token || req.body?.activationToken
         if(!seller_token){
             return next(new ErrorHandler("Activation token is required", 400))
         }
@@ -155,7 +154,7 @@ export const loginSeller = catchAsyncError(async(req, res, next) => {
             return next(new ErrorHandler("Invalid email or password, This seller doesn't exist!", 401 ))
         }
         
-        const isPasswordMatched = await Shop.comparePassword(password)
+        const isPasswordMatched = await seller.comparePassword(password)
         if(!isPasswordMatched){
             return next(new ErrorHandler("Invalid email or password", 401))
         }
@@ -167,7 +166,7 @@ export const loginSeller = catchAsyncError(async(req, res, next) => {
 
 export const loadSeller = catchAsyncError(async(req, res, next) => {
     try{
-        const seller = await Shop.findById(req.seller._id)
+        const seller = await Shop.findById(req.seller.id)
         if(!seller){
             return next(new ErrorHandler("Seller not found", 404))
         }
@@ -186,8 +185,8 @@ export const logoutSeller = catchAsyncError(async(req, res, next) => {
         res.cookie("seller_token", null, {
             expires: new Date(Date.now()),
             httpOnly: true,
-            sameSite: "None",
-            secure: true
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            secure: process.env.NODE_ENV === "production"
         })  
         res.status(201).json({
             success: true,
