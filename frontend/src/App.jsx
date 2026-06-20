@@ -1,5 +1,5 @@
 import React from 'react'
-import {Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage, ShopLoginPage } from "./Routes.jsx"
 import { ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
@@ -10,15 +10,14 @@ import CheckoutPage from './pages/CheckoutPage.jsx';
 import PaymentPage from './pages/PaymentPage.jsx'
 import OrderSuccessPage from './pages/OrderSuccessPage.jsx'
 import { useSelector } from 'react-redux';
-import ProtectedRoute from './ProtectedRoute';
-import {ShopHomePage} from './ShopRoutes.jsx'
-import SellerProtectedRoute from './SellerProtectedRoute.jsx';
+import ProtectedRoute from './routes/ProtectedRoute.jsx';
+import { ShopHomePage } from './ShopRoutes.jsx'
+import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { loadSeller } from '../redux/actions/sellerActions.js';
+import { ShopDashboardPage } from './routes/ShopRoutes.jsx'
 
 
 export default function App() {
-  const { loading, isAuthenticated } = useSelector((state) => state.user)
-  const { isLoading, isSeller, seller } = useSelector((state) => state.seller)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -39,22 +38,26 @@ export default function App() {
         <Route path='/events' element={<EventsPage />} />
         <Route path='/faq' element={<FaqPage />} />
         <Route path='/checkout' element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <CheckoutPage />
           </ProtectedRoute>
         } />
         <Route path='/payment' element={<PaymentPage />} />
         <Route path="/order/success/:id" element={<OrderSuccessPage />} />
         <Route path='/profile' element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute >
             <ProfilePage />
           </ProtectedRoute>
         } />
         <Route path='/shop-create' element={<ShopCreatePage />} />
         <Route path='/shop-login' element={<ShopLoginPage />} />
         <Route path='/shop/:id' element={
-          <SellerProtectedRoute isSeller={isSeller} seller={seller}>
-          <ShopHomePage />
+          <SellerProtectedRoute>
+            <ShopHomePage />
+          </SellerProtectedRoute>} />
+        <Route path='/dashboard' element={
+          <SellerProtectedRoute>
+            <ShopDashboardPage />
           </SellerProtectedRoute>} />
 
       </Routes>
