@@ -30,7 +30,7 @@ export default function ShopLogin () {
             setPassword("")
             toast.success("Login successful!")
             console.log(res.data)
-            navigate("/")
+            navigate("/dashboard")
             window.location.reload();
         })
         .catch((err) => {
