@@ -1,15 +1,15 @@
-import LoginPage from './pages/LoginPage.jsx'
-import SignupPage from './pages/SignupPage.jsx';
-import ActivationPage from './pages/ActivationPage.jsx';
-import HomePage from '../src/pages/HomePage.jsx';
-import ProductsPage from '../src/pages/ProductsPage.jsx'
-import BestSellingPage from '../src/pages/BestSellingPage.jsx'
-import EventsPage from '../src/pages/EventsPage'
-import FaqPage from '../src/pages/FaqPage.jsx'
-import ProfilePage from '../src/pages/ProfilePage.jsx'
-import ShopCreatePage from './pages/ShopCreatePage.jsx'
-import SellerActivationPage from './pages/SellerActivationPage.jsx'
-import ShopLoginPage from './pages/ShopLoginPage.jsx'
+import LoginPage from '../pages/LoginPage.jsx'
+import SignupPage from '../pages/SignupPage.jsx';
+import ActivationPage from '../pages/ActivationPage.jsx';
+import HomePage from '../pages/HomePage.jsx';
+import ProductsPage from '../pages/ProductsPage.jsx'
+import BestSellingPage from '../pages/BestSellingPage.jsx'
+import EventsPage from '../pages/EventsPage'
+import FaqPage from '../pages/FaqPage.jsx'
+import ProfilePage from '../pages/ProfilePage.jsx'
+import ShopCreatePage from '../pages/ShopCreatePage.jsx'
+import SellerActivationPage from '../pages/SellerActivationPage.jsx'
+import ShopLoginPage from '../pages/ShopLoginPage.jsx'
 
 export {
     LoginPage,
