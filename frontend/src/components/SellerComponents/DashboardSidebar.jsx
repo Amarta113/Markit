@@ -16,7 +16,7 @@ const DashboardSidebar = () => {
                     <RxDashboard
                         size={30}
                         color={`${activeHeading === 1 ? 'crimson' : '#555'}`} />
-                    <h5 className={`display-bloakc-800px hidden pl-2 text-[18px] font-[400] ${activeHeading === 1 ? "text-[crimson]" : "text-[#555]"}`}>
+                    <h5 className={`display-block-800px hidden pl-2 text-[18px] font-[400] ${activeHeading === 1 ? "text-[crimson]" : "text-[#555]"}`}>
                         Dashboard
                     </h5>
                 </Link>
