@@ -1,6 +1,6 @@
 import React from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
-import { LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage, ShopLoginPage } from "./Routes.jsx"
+import { LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage, ShopLoginPage } from "./routes/Routes.jsx"
 import { ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
 import store from '../redux/store.js';
@@ -14,7 +14,7 @@ import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import { ShopHomePage } from './ShopRoutes.jsx'
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { loadSeller } from '../redux/actions/sellerActions.js';
-import { ShopDashboardPage } from './routes/ShopRoutes.jsx'
+import { ShopDashboardPage } from './routes/ShopRoutes.jsx';
 
 
 export default function App() {
