@@ -29,17 +29,17 @@ const ProfileContent = ({ active }) => {
             {/* Profile  */}
             {
                 active === 1 && (
-                    <div className="flex justify-center w-full">
-                        <div className="relative">
-                            <img src={`${backend_url}${user?.avatar}`}
-                                className='w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#3ad132]'
-                                alt="profile-img" />
-                            <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
-                                <AiOutlineCamera />
+                    <div className="flex flex-col w-full">
+                        <div className="flex justify-center pb-8">
+                            <div className="relative">
+                                <img src={`${backend_url}${user?.avatar}`}
+                                    className='w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#3ad132]'
+                                    alt="profile-img" />
+                                <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
+                                    <AiOutlineCamera />
+                                </div>
                             </div>
                         </div>
-                        <br />
-                        <br />
                         <div className="w-full px-5">
                             <form onSubmit={handleSubmit} aria-required={true}>
                                 <div className="w-full 800px:flex block pb-5">
