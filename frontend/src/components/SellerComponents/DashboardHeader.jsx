@@ -11,7 +11,7 @@ const DashboardHeader = () => {
   const { seller } = useSelector((state) => state.seller)
   return (
     <div className='w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex item-center justify-between px-4'>
-      <div className='800px:block hidden'>
+      <div className='hidden md:block'>
         <Link to="/dashboard">
           <img src={logoImg} alt='logo' className='w-[140px] bg-transparent' />
         </Link>
