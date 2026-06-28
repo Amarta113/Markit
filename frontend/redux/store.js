@@ -3,6 +3,7 @@ import {userReducer} from "./reducer/user.js";
 import { cartReducer } from './reducer/cartReducer.js';
 import { wishlistReducer } from './reducer/wishlistReducer.js';
 import { sellerReducer } from './reducer/sellerReducer.js';
+import { productReducer } from './reducer/productReducer.js';
 
 
 const store = configureStore({
@@ -10,7 +11,8 @@ const store = configureStore({
     user: userReducer,
     cart: cartReducer,
     seller: sellerReducer,
-    wishlist: wishlistReducer
+    wishlist: wishlistReducer,
+    products: productReducer
   },
 }); 
 
