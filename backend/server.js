@@ -7,6 +7,7 @@ import userRouter from "./routes/userRouter.js"
 import shopRouter from "./routes/shopRouter.js"
 import connectDb from "./db/Database.js";
 import dns from "dns";
+import productRouter from "./routes/productRouter.js";
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
@@ -20,6 +21,8 @@ app.use(cors({
 }))
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/seller', shopRouter)
+app.use('/api/v1/product', productRouter)
+
 
 app.get('/', (req, res) => {res.json({success: true, message: "server is running"})})
 app.use(errorMiddleware)
