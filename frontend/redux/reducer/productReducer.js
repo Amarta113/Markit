@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { createProduct } from "../../../backend/controller/productController";
+import { createProduct } from "../actions/productActions";
 
 const initialState = {
     isLoading: true
