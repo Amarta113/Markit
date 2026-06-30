@@ -42,3 +42,29 @@ export async function getAllProductsShop(req, res) {
         res.status(500).json({message: "Internal Server Error"})
     }
 }
+
+
+
+export async function deleteProduct(req, res) {
+    try{
+        const productId = req.params.id;
+        const productData = await Product.findById(productId)
+        if(!productData){
+            return res.status(404).json({success: false, message: "Product not found with this id!"})
+        }
+        const deletionPromises = productData.images.map(img=> {
+            const publicId = img.public_id;
+            return cloudinary.uploader.destroy(`ecommerce_uploads/${publicId}`)
+        })
+        await Promise.all(deletionPromises);
+        await Product.findByIdAndDelete(productId);
+
+        res.status(200).json({
+            success: true,
+            message: "Product deleted succesffully!"
+        })
+    } catch(error){
+        console.error(error)
+        res.status(500).json({message: "Internal server Error"})
+    }
+}
