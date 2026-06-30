@@ -6,14 +6,22 @@ import Button from '@mui/material/Button'
 import { AiOutlineEye } from 'react-icons/ai'
 import { DataGrid } from '@mui/x-data-grid'
 import Loader from '../Layout/Loader'
+import { deleteProduct } from '../../../redux/actions/productActions/deleteProduct'
 
 const AllProducts = () => {
     const { products, isLoading } = useSelector((state) => state.products)
     const { seller } = useSelector((state) => state.seller)
     const dispatch = useDispatch()
+
     useEffect(() => {
         dispatch(getAllProductsShop(seller._id))
     }, [dispatch])
+
+    function handleDelete(id) {
+        dispatch(deleteProduct(id))
+        window.location.reload()
+    }
+
     const columns = [
         { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
         { field: "name", headerName: "Name", minWidth: 180, flex: 1.4 },
@@ -80,10 +88,7 @@ const AllProducts = () => {
             })
         }
     )
-    function handleDelete(id) {
-        dispatch(deleteProduct(id))
-        window.location.reload()
-    }
+
     return (
         <>
             isLoading? (
