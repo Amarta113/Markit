@@ -21,5 +21,18 @@ export const productReducer = createReducer(
             state.success = false;            
             state.error = action.payload;
         })
+        // Get All the Products for Specific Shop
+        .addCase(getAllProductsShop.pending, (state, action)=> {
+            state.isLoading = true;
+        })
+        .addCase(getAllProductsShop.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.product = action.payload
+        })
+        .addCase(getAllProductsShop.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        })
     }
 )
+
