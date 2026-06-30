@@ -14,7 +14,7 @@ import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import { ShopHomePage } from './ShopRoutes.jsx'
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { loadSeller } from '../redux/actions/sellerActions.js';
-import {ShopDashboardPage} from './routes/ShopRoutes.jsx';
+import { ShopDashboardPage, ShopAllProducts } from './routes/ShopRoutes.jsx';
 import ShopCreateProducts from './routes/ShopCreateProducts.jsx';
 
 
@@ -63,6 +63,10 @@ export default function App() {
         <Route path='/dashboard-create-product' element={
           <SellerProtectedRoute>
             <ShopCreateProducts />
+          </SellerProtectedRoute>} />
+        <Route path='/dashboard-products' element={
+          <SellerProtectedRoute>
+            <ShopAllProducts/>
           </SellerProtectedRoute>} />
       </Routes>
       <ToastContainer
