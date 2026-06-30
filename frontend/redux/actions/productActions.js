@@ -27,12 +27,45 @@ export const getAllProductsShop = createAsyncThunk(
     async (id,  thunkAPI) => {
         try{
             const { data } = await axios.get(
-                `${server}/api/v1/product/get-all-products-shop/${id}`
+                `${server}/product/get-all-products-shop/${id}`
             )
             return data.products
         } catch(error){
             return thunkAPI.rejectWithValue(
                 error.response?.data?.message || "Failed to load all products"
+            )
+        }
+    }
+)
+
+export const deleteProduct = createAsyncThunk(
+    "deleteProduct/load",
+    async (id, thunkAPI) => {
+        try {
+            const { data } = await axios.delete(
+                `${server}/product/delete-shop-product/${id}`,
+                {withCredentials: true}
+            )
+            return data.message;
+        } catch (error){
+            return thunkAPI.rejectWithValue(
+                error.response?.data?.message || "Failed to delete the product"
+            )
+        }
+    }
+)
+
+export const getAllProducts = createAsyncThunk(
+    "getAllProducts/load",
+    async(_, thunkAPI) => {
+        try {
+            const {data} = await axios.get(
+                `${server}/product/get-all-products`
+            )
+            return data.products;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(
+               error.response?.data?.message || "Failed to load all products"
             )
         }
     }
