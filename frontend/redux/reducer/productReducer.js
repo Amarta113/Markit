@@ -33,6 +33,18 @@ export const productReducer = createReducer(
             state.isLoading = false;
             state.error = action.payload;
         })
+        // Delete the product
+        .addCase(deleteProduct.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(deleteProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = action.payload
+        })
+        .addCase(deleteProduct.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        })
     }
 )
 
