@@ -19,6 +19,7 @@ export const productReducer = createReducer(
         .addCase(createProduct.rejected, (state, action) => {
             state.isLoading = false;
             state.success = false;            
+            state.error = action.payload;
         })
     }
 )
