@@ -1,6 +1,7 @@
 import { Shop } from "../models/shop.js";
 import Product from '../models/product.js'
 import cloudinary from "../config/cloudinary.js";
+import { catchAsyncError } from '../middleware/catchAsyncError.js'
 
 export async function createProduct(req, res){
     try{
@@ -25,5 +26,19 @@ export async function createProduct(req, res){
     }
     catch (error) {
         return next(new ErrorHandler(error, 400))
+    }
+}
+
+export async function getAllProductsShop(req, res) {
+    try {
+        const products = await Product.find({shopId: req.params.id})
+        res.status(201).json({
+            success: true,
+            products
+        })
+    }
+    catch(error){
+        console.error(error)
+        res.status(500).json({message: "Internal Server Error"})
     }
 }
