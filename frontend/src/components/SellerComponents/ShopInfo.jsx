@@ -1,10 +1,26 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { server } from '../../server'
 
 const ShopInfo = ({ isOwner }) => {
     const { seller } = useSelector((state) => state.seller)
-    function logoutHandler () {
-         
+    async function logoutHandler () {
+        try {
+            setIsLoading(true)
+            const res = await axios.get(
+                `${server}/seller/seller-logout`,
+                {
+                    withCredential: true
+                }
+            )
+            if (res.data.success) {
+                window.location.href = '/shop-create'
+            } else {
+                console.error('Seller logout failed! ', res.data.message)
+            }
+        } catch (error){
+            console.error("Seller logout error", error)
+        }
     }
     return (
         <div>
