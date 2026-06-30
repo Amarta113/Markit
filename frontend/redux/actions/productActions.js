@@ -21,3 +21,19 @@ export const createProduct = createAsyncThunk("product/load",
             || "Failed to create product");
     }
 });
+
+export const getAllProductsShop = createAsyncThunk(
+    "allProducts/load",
+    async (id,  thunkAPI) => {
+        try{
+            const { data } = await axios.get(
+                `${server}/api/v1/product/get-all-products-shop/${id}`
+            )
+            return data.products
+        } catch(error){
+            return thunkAPI.rejectWithValue(
+                error.response?.data?.message || "Failed to load all products"
+            )
+        }
+    }
+)
