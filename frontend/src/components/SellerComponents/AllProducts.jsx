@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllProductsShop } from '../../../redux/actions/productActions'
+import { getAllProductsShop, deleteProduct } from '../../../redux/actions/productActions'
 import { Link } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import { AiOutlineEye } from 'react-icons/ai'
 import { DataGrid } from '@mui/x-data-grid'
 import Loader from '../Layout/Loader'
-import { deleteProduct } from '../../../redux/actions/productActions/deleteProduct'
 
 const AllProducts = () => {
     const { products, isLoading } = useSelector((state) => state.products)
