@@ -9,6 +9,7 @@ import connectDb from "./db/Database.js";
 import dns from "dns";
 import productRouter from "./routes/productRouter.js";
 import eventsRouter from "./routes/eventRouter.js";
+import couponCodeRouter from "./routes/couponRouter.js";
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
@@ -24,10 +25,11 @@ app.use('/api/v1/user', userRouter)
 app.use('/api/v1/seller', shopRouter)
 app.use('/api/v1/product', productRouter)
 app.use('/api/v1/event', eventsRouter)
-
+app.use('api/v1/coupon', couponCodeRouter)
 
 app.get('/', (req, res) => {res.json({success: true, message: "server is running"})})
 app.use(errorMiddleware)
+
 
 
 const PORT = process.env.PORT || 8000
