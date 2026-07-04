@@ -2,25 +2,30 @@ import express from 'express'
 import { Shop } from "../models/shop.js";
 import cloudinary from "../config/cloudinary.js";
 import { catchAsyncError } from '../middleware/catchAsyncError.js'
-import couponCode from '../models/couponCode.js'
+import Coupon from '../models/couponCode.js'
 
 export async function createCouponCode(req, res) {
     try{
-        const isCouponCode = await couponCode.find({name: req.body.name})
-        if(isCouponCode.length !== 0){
+        const existingCoupons = await Coupon.find({name: req.body.name})
+        if(existingCoupons.length !== 0){
             return res.status(404).json({success: false, message: 'Coupon code already exists!'})
         }
-        const couponCode = await couponCode.create(req.body)
-        res.status(201).json({success: true, couponCode})
+        const coupon = await Coupon.create(req.body)
+        res.status(201).json({success: true, coupon})
     } catch(error){
         console.error(error)
         res.status(500).json({message: "Internal Server Error!"})
     }
 }
 
+// get all coupons for a shop
 export async function getAllCoupons(req, res) {
     try{
-
+        const couponCodes = await Coupon.find({shopId: req.seller.id})
+        res.status(201).json({
+            success: true,
+            couponCodes
+        })
     } catch(error){
         console.error(error)
         res.status(500).json({success:false, message: "Internal server error"})
