@@ -19,11 +19,15 @@ const couponCodeSchema = mongoose.Schema({
         type: Object,
         required: true,
     },
+    selectedProduct: {
+        type: String,
+
+    },
     createdAt: {
         type: Date,
         default: Date.now()
     }
 })
 
-const couponCode = mongoose.model("CouponCode", couponCodeSchema)
-export default couponCode;
+const Coupon = mongoose.model("Coupon", couponCodeSchema)
+export default Coupon
