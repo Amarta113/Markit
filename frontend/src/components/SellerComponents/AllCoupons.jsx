@@ -14,22 +14,27 @@ import {toast} from 'react-toastify'
 const AllCoupons = () => {
     const [open, setOpen] = useState(false)
     const [name, setName] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
+    const [coupons, setCoupons] = useState([])
     const [minAmount, setMinAmount] = useState(0)
     const [maxAmount, setMaxAmount] = useState()
     const [selectedProducts, setSelectedProducts] = useState(null)
     const [value, setValue] = useState(null)
-    const { products, isLoading } = useSelector((state) => state.products)
+    const { products } = useSelector((state) => state.products)
     const { seller } = useSelector((state) => state.seller)
 
     useEffect(() => {
+        setIsLoading(true)
         axios.get(`${server}/coupons/get-coupon/${seller._id}`,
             {withCredentials: true}
-        ).then(
-            res => {
+        ).then((res) => 
+            {
+                setIsLoading(false)
                 setCoupons(res?.data.couponCode)
                 console.log(res)
             }
         ).catch(error => {
+            setIsLoading(false)
             console.error(error)
         })
     }, [])
@@ -53,7 +58,24 @@ const AllCoupons = () => {
     async function handleSubmit(e){
         e.preventDefault()
         try{
-
+            const {data, status} = await axios.post(`${server}/coupon/create-coupon-code`,
+                {
+                    name,
+                    minAmount,
+                    maxAmount,
+                    selectedProducts,
+                    value,
+                    shopId: seller._id
+                }, {
+                    withCredentials: true
+                }
+            );
+            if (status === 201){
+                setOpen(false)
+                toast.success("Coupon created for the product")
+                window.location.reload()
+            }
+            console.log(data)
         }catch(error){
             toast.error(error?.response?.data.message)  
         }
@@ -86,9 +108,11 @@ const AllCoupons = () => {
             minWidth: 100,
             flex: 0.8,
             renderCell: params => {
+                const data = params.row.name;
+                const product_name = data.replace(/\s+/g, "-")
                 return (
                     <>
-                        <Link to={`/product/${params.id}`}>
+                        <Link to={`/product/${product_name}`}>
                             <Button>
                                 <AiOutlineEye size={20} />
                             </Button>
@@ -116,12 +140,12 @@ const AllCoupons = () => {
         },
     ];
     const row = [];
-    product && product.forEach(
+    coupons && coupons.forEach(
         item => {
             row.push({
                 id: item._id,
                 name: item.name,
-                price: "US$" + item.discountPrice,
+                price: item.value + " %",
                 sold: 10
             })
         }
@@ -134,7 +158,10 @@ const AllCoupons = () => {
             ): (
             <div className='w-full mx-8 pt-1 bg-white flex flex-col min-h-[200px] max-h-[600px]'>
                 <div className='w-full flex justify-end'>
-                    <div className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3`}>
+                    <div 
+                    className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3`}
+                    onClick={() => setOpen(true)}
+                    >
                         <span className='text-white'>Create Coupon Code</span>
                     </div>
                 </div>
@@ -161,13 +188,16 @@ const AllCoupons = () => {
                                 <h5 className='text-[30px] font-[Poppins] text-center font-[600]'
                                 >Create Coupon Code</h5>
                                 { /* Create coupon code */}
-                                <form onSubmit={handleSubmit}>
+                                <form onSubmit={handleSubmit} aria-required = {true}>
                                     <br />
                                     <div>
                                         <label className='pb-2'>
                                             Name <span className='text-red-500'>*</span>
                                         </label>
-                                        <input type="text" name='name' value={name}
+                                        <input type="text" 
+                                            name='name' 
+                                            value={name}
+                                            required
                                             className='mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 sm:text-sm'
                                             onChange={(e) => setName(e.target.value)}
                                             placeholder='Enter your Coupon Code name...' />
@@ -177,7 +207,11 @@ const AllCoupons = () => {
                                         <label className='pb-2'>
                                             Discount Percentage <span className='text-red-500'>*</span>
                                         </label>
-                                        <input type="numbar" name='discount' value={value}
+                                        <input 
+                                            type="numbar" 
+                                            name='discount' 
+                                            required
+                                            value={value}
                                             className='mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 sm:text-sm'
                                             onChange={(e) => setValue(e.target.value)}
                                             placeholder='Enter your Coupon Code value...' />
@@ -187,7 +221,10 @@ const AllCoupons = () => {
                                         <label className='pb-2'>
                                             Min Amount <span className='text-red-500'>*</span>
                                         </label>
-                                        <input type="number" name='min-amount' value={minAmount}
+                                        <input 
+                                            type="number" 
+                                            name='min-amount' 
+                                            value={minAmount}
                                             className='mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 sm:text-sm'
                                             onChange={(e) => setMinAmount(e.target.value)}
                                             placeholder='Enter your Coupon Code min amount' />
@@ -195,7 +232,7 @@ const AllCoupons = () => {
                                     <br />
                                     <div>
                                         <label className='pb-2'>
-                                            Min Amount <span className='text-red-500'>*</span>
+                                            Max Amount <span className='text-red-500'>*</span>
                                         </label>
                                         <input type="number" name='max-amount' value={maxAmount}
                                             className='mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 sm:text-sm'
@@ -215,7 +252,7 @@ const AllCoupons = () => {
                                             Choose a selected product
                                         </option>
                                         {
-                                            products && product.map((data, i) => (
+                                            products && products.map((data, i) => (
                                                 <option value={data.name} key={i}>
                                                     {data.name}
                                                 </option>
