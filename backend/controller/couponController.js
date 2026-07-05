@@ -33,9 +33,39 @@ export async function getAllCoupons(req, res) {
 }
 
 export async function deleteCoupon(req, res){
-
+    try {
+        const couponId = await Coupon.findByIdAndDelete(req.params.id)
+        if(!couponId){
+            return res.status(404).json({
+                success: false,
+                message: "Coupon not found!"
+            })
+        }
+        res.status(201).json({
+            success: true,
+            message: "Coupon delted successfully"
+        })
+    } catch (error){
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: "Internal Server error"
+        })
+    }
 }
 
 export async function getCouponValue(req, res) {
-    
+    try{
+        const couponCode = await Coupon.findONe({name: req.params.name})
+        res.status(200).json({
+            success: true,
+            couponCode
+        })
+    } catch(error){
+        console.error(error)
+        res.status(500).json({
+            success: false,
+            message: "Internal Server error"
+        })
+    }
 }
