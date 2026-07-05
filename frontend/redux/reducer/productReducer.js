@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { createProduct } from "../actions/productActions";
+import { createProduct, getAllProducts } from "../actions/productActions";
 
 const initialState = {
     isLoading: true
@@ -42,6 +42,17 @@ export const productReducer = createReducer(
             state.message = action.payload
         })
         .addCase(deleteProduct.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        })
+        .addCase(getAllProducts.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(getAllProducts.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.allProducts = action.payload;
+        })
+        .addCase(getAllProducts.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
         })
