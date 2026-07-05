@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     addToWishlist,
     removeFromWishlist,
@@ -8,12 +8,20 @@ import { addToCart } from "../../../redux/actions/cartActions";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/styles";
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from 'react-icons/ai';
+import { backend_url } from '../../server';
 
 const ProductDetails = ({ data }) => {
     const [count, setCount] = useState(1)
     const [click, setClick] = useState(false)
     const [select, setSelect] = useState()
+    const { products } = useSelector(state => state.products)
+    const { seller } = useSelector(state => state.seller)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getAllProductsShop(data._id))
+    }, [dispatch])
 
     const incrementCount = () => {
         setCount(count + 1)
@@ -34,7 +42,7 @@ const ProductDetails = ({ data }) => {
                         <div className="block w-full flex-800px">
                             <div className='w-full width-800px-50'>
                                 <img
-                                    src={data.image_Url?.[select]?.url}
+                                    // src={data.image_Url?.[select]?.url}
                                     alt="img"
                                     className='w-[80%] cursor-pointer'
                                 />
@@ -43,7 +51,7 @@ const ProductDetails = ({ data }) => {
                                         data?.images.map((img, i) => (
                                             <div className={`cursor-pointer`} key={i}>
                                                 <img
-                                                    src={`${img?.url}`}
+                                                    src={`${backend_url}${data.images && data.images[0]}`}
                                                     alt="Images"
                                                     className="h-[200px] overflow-hidden mr-3 mt-3"
                                                     onClick={() => setSelect(i)}
@@ -53,17 +61,17 @@ const ProductDetails = ({ data }) => {
                                 </div>
                                 {/* closing dev*/}
                             </div>
-                            <div className="w-full 800px:w-[50%] pt-5">
+                            <div className="w-full md:w-[50%] pt-5">
                                 <h1 className={`${styles.productTitle}`}>
                                     {data.name}
                                 </h1>
                                 <p>{data.description}</p>
                                 <div className="flex pt-3">
                                     <h4 className={`${styles.productDiscountPrice}`}>
-                                        {data.discount_price}
+                                        {data.discountPrice}
                                     </h4>
                                     <h3 className={`${styles.price}`}>
-                                        {data.price ? data.price + "$" : null}
+                                        {data.originalPrice ? data.originalPrice + "$" : null}
                                     </h3>
                                 </div>
                                 <div className="flex items-center mt-12 justify-between pr-3">
@@ -107,14 +115,16 @@ const ProductDetails = ({ data }) => {
                             </span>
                         </div>
                         <div className="flex items-center pt-8">
-                            <img src={data.shop.shop_avatar.url} alt="shop avatar"
+                            <img
+                                src={`${backend_url}${data?.shop?.avatar}`}
+                                alt="shop avatar"
                                 className='w-[50px] h-[50px] rounded-full mr-2' />
                             <div className='pr-8'>
                                 <h3 className={`${styles.shop_name} pb-1 pt-1`}>
                                     {data.shop.name}
                                 </h3>
                                 <h5 className='pb-3 text-[15px]'>
-                                    ({data.shop.ratings}) Ratings
+                                    (4/5) Ratings
                                 </h5>
                             </div>
                             <div className={`${styles.button} !bg-[#6443d1] mt-4 !rounded !h-11`}
@@ -125,7 +135,7 @@ const ProductDetails = ({ data }) => {
                             </div>
                         </div>
                     </div>
-                    <ProducDetailsInfo data={data} />
+                    <ProducDetailsInfo data={data} products={products} />
                     <br />
                     <br />
                 </div>)
@@ -135,7 +145,7 @@ const ProductDetails = ({ data }) => {
     )
 }
 
-const ProducDetailsInfo = () => {
+const ProducDetailsInfo = (data, products) => {
     const [active, setActive] = useState(1)
 
     return (
@@ -161,7 +171,6 @@ const ProducDetailsInfo = () => {
                     {
                         active === 2 ? (
                             <div className={`${styles.active_indicator}`} />
-
                         ) : null
                     }
                 </div>
@@ -173,7 +182,6 @@ const ProducDetailsInfo = () => {
                     {
                         active === 3 ? (
                             <div className={`${styles.active_indicator}`} />
-
                         ) : null
                     }
                 </div>
@@ -182,19 +190,7 @@ const ProducDetailsInfo = () => {
                 active === 1 ? (
                     <>
                         <p className='py-2 text-[18px] leading-8 pb-10 whitespace-pre-line'>
-                            This premium product is manufactured using high-quality materials and
-                            undergoes strict quality checks to ensure customer satisfaction. Its
-                            modern design, durability, and ease of use make it suitable for everyday
-                            use. Whether you're purchasing it for personal use or as a gift, it offers
-                            outstanding performance and excellent value. For best results, follow the
-                            recommended usage instructions and care guidelines provided by the seller
-                        </p>
-                        <p className='py-2 text-[18px] leading-8 pb-10 whitespace-pre-line'>
-                            This product is carefully selected to provide excellent quality,
-                            durability, and value for money. Designed with customer
-                            satisfaction in mind, it offers reliable performance and a
-                            user-friendly experience. Review the product specifications,
-                            images, and seller information before placing your order.
+                            {data.description}
                         </p>
                     </>
                 ) : null
@@ -212,39 +208,40 @@ const ProducDetailsInfo = () => {
                     <div className="w-full block 800px:flex p-5">
                         <div className="w-full 800px:w-[50%]">
                             <div className="flex items-center">
-                                <img src={data.shop.shop_avatar.url}
+                                <img
+                                    src={`${backend_url}${data?.shop?.avatar}`}
                                     className="w-[50px] h-[50px] rounded"
                                     alt="" />
                             </div>
                             <div className='pl-3'>
                                 <h3 className={styles.shop_name}>{data.shop.name}</h3>
                                 <h5 className='pb-2 text-[15px]'>
-                                    ({data.shop.ratings})Ratings
+                                    (4/5) Ratings
                                 </h5>
                             </div>
                         </div>
-                        <p className='pt-2'>Discover more about the seller's quality products and reliable service before making your purchase.</p>
+                        <p className='pt-2'>{data.shop.description}</p>
                         <div className='w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end'>
                             <div className="text-left">
                                 <h5 className='font-[600]'>
-                                    Joined on: <span className='font-[500]'>14 March, 2026</span>
+                                    Joined on: <span className='font-[500]'>{data.shop?.createAt.slice(0, 10)}</span>
                                 </h5>
                                 <h5 className='font-[600] pt-3'>
-                                    Total Products: <span className='font-[500]'>1,324</span>
+                                    Total Products: <span className='font-[500]'>{products && products.length}</span>
                                 </h5>
                                 <h5 className='font-[600] pt-3'>
                                     Total reviews: <span className='font-[500]'>324</span>
                                 </h5>
                                 <Link to='/'>
-                                <div className={`${styles.button} !rounded-[4px] !h-[39.5px] mt-3`}>
-                                    <h4 className='text-white'>Visit Shop</h4>
-                                </div>
+                                    <div className={`${styles.button} !rounded-[4px] !h-[39.5px] mt-3`}>
+                                        <h4 className='text-white'>Visit Shop</h4>
+                                    </div>
                                 </Link>
                             </div>
                         </div>
                     </div>
-                    
-                ) 
+
+                )
             }
         </div>
     )
