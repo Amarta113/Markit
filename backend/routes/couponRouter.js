@@ -7,6 +7,6 @@ const couponCodeRouter = express.Router()
 couponCodeRouter.post('/create-coupon-code', createCouponCode)
 couponCodeRouter.get('/get-coupon/:id', isSeller, getAllCoupons)
 couponCodeRouter.get('/get-coupon-value/:name', getCouponValue)
-couponCodeRouter.delete('/delete-coupon/:id', isSeller, deletCoupon)
+couponCodeRouter.delete('/delete-coupon/:id', isSeller, deleteCoupon)
 
 export default couponCodeRouter
