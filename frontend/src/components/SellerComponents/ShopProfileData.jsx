@@ -1,8 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../../styles/styles'
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useParams } from "react-router-dom";
+import { getAllProductsShop } from '../../../redux/actions/productActions'
+import { getAllEventShop  } from '../../../redux/actions/eventActions'
 
 const ShopProfileData = ({isOwner}) => {
   const [active, setActive] = useState(1)
+  const {products} = useSelector(state => state.products)
+  const {seller } = useSelector(state => state.seller)  
+  const {events} = useSelector(state => state.events)
+  const { id } = useParams()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+      dispatch(getAllProductsShop(id))
+      dispatch(getAllEventShop(seller._id))
+  }, [dispatch])
 
   return (
     <div className='w-full'>
@@ -24,7 +38,6 @@ const ShopProfileData = ({isOwner}) => {
               Shop Reviews
             </h5>
           </div>
-      
         </div>
         <div>
           {isOwner && (
