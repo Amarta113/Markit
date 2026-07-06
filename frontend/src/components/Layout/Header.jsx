@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import logoImg from '../../assets/markit-logo.jpg'
 import styles from '../../styles/styles'
 import { categoriesData, productData } from "../../static/data";
-import { AiOutlineSearch, AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai'
+import { AiOutlineSearch, AiOutlineHeart, AiOutlineShoppingCart, AiFillProduct } from 'react-icons/ai'
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
 import { LayoutGrid, TreeDeciduous } from 'lucide-react'
 import { BiMenuAltLeft } from 'react-icons/bi'
@@ -27,11 +27,12 @@ export default function Header({ activeHeading }) {
     const [open, setOpen] = useState(false)
     const { cart } = useSelector(state => state.cart)
     const { wishlist } = useSelector(state => state.wishlist)
+    const {allProducts} = useSelector(state => state.products)
 
     const handleSearchChange = async (e) => {
         const term = e.target.value;
         setSearchTerm(term);
-        const filteredProducts = productData.filter((product) =>
+        const filteredProducts = allProducts.filter((product) =>
             product.name.toLowerCase().includes(term.toLowerCase())
         );
         setSearchData(filteredProducts)
@@ -51,8 +52,7 @@ export default function Header({ activeHeading }) {
             loading ? (
                 null
             ) :
-                (
-                    <>
+                (<>
                         <div className={`${styles.section} hidden md:block`}>
                             <div className="h-[50px] my-[20px] flex items-center justify-between">
                                 <div>
@@ -80,14 +80,15 @@ export default function Header({ activeHeading }) {
                                                             return (
                                                                 <Link to={`/products/${Product_name}`} key={index}>
                                                                     <div className="w-full flex items-start py-3">
-                                                                        <img src={i.image_Url?.[0]?.url} alt='product img'
+                                                                        <img 
+                                                                            src={`${backend_url}${i.images[0]}`} 
+                                                                            alt='product image'
                                                                             className='w-[40px] h-[40px] mr-[10px]'
                                                                         />
                                                                         <h1>{i.name}</h1>
                                                                     </div>
                                                                 </Link>
-                                                            )
-                                                        })}
+                                                            )})}
                                             </div>
                                         ) : null}
                                 </div>
@@ -260,15 +261,12 @@ export default function Header({ activeHeading }) {
                                         )}
                                     </div>
                                     <Navbar active={activeHeading} mobile={true}/>
-                                    <div className={`${styles.button} ml-4 rounded-xl text-[20px]`}>
+                                    <div className={`${styles.button} ml-4 rounded-xl text-[20px] text-white`}>
                                         <Link to="/shop-create">
                                             Become Seller
                                         </Link>
                                     </div>
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <div className="flex w-full justify-center">
+                                    <div className="flex w-full justify-center my-[30px]">
                                         {
                                             !isAuthenticated ? (<>
                                                 <Link
