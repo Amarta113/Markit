@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { createEvent } from "../actions/eventActions.js";
+import { createEvent, deleteEvent, getAllEvents, getAllEventShop } from "../actions/eventActions.js";
 
 const initialState = {
     isLoading: true
@@ -21,6 +21,7 @@ export const eventReducer = eventReducer(
             state.success = false;            
             state.error = action.payload;
         })
+
         // Get All the Events for Specific Shop
         .addCase(getAllEventShop.pending, (state, action)=> {
             state.isLoading = true;
@@ -30,6 +31,18 @@ export const eventReducer = eventReducer(
             state.product = action.payload
         })
         .addCase(getAllEventShop.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        })
+         // Get All the Events 
+        .addCase(getAllEvents.pending, (state, action)=> {
+            state.isLoading = true;
+        })
+        .addCase(getAllEvents.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.allEvents = action.payload
+        })
+        .addCase(getAllEvents.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
         })
