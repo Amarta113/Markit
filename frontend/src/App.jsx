@@ -16,6 +16,8 @@ import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { loadSeller } from '../redux/actions/sellerActions.js';
 import { ShopDashboardPage, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons} from './routes/ShopRoutes.jsx';
 import ShopCreateProducts from './routes/ShopCreateProducts.jsx';
+import { getAllEvents } from '../redux/actions/eventActions.js';
+import { getAllProducts } from '../redux/actions/productActions.js';
 
 export default function App() {
   const navigate = useNavigate()
@@ -23,6 +25,8 @@ export default function App() {
   useEffect(() => {
     store.dispatch(loadUser())
     store.dispatch(loadSeller())
+    store.dispatch(getAllProducts())
+    store.dispatch(getAllEvents())
   }, [])
   return (
     <>
