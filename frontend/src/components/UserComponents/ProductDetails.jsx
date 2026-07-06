@@ -42,7 +42,7 @@ const ProductDetails = ({ data }) => {
                         <div className="block w-full flex-800px">
                             <div className='w-full width-800px-50'>
                                 <img
-                                    // src={data.image_Url?.[select]?.url}
+                                    src={`${backend_url}${data && data.images[select]}`}
                                     alt="img"
                                     className='w-[80%] cursor-pointer'
                                 />
@@ -207,18 +207,20 @@ const ProducDetailsInfo = (data, products) => {
                 active === 3 && (
                     <div className="w-full block 800px:flex p-5">
                         <div className="w-full 800px:w-[50%]">
-                            <div className="flex items-center">
-                                <img
-                                    src={`${backend_url}${data?.shop?.avatar}`}
-                                    className="w-[50px] h-[50px] rounded"
-                                    alt="" />
-                            </div>
-                            <div className='pl-3'>
-                                <h3 className={styles.shop_name}>{data.shop.name}</h3>
-                                <h5 className='pb-2 text-[15px]'>
-                                    (4/5) Ratings
-                                </h5>
-                            </div>
+                            <Link to={`/shop/preview/${data.shop._id}`}>
+                                <div className="flex items-center">
+                                    <img
+                                        src={`${backend_url}${data?.shop?.avatar}`}
+                                        className="w-[50px] h-[50px] rounded"
+                                        alt="" />
+                                </div>
+                                <div className='pl-3'>
+                                    <h3 className={styles.shop_name}>{data.shop.name}</h3>
+                                    <h5 className='pb-2 text-[15px]'>
+                                        (4/5) Ratings
+                                    </h5>
+                                </div>
+                            </Link>
                         </div>
                         <p className='pt-2'>{data.shop.description}</p>
                         <div className='w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end'>
