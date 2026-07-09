@@ -5,7 +5,7 @@ const initialState = {
     isLoading: true
 }
 
-export const eventReducer = eventReducer(
+export const eventReducer = createReducer(
     initialState, builder => {
         builder
         .addCase(createEvent.pending, (state) => {
