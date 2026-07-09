@@ -12,7 +12,7 @@ function ShopAllEvents() {
           <DashboardSideBar active={5} />
         </div>
         <div className='w-full justify-center flex'>
-          <ShopAllEvents />
+          <AllEvents />
         </div>
       </div>
     </div>
