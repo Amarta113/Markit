@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const calculateTimeLeft = () => {
+const calculateTimeLeft = (data) => {
   const difference = +new Date(data?.Finish_Date) - +new Date();
   let timeLeft = {};
   if (difference > 0) {
@@ -16,15 +16,15 @@ const calculateTimeLeft = () => {
 };
 
 export default function CountDown({data}) {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [timeLeft, setTimeLeft] = useState(() => calculateTimeLeft(data));
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
+      setTimeLeft(calculateTimeLeft(data));
     }, 1000);
 
     return () => clearInterval(timer);
-  });
+  }, [data]);
 
   const timerComponents = Object.keys(timeLeft).map((interval) => (
     <span key={interval} className="text-[25px] text-[#475ad2] mr-2">
