@@ -5,6 +5,11 @@ import CountDown from "./CountDown.jsx"
 import { backend_url } from '../../server.js'
 
 export default function EventCard({active, data}){
+    if (!data) return null
+
+    const imageSrc = data?.images?.[0]
+        ? `${backend_url}${data.images[0]}`
+        : mobile
 
     return (
         <div className={`w-full block bg-white rounded-lg ${
@@ -13,7 +18,7 @@ export default function EventCard({active, data}){
         >
             <div className="mb-8 flex w-full shrink-0 justify-center lg:mb-0 lg:w-[46%] lg:justify-end">
                 <img
-                    src={`${backend_url}${data.images[0]}`}
+                    src={imageSrc}
                     alt="iPhone 17 Pro Max"
                     className="max-h-[320px] w-auto max-w-full object-contain lg:max-h-[380px]"
                 />
