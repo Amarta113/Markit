@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { createProduct, getAllProducts } from "../actions/productActions";
+import { createProduct, deleteProduct, getAllProducts, getAllProductsShop } from "../actions/productActions";
 
 const initialState = {
     isLoading: true
