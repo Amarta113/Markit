@@ -44,8 +44,8 @@ export async function getAllEventsShop(req, res) {
 
 export async function getAllEvents(req, res) {
     try {
-        const events = await Events.find()
-        res.status(201).json({success: true, events}) 
+        const events = await Event.find()
+        res.status(200).json({success: true, events}) 
     }
     catch(error){
         console.error(error)
