@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RxCross1 } from "react-icons/rx"
-import useSelector, { useDispatch } from 'react-redux'
 import styles from '../../styles/styles'
 import { AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from 'react-icons/ai'
-import { taost } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { addToCart } from '../../../redux/actions/cartActions'
+import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlistActions'
+import { useDispatch, useSelector } from 'react-redux'
 
 const ProductDetailsCard = ({ setOpen, data }) => {
     const { cart } = useSelector((state) => state.cart)
+    const { wishlist } = useSelector((state) => state.wishlist)
     const dispatch = useDispatch()
     const [count, setCount] = useState(1)
     const [click, setClick] = useState(false)
@@ -39,13 +41,22 @@ const ProductDetailsCard = ({ setOpen, data }) => {
             }
         }
     }
-    const removeFromWishListhandler = () => {
-        return null
+    const removeFromWishListhandler = (data) => {
+        setClick(!click)
+        dispatch(removeFromWishlist(data))
+    }
+    const addToWishListhandler = (data) => {
+        setClick(!click)
+        dispatch(addToWishlist(data))
     }
 
-    const addToWishListhandler = () => {
-        return null
-    }
+    useEffect(() => {
+        if (wishlist && wishlist.find((i) => i._id === data._id)) {
+            setClick(true)
+        } else {
+            setClick(false)
+        }
+    }, [wishlist])
 
     return (
         <div className='bg-[#fff]'>
@@ -88,7 +99,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                                 <p>{data.description}</p>
                                 <div className="flex pt-3">
                                     <h4 className={`${styles.productDiscountPrice}`}>
-                                        {data.discount_price}$
+                                        {data.discountPrice}$
                                     </h4>
                                     <h3 className={`${styles.price}`}>{data.price ? data.price + "$" : null}</h3>
                                 </div>
