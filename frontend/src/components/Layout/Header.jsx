@@ -17,6 +17,7 @@ import Wishlist from '../Wishlist/Wishlist.jsx';
 
 export default function Header({ activeHeading }) {
     const { isAuthenticated, user, loading } = useSelector(state => state.user)
+    const {cart} = useSelector((state) => state.cart)
     const [searchTerm, setSearchTerm] = useState("")
     const [searchData, setSearchData] = useState(null)
     const [active, setActive] = useState(false)
@@ -142,7 +143,9 @@ export default function Header({ activeHeading }) {
                                             size={30}
                                             className='cursor-pointer'
                                             color='rgb(255, 255, 255 / 83%)' />
-                                        <span className="absolute -top-1 -right-1 rounded-full bg-[#40d132] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">1</span>
+                                        <span className="absolute -top-1 -right-1 rounded-full bg-[#40d132] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                                            {cart & cart.length}
+                                        </span>
                                     </div>
                                     <div className="relative cursor-pointer mr-[15px]">
                                         {!isAuthenticated ? (
