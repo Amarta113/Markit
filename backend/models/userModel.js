@@ -10,9 +10,21 @@ const userSchema = new mongoose.Schema({
         minLength: [8, "Password must have at least 8 characters."],
         maxLength: [32, "Password cannot have more than 32 characters."]
     },
-    accountVerified: {type: Boolean, default: false},
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
+    addresses: [
+        {
+            country: { type: String },
+            city: { type: String },
+            address1: { type: String },
+            address2: { type: String },
+            zipCode: { type: Number },
+            addressType: {
+                type: String
+            },
+        }
+    ],
+    phoneNumber: {
+        type: Number
+    },
     createdAt: {
         type: Date,
         default: Date.now,
@@ -27,6 +39,9 @@ const userSchema = new mongoose.Schema({
             required: true,
         },
     }, 
+    accountVerified: {type: Boolean, default: false},
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
 })
 
 // hash password
