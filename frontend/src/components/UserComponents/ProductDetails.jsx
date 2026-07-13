@@ -9,19 +9,29 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/styles";
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from 'react-icons/ai';
 import { backend_url } from '../../server';
+import { getAllProductsShop } from '../../../redux/actions/productActions';
+import { toast } from 'react-toastify';
 
 const ProductDetails = ({ data }) => {
+    const { products } = useSelector(state => state.products)
+    const { seller } = useSelector(state => state.seller)
+    const { wishlist } = useSelector(state => state.wishlist)
+    const { cart } = useSelector(state => state.cart)
     const [count, setCount] = useState(1)
     const [click, setClick] = useState(false)
     const [select, setSelect] = useState()
-    const { products } = useSelector(state => state.products)
-    const { seller } = useSelector(state => state.seller)
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getAllProductsShop(data._id))
-    }, [dispatch])
+        dispatch(getAllProductsShop(data && data._id))
+        if (wishlist && wishlist.find((i) => i._id === data._id)) {
+            setClick(true)
+        } else {
+            setClick(false)
+        }
+    }, [data, wishlist])
 
     const incrementCount = () => {
         setCount(count + 1)
@@ -31,6 +41,31 @@ const ProductDetails = ({ data }) => {
             setCount(count - 1)
         }
     }
+
+    const removeFromWishlistHandler = (data) => {
+        setClick(!click)
+        dispatch(removeFromWishlist(data))
+    }
+    const addToWishListhandler = (data) => {
+        setClick(!click)
+        dispatch(addToWishlist(data))
+    }
+
+    const addToCartHandler = (id) => {
+        const isItemExist = cart && cart.find((i) => i._id === id)
+        if (!isItemExist) {
+            toast.error("Item already in cart!")
+        } else {
+            if (data.stock < count) {
+                return toast.error("Product stock is limited")
+            } else {
+                const cartData = { ...data, qty: count }
+                dispatch(addToCart(cartData))
+                toast.success("Item added to cart successfully.")
+            }
+        }
+    }
+
     const handleMessageSubmit = () => {
         navigate('/inbox?conversation=507ebjver884ehfdjeriv84')
     }
@@ -115,14 +150,18 @@ const ProductDetails = ({ data }) => {
                             </span>
                         </div>
                         <div className="flex items-center pt-8">
-                            <img
-                                src={`${backend_url}${data?.shop?.avatar}`}
-                                alt="shop avatar"
-                                className='w-[50px] h-[50px] rounded-full mr-2' />
+                            <Link to={`/shop/preview/${data.shop._id}`}>
+                                <img
+                                    src={`${backend_url}${data?.shop?.avatar}`}
+                                    alt="shop avatar"
+                                    className='w-[50px] h-[50px] rounded-full mr-2' />
+                            </Link>
                             <div className='pr-8'>
+                                <Link to={`/shop/preview/${data.shop._id}`}>
                                 <h3 className={`${styles.shop_name} pb-1 pt-1`}>
                                     {data.shop.name}
                                 </h3>
+                                </Link>
                                 <h5 className='pb-3 text-[15px]'>
                                     (4/5) Ratings
                                 </h5>
@@ -135,7 +174,7 @@ const ProductDetails = ({ data }) => {
                             </div>
                         </div>
                     </div>
-                    <ProducDetailsInfo data={data} products={products} />
+                    <ProductDetailsInfo data={data} products={products} />
                     <br />
                     <br />
                 </div>)
@@ -145,7 +184,7 @@ const ProductDetails = ({ data }) => {
     )
 }
 
-const ProducDetailsInfo = (data, products) => {
+const ProductDetailsInfo = (data, products) => {
     const [active, setActive] = useState(1)
 
     return (
@@ -159,7 +198,6 @@ const ProducDetailsInfo = (data, products) => {
                     {
                         active === 1 ? (
                             <div className={`${styles.active_indicator}`} />
-
                         ) : null
                     }
                 </div>
