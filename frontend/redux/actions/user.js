@@ -14,3 +14,25 @@ export const loadUser = createAsyncThunk("user/load", async (_, thunkAPI) => {
         return thunkAPI.rejectWithValue(error.response?.data?.message || error.message || "Failed to load user");
     }
 });
+
+export const updateUser = createAsyncThunk(
+    "updateUser/load",
+    async({email, password, fullName, phoneNumber}, 
+        {rejectWithValue}
+    ) => {
+        try{
+            const { data } = await axios.put(
+                `${server}/user/update-user-info`,
+                {email, password, fullName, phoneNumber},
+                {withCredentials}
+            )
+            return data.user
+        }
+        catch(error){
+            return rejectWithValue(
+                error.response.data?.message || "Failed to update user details"
+            )
+        }
+    }
+)
+
