@@ -14,9 +14,6 @@ const ProductCard = ({ data }) => {
     const [open, setOpen] = useState(false)
     const dispatch = useDispatch()
 
-    const d = data.name;
-    const product_name = d.replace(/\s+/g, "-")
-
     const addToCartHandler = (id) => {
             const isItemExist = cart && cart.find((i) => i._id === id)
             if (!isItemExist) {
@@ -53,14 +50,14 @@ const ProductCard = ({ data }) => {
             <div className='bg-white shadow w-full h-[370px] rounded-lg shadow-sm p-3 relative cursor-pointer'>
                 <div className="flex justify-end">
                 </div>
-                <Link to={`/products/${product_name}`}>
+                <Link to={`/products/${data._id}`}>
                     <img src={data.image_Url[0].url} alt="product-image"
                         className='w-full h-[170px] object-contain' />
                 </Link>
                 <Link to="/">
                     <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
                 </Link>
-                <Link to={`/products/${product_name}`}>
+                <Link to={`/products/${data._id}`}>
                     <h4 className='pb-3 font-[500]'>
                         {data.name.length > 40 ? data.name.slice(0, 40) + "...." : data.name}
                     </h4>
