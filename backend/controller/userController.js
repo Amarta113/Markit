@@ -242,6 +242,32 @@ export const updateAddresses = catchAsyncError(async(req, res, next) => {
     }
 })
 
+// update avatar
+export const updateUserAvatar = catchAsyncError(async(req, res, next) => {
+    try {
+        const existUser = await User.findById(req.user.id)
+        const oldPublicId = existUser?.avatar.public_id;
+        if(oldPublicId){
+            await cloudinary.uploader.destroy(`ecommerce_uploads/${oldPublicId}`)
+        }
+        const newPublicId = req.file.filename.split(".")[0]
+        const newUrl = req.file.path;
+        const user = await User.findByIdAndUpdate(
+            req.user.id,
+            {
+                avatar: {
+                    public_id: newPublicId,
+                    url: newUrl
+                }
+            },
+            {new: true}
+        )
+        res.status(201).json({success:true, user})
+    } catch(error){
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
+
 export const deleteUserAddress = catchAsyncError(async(req, res, next) => {
     try {
         const userId = req.user._id
