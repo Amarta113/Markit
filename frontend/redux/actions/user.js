@@ -2,6 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createAction } from "@reduxjs/toolkit";
 import { server } from '../../src/server.js'
+import {toast} from 'react-toastify' 
 
 export const clearErrors = createAction("user/clearErrors");
 export const loadUser = createAsyncThunk("user/load", async (_, thunkAPI) => {
