@@ -12,7 +12,7 @@ import PaymentMethod from './PaymentMethod.jsx'
 import Address from './Address.jsx'
 import { updateUser } from '../../../redux/actions/user.js'
 import { useEffect } from 'react'
-import {toast} from 'react-toastify' 
+import { toast } from 'react-toastify'
 
 const ProfileContent = ({ active }) => {
     const { user, error } = useSelector((state) => state.user)
@@ -24,15 +24,14 @@ const ProfileContent = ({ active }) => {
     const dispatch = useDispatch()
     const handleSubmit = (e) => {
         e.preventDefault()
-        dispatch(updateUser({email, password, name, phoneNumber}))
+        dispatch(updateUser({ email, password, name, phoneNumber }))
     }
 
     useEffect(() => {
-        if(error){
+        if (error) {
             toast.error(error)
         }
     }, [error])
-
     return (
         <div className='w-full'>
             {/* Profile  */}
@@ -46,10 +45,10 @@ const ProfileContent = ({ active }) => {
                                     alt="profile-img" />
                                 <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
                                     <input type="file" id="image"
-                                    className='hidden'
-                                    onChange={handleImage} />
+                                        className='hidden'
+                                        onChange={handleImage} />
                                     <label htmlFor="image">
-                                        <AiOutlineCamera/>
+                                        <AiOutlineCamera />
                                     </label>
                                 </div>
                             </div>
@@ -104,7 +103,7 @@ const ProfileContent = ({ active }) => {
                                         />
                                     </div>
                                 </div>
-                                
+
                                 <input
                                     className={`w-[250px] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
                                     required
@@ -131,7 +130,7 @@ const ProfileContent = ({ active }) => {
                     </div>
                 )
             }
-             {/* Track Order */}
+            {/* Track Order */}
             {
                 active === 5 && (
                     <div>
@@ -163,49 +162,49 @@ const AllOrders = () => {
     const { orders } = useSelector(state => state.orders);
     const { user } = useSelector(state => state.user);
     const columns = [
-    {
-      field: "id",
-      headerName: "Order ID",
-      minWidth: 150,
-      flex: 0.7,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
-      flex: 0.7,
-      cellClassName: params =>
-        params.row.status === "Delivered" ? "greenColor" : "redColor",
-    },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
-    },
-    {
-      field: "actions",
-      headerName: "",
-      sortable: false,
-      minWidth: 150,
-      flex: 1,
-      renderCell: params => (
-        <Link to={`/user/order/${params.id}`}>
-          <Button>
-            <AiOutlineArrowRight size={20} />
-          </Button>
-        </Link>
-      ),
-    },
-]
+        {
+            field: "id",
+            headerName: "Order ID",
+            minWidth: 150,
+            flex: 0.7,
+        },
+        {
+            field: "status",
+            headerName: "Status",
+            minWidth: 130,
+            flex: 0.7,
+            cellClassName: params =>
+                params.row.status === "Delivered" ? "greenColor" : "redColor",
+        },
+        {
+            field: "itemsQty",
+            headerName: "Items Qty",
+            type: "number",
+            minWidth: 130,
+            flex: 0.7,
+        },
+        {
+            field: "total",
+            headerName: "Total",
+            type: "number",
+            minWidth: 130,
+            flex: 0.8,
+        },
+        {
+            field: "actions",
+            headerName: "",
+            sortable: false,
+            minWidth: 150,
+            flex: 1,
+            renderCell: params => (
+                <Link to={`/user/order/${params.id}`}>
+                    <Button>
+                        <AiOutlineArrowRight size={20} />
+                    </Button>
+                </Link>
+            ),
+        },
+    ]
     const row = [];
     orders && orders.forEach((item) => {
         row.push({
@@ -215,19 +214,19 @@ const AllOrders = () => {
             status: item.orderStatus
         })
     })
-    
+
     return (
         <div className="pl-8 pt-l flex flex-col min-h-[200px] max-h-[600px]">
             <DataGrid
-                row = {row}
-                columns = {columns}
+                row={row}
+                columns={columns}
                 pageSizeOptions={[10]}
                 initialState={{
-                    pagination: {paginationModel: {pageSize: 10, page: 0}}
+                    pagination: { paginationModel: { pageSize: 10, page: 0 } }
                 }}
                 disableRowSelectionOnClick
-                sx={{flexGrow: 1}}
-                />
+                sx={{ flexGrow: 1 }}
+            />
         </div>
     )
 }
