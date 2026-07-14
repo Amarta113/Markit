@@ -196,3 +196,25 @@ export const logoutUser = catchAsyncError(async(req, res, next) => {
         return next(new ErrorHandler(error.message, 500))
     }
 }) 
+
+// update user profile
+export const updateUser = catchAsyncError(async(req, res, next) => {
+    try {
+        const {name, email, password, phoneNumber} = req.body
+        const { user } = await User.findOne({email}).select("+password");
+        if(!user){
+            return next(new ErrorHandler("User doesn't exist", 401))
+        }
+        const isPasswordMatched = await user.comparePassword(password)
+        if(!isPasswordMatched){
+            return next(new ErrorHandler(error.message, 400))
+        }
+        user.name = name;
+        user.email = email;
+        user.phoneNumber = phoneNumber
+        await user.save();
+    } catch(error){
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
+
