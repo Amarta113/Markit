@@ -218,3 +218,27 @@ export const updateUser = catchAsyncError(async(req, res, next) => {
     }
 })
 
+export const updateAddresses = catchAsyncError(async(req, res, next) => {
+    try {
+        const user = await User.findById(req.user.id)
+        const sameTypeAddress = user.addresses.find(
+            address => address.addressType === req.body.addressType
+        )
+        if(sameTypeAddress){
+            return next(new ErrorHandler(`${req.body.addressType} address already exists`, 401))
+        }
+        const existsAddress = user.addresses.find(
+            address => address._id === req.body._id
+        )
+        if(existsAddress){
+            Object.assign(existsAddress, req.body)
+        }else{
+            user.addresses.push(req.body)
+        }
+        await user.save()
+        res.status(200).json({success: true, user})
+    } catch (error){
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
+
