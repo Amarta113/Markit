@@ -17,13 +17,13 @@ export const loadUser = createAsyncThunk("user/load", async (_, thunkAPI) => {
 
 export const updateUser = createAsyncThunk(
     "updateUser/load",
-    async ({ email, password, fullName, phoneNumber },
+    async ({ email, password, name, phoneNumber },
         { rejectWithValue }
     ) => {
         try {
             const { data } = await axios.put(
                 `${server}/user/update-user-info`,
-                { email, password, fullName, phoneNumber },
+                {name, email, password, phoneNumber },
                 { withCredentials }
             )
             return data.user
