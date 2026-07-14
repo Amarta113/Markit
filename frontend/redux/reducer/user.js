@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { loadUser, clearErrors } from '../actions/user.js'
+import { loadUser, clearErrors, updateUser, updateAddresses, deleteAddress } from '../actions/user.js'
 
 const initialState = {
   isAuthenticated: false,
