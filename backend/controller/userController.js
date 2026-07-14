@@ -242,3 +242,21 @@ export const updateAddresses = catchAsyncError(async(req, res, next) => {
     }
 })
 
+export const deleteUserAddress = catchAsyncError(async(req, res, next) => {
+    try {
+        const userId = req.user._id
+        const addressId = req.params.id;
+        await User.updateOne(
+            {
+                _id: userId
+            },
+            {
+                $pull: { addresses: {_id: addressId} }
+            }
+        )
+        const user = await User.findById(userId)
+        res.status(201).json({success: true, user})
+    } catch(error){
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
