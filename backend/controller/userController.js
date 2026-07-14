@@ -260,3 +260,24 @@ export const deleteUserAddress = catchAsyncError(async(req, res, next) => {
         return next(new ErrorHandler(error.message, 500))
     }
 })
+
+export const updateUserPassword = catchAsyncError(async(req, res, next) => {
+    try {
+        const user = await User.findById(req.user.id).select("+password")
+        const isPasswordMatched = await user.comparePassword(req.body.oldPassword)
+        if(!isPasswordMatched){
+            return res.status(400).json({success: false, message: "Old Password is incorrect!"})
+        }
+        if (req.body.newPassword !== req.body.confirmPassword){
+            return res.status(400).json({
+                success: false,
+                message: "Password doesn't match with existing one!"
+            })
+        }
+        user.password = req.body.newPassword;
+        await user.save()
+        res.status(201).json({success: true, message: "Password Updated successfully!"})
+    } catch(error){
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
