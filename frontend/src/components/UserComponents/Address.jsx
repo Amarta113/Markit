@@ -1,10 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 const Address = () => {
+    const [open, setOpen] = useState(false)
+    const [country, setCountry] = useState("")
+    const [city, setCity] = useState("")
+    const [zipCode, setZipCode] = useState()
+    const [address1, setAddress1] = useState("")
+    const [address2, setAddress2] = useState("")
+    const [addressType, setAddressType] = useState("")
+    const {user} = useSelector((state) => state.user)
+    const addressTypeData =  [
+        {
+            name: "Default"
+        },
+        {
+            name: "Home"
+        }, 
+        {
+            name: "Office"
+        }
+    ]
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        if(addressType === "" || country === "" || city === ""){
+            toast.error("Please fill all the fields!")
+        } else{
+            //
+        }
+    }
     return (
         <div className='w-full px-5'>
             <div className='flex w-full items-center justify-between'>
-                <h1 className='text-[25px] font-[600] text-[#000000ba] pb-2'>My Addresses</h1>
+                <h1 className='text-[25px] font-[600] text-[#000000ba] pb-2'
+                onClick={() => setOpen(true)}
+                >My Addresses</h1>
                 <div className={`${styles.button} rounded-md`}>
                     <span className='text-[#fff]'>Add New</span>
                 </div>
