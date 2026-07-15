@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { backend_url } from '../../server'
+import { backend_url, server } from '../../server'
 import { useDispatch, useSelector } from 'react-redux'
 import { AiOutlineArrowRight, AiOutlineCamera } from 'react-icons/ai'
 import styles from '../../styles/styles'
@@ -32,6 +32,27 @@ const ProfileContent = ({ active }) => {
             toast.error(error)
         }
     }, [error])
+
+    const handleImage = async (e) => {
+        const file = e.target.files[0]
+        setAvatar(file)
+
+        const formData = new FormData()
+        formData.append("image", e.target.files[0])
+
+        await axios.put(`${server}/user/update-avatar`, formData,
+           { 
+            headers: {
+                "Content-Type" : "multipart/form-data"
+            }, 
+            withCredential: true
+            }
+        ).then((response) => {
+            window.location.reload()
+        }).catch((error) => {
+            toast.error(error)
+        })
+    }
     return (
         <div className='w-full'>
             {/* Profile  */}
