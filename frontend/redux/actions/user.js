@@ -37,7 +37,7 @@ export const updateUser = createAsyncThunk(
     }
 )
 
-export const updateAddresses = createActionThunk(
+export const updateAddresses = createAsyncThunk(
     "updateAddresses/load",
     async (
         { country, city, zipCode, address1, address2, addressType },
