@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RxCross1 } from 'react-icons/rx'
 import { Country, State } from 'country-state-city'
+import { updateAddresses } from '../../../redux/actions/user'
+import { toast } from 'react-toastify'
 
 const Address = () => {
     const [open, setOpen] = useState(false)
@@ -12,6 +14,7 @@ const Address = () => {
     const [address2, setAddress2] = useState("")
     const [addressType, setAddressType] = useState("")
     const { user } = useSelector((state) => state.user)
+    const dispatch = useDispatch()
     const addressTypeData = [
         { name: "Default" },
         { name: "Home" },
@@ -22,7 +25,14 @@ const Address = () => {
         if (addressType === "" || country === "" || city === "") {
             toast.error("Please fill all the fields!")
         } else {
-            //
+            dispatch(updateAddresses(country, city, address1, address2, addressType))
+            setOpen(false)
+            setCountry("")
+            setCity("")
+            setZipCode(null)
+            setAddress1("")
+            setAddress2("")
+            setAddressType("")
         }
     }
     return (
