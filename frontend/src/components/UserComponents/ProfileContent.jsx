@@ -10,9 +10,10 @@ import AllRefundOrders from './AllRefundOrders'
 import TrackOrder from './TrackOrder.jsx'
 import PaymentMethod from './PaymentMethod.jsx'
 import Address from './Address.jsx'
-import { updateUser } from '../../../redux/actions/user.js'
+import { clearErrors, updateAddresses, updateUser } from '../../../redux/actions/user.js'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const ProfileContent = ({ active }) => {
     const { user, error } = useSelector((state) => state.user)
@@ -22,6 +23,7 @@ const ProfileContent = ({ active }) => {
     const [password, setPassword] = useState("")
     const [avatar, setAvatar] = useState(null)
     const dispatch = useDispatch()
+
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(updateUser({ email, password, name, phoneNumber }))
@@ -30,6 +32,7 @@ const ProfileContent = ({ active }) => {
     useEffect(() => {
         if (error) {
             toast.error(error)
+            dispatch(clearErrors())
         }
     }, [error])
 
@@ -47,8 +50,9 @@ const ProfileContent = ({ active }) => {
             }, 
             withCredential: true
             }
-        ).then((response) => {
-            window.location.reload()
+        ).then(() => {
+            dispatch(loadUser())
+            toast.success("Profile Updated!")
         }).catch((error) => {
             toast.error(error)
         })
