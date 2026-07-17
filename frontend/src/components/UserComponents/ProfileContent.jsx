@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import AllRefundOrders from './AllRefundOrders'
 import TrackOrder from './TrackOrder.jsx'
-import PaymentMethod from './PaymentMethod.jsx'
+import ChangePassword from './ChangePassword.jsx'
 import Address from './Address.jsx'
 import { clearErrors, updateAddresses, updateUser } from '../../../redux/actions/user.js'
 import { useEffect } from 'react'
@@ -128,7 +128,6 @@ const ProfileContent = ({ active }) => {
                                         />
                                     </div>
                                 </div>
-
                                 <input
                                     className={`w-[250px] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
                                     required
@@ -167,7 +166,7 @@ const ProfileContent = ({ active }) => {
             {
                 active === 6 && (
                     <div>
-                        <PaymentMethod />
+                        <ChangePassword />
                     </div>
                 )
             }
