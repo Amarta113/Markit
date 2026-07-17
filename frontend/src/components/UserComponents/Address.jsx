@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RxCross1 } from 'react-icons/rx'
 import { Country, State } from 'country-state-city'
-import { updateAddresses } from '../../../redux/actions/user'
+import { deleteAddress, updateAddresses } from '../../../redux/actions/user'
 import { toast } from 'react-toastify'
 
 const Address = () => {
@@ -34,6 +34,10 @@ const Address = () => {
             setAddress2("")
             setAddressType("")
         }
+    }
+
+    const handleDelete = (address) => {
+        dispatch(deleteAddress(address._id))
     }
     return (
         <div className='w-full px-5'>
@@ -190,20 +194,36 @@ const Address = () => {
                 </div>
             </div>
             <br />
-            <div className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between">
-                <div className="flex items-center">
-                    <h5 className='pl-5 font-[600]'>Default</h5>
+            {user && user.addresses.map((item, index) => (
+                <div 
+                    className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between"
+                    key={index}
+                >
+                    <div className="flex items-center">
+                        <h5 className='pl-5 font-[600]'>{item.addressType}</h5>
+                    </div>
+                    <div className="pl-8 flex items-center">
+                        <h6>{item.address1} {item.address2}</h6>
+                    </div>
+                    <div className="pl-8 flex items-center">
+                        <h6>{user && user.phoneNumber}</h6>
+                    </div>
+                    <div className="min-2-[10%] flex items-center pl-8">
+                        <AiOutlineDelete 
+                        size={25} 
+                        className="cursor-pointer"
+                        onClick={() => handleDelete(item)} />
+                    </div>
                 </div>
-                <div className="pl-8 flex items-center">
-                    <h6>Street 1, block-14, Green Town</h6>
-                </div>
-                <div className="pl-8 flex items-center">
-                    <h6>(213) 840</h6>
-                </div>
-                <div className="min-2-[10%] flex items-center pl-8">
-                    <AiOutlineDelete size={25} className="cursor-pointer" />
-                </div>
-            </div>
+            )
+            )}
+            {
+                user && user.addresses.length === 0 && (
+                <h5 className='text-center pt-8 text-[18px]'>
+                    You don't have any saved address...
+                </h5>
+                )
+            }
         </div>
     )
 }
