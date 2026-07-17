@@ -22,8 +22,14 @@ const ChangePassword = () => {
             }
         ).then((res) => {
             toast.success(res.data.successs)
+            setOldPassword("")
+            setNewPassword("")
+            setConfirmPassword("")
         }).catch((error) => {
             toast.error(error.response.data.message)
+            setOldPassword("")
+            setNewPassword("")
+            setConfirmPassword("")
         })
     }
 
