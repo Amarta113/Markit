@@ -10,7 +10,7 @@ import { server } from '../../server'
 import { toast } from 'react-toastify'
 import { RiLockPasswordLine } from "react-icons/ri";
 
-const ProfileSidebar = ({ setActive, active }) => {
+const ProfileSidebar = ({ active,setActive }) => {
     const navigate = useNavigate()
     async function logoutHandler(){
         try {
@@ -73,7 +73,9 @@ const ProfileSidebar = ({ setActive, active }) => {
                     Change Password
                 </span>
             </div>
-            <div className="flex items-center cursor-pointer w-full mb-8" onClick={() => setActive(7)}>
+            <div 
+            className="flex items-center cursor-pointer w-full mb-8" 
+            onClick={() => setActive(7)}>
                 <TbAddressBook size={20} color={active === 7 ? "red" : ""} />
                 <span className={`pl-3 ${active === 7 ? "text-[red]" : ""} hidden md:block`}>
                     Address
