@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from '../../styles/styles'
 import { useSelector } from 'react-redux'
@@ -9,6 +9,10 @@ function Checkout() {
     const { user } = useSelector(state => state.user)
     const { cart } = useSelector(state => state.user)
 
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     const navigate = useNavigate()
 
     const paymentSubmit = () => {
@@ -18,7 +22,7 @@ function Checkout() {
         <div className="w-full flex flex-col items-center py-8">
             <div className="w-[90%] lg:w-[70%] block md:flex">
                 <div className="w-full md:w-[65%]">
-                    <ShippingInfo />
+                    <ShippingInfo user={user}/>
                 </div>
                 <div className="w-full md:w-[35%] md:mt-0 mt-8">
                     <CartData />
