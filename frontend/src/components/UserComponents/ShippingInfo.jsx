@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import styles from '../../styles/styles'
 import { Country, State } from 'country-state-city'
 
-const ShippingInfo = ({user}) => {
-    const [country, setCountry] = useState("")
-    const [userInfo, setUserInfo] = useState(false)
+const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setUserInfo, address1, setAddress1, address2, setAddress2, zipCode, setZipCode }) => {
 
     return (
         <div className='w-full md:w-[95%] bg-white rounded-md p-5 pb-8'>
@@ -18,6 +16,7 @@ const ShippingInfo = ({user}) => {
                         </label>
                         <input
                             type="text"
+                            value={user && user.name}
                             required
                             className={`${styles.input} !w-[95%]`}
                         />
@@ -29,6 +28,7 @@ const ShippingInfo = ({user}) => {
                         <input
                             type="text"
                             required
+                            value={user && user.email}
                             className={`${styles.input}`} />
                     </div>
                 </div>
@@ -40,6 +40,7 @@ const ShippingInfo = ({user}) => {
                         <input
                             type="number"
                             required
+                            value={user && user.phoneNumber}
                             className={`${styles.input} !w-[95%]`}
                         />
                     </div>
@@ -51,6 +52,7 @@ const ShippingInfo = ({user}) => {
                             type="number"
                             value={zipCode}
                             required
+                            onChange={(e) => setZipCode(e.target.value)}
                             className={`${styles.input}`} />
                     </div>
                 </div>
@@ -109,7 +111,7 @@ const ShippingInfo = ({user}) => {
                             value={address1}
                             required
                             className={`${styles.input}`}
-                            onChange={e => setAddress1(e.target.value)} />
+                            onChange={(e) => setAddress1(e.target.value)} />
                     </div>
                     <div className="w-[50%]">
                         <label className='block pb-2'>
@@ -120,30 +122,36 @@ const ShippingInfo = ({user}) => {
                             value={address2}
                             required
                             className={`${styles.input}`}
-                            onChange={e => setAddress2(e.target.value)}
+                            onChange={(e) => setAddress2(e.target.value)}
                         />
                     </div>
                 </div>
                 <div></div>
             </form>
-            <h5 
-            className='text-[18px] cursor-pointer inline-block'
-            onClick={() => setUserInfo(!userInfo)}>
+            <h5
+                className='text-[18px] cursor-pointer inline-block'
+                onClick={() => setUserInfo(!userInfo)}>
                 Choose from saved address
             </h5>
             {
                 userInfo && (
                     <div>
-                    {
-                        user && user.addresses.map((item, index) => (
-                            <div className="w-full flex">
-                                <input
-                                type="checkbox" 
-                                className='mr-3'
-                                value={item.addressType}
-                                />
-                            </div>
-                    ))}
+                        {
+                            user && user.addresses.map((item, index) => (
+                                <div className="w-full flex mt-l">
+                                    <input
+                                        type="checkbox"
+                                        className='mr-3'
+                                        value={item.addressType}
+                                        onClick={() => setAddress1(item.address1) ||
+                                            setAddress2(item.address2) ||
+                                            setZipCode(item.zipCode) ||
+                                            setCountry(item.setCountry) ||
+                                            setCity(item.setCity)}
+                                    />
+                                    <h2>{item.addressType}</h2>
+                                </div>
+                            ))}
                     </div>
                 )
             }
