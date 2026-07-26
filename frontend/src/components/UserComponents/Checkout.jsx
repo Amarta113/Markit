@@ -22,28 +22,30 @@ function Checkout() {
         window.scrollTo(0, 0)
     }, [])
 
-
     const paymentSubmit = () => {
-        const shippingAddress = {
-            address1,
-            address2,
-            zipCode,
-            country,
-            city
-        }
-        const orderData = {
-            cart,
-            totalPrice,
-            subTotalPrice,
-            shipping,
-            discountPrice,
-            shippingAddress,
-            user 
-        }
-
+        if (address1 === "" || address2 === "" || zipCode === null || country === "" || city === "") {
+            toast.error("Please choose your delivery items!")
+        } else {
+            const shippingAddress = {
+                address1,
+                address2,
+                zipCode,
+                country,
+                city
+            }
+            const orderData = {
+                cart,
+                totalPrice,
+                subTotalPrice,
+                shipping,
+                discountPrice,
+                shippingAddress,
+                user
+            }
         // Update the local storage with updated orders arrays
         localStorage.setItems("latestOrder", JSON.stringify(orderData))
         navigate("/payment")
+        }
     }
     const subTotalPrice = cart.reduce(
         (acc, item) => acc + item.qty * item.discountPrice,
@@ -57,17 +59,17 @@ function Checkout() {
         const couponCode;
         await axios.get(`{server}/coupon/get-coupon-value/${name}`).then(
             (res) => {
-                const shopId = res.data.couponCode?.shopId 
+                const shopId = res.data.couponCode?.shopId
                 const couponCodeValue = res.data.couponCode?.value
-                if(res.data.couponCode !== null){
+                if (res.data.couponCode !== null) {
                     const isCouponValid = cart && cart.filter((item) => item.shopId === shopId)
-                    if(isCouponValid.length === 0){
+                    if (isCouponValid.length === 0) {
                         taost.error("Coupon code is not valid for this shop")
                         setCouponCode("")
                     } else {
                         const eligiblePrice = isCouponValid.reduce((acc, item) => acc + item.qty * item.discountPrice, 0)
                         const discountPrice = (
-                            (eligiblePrice * couponCodeValue) / 100 
+                            (eligiblePrice * couponCodeValue) / 100
                         )
                         setDiscountPrice(discountPrice)
                         setCouponCodeData(res.data.couponCode)
