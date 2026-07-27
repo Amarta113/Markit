@@ -14,22 +14,43 @@ import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import { ShopHomePage } from './ShopRoutes.jsx'
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { loadSeller } from '../redux/actions/sellerActions.js';
-import { ShopDashboardPage, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons} from './routes/ShopRoutes.jsx';
+import { ShopDashboardPage, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons } from './routes/ShopRoutes.jsx';
 import ShopCreateProducts from './routes/ShopCreateProducts.jsx';
 import { getAllEvents } from '../redux/actions/eventActions.js';
 import { getAllProducts } from '../redux/actions/productActions.js';
+import axios from 'axios';
+import {loadStripe} from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js';
+
 
 export default function App() {
   const navigate = useNavigate()
-
+  const [stripeApiKey, setStripeApiKey] = useState("")
+  async function getStripeApikey() {
+    const { data } = await axios.get(`${server}/payment/stipeapikey`)
+    setStripeApiKey(data.stripeApiKey)
+  }
   useEffect(() => {
     store.dispatch(loadUser())
     store.dispatch(loadSeller())
     store.dispatch(getAllProducts())
     store.dispatch(getAllEvents())
+    getStripeApikey()
   }, [])
   return (
     <>
+      {stripeApiKey && (
+        <Elements stripeApiKey={loadStripe(stripeApiKey)}>
+          <Routes>
+            <Route path='/payment'
+              element={
+                <ProtectedRoute>
+                  <PaymentPage />
+                </ProtectedRoute>
+              } />
+          </Routes>
+        </Elements>
+      )}
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<LoginPage />} />
@@ -46,7 +67,6 @@ export default function App() {
             <CheckoutPage />
           </ProtectedRoute>
         } />
-        <Route path='/payment' element={<PaymentPage />} />
         <Route path="/order/success/:id" element={<OrderSuccessPage />} />
         <Route path='/profile' element={
           <ProtectedRoute >
@@ -73,13 +93,13 @@ export default function App() {
           </SellerProtectedRoute>} />
         <Route path='/dashboard-create-event' element={
           <SellerProtectedRoute>
-            < ShopCreateEvents/>
+            < ShopCreateEvents />
           </SellerProtectedRoute>} />
         <Route path='/dashboard-events' element={
           <SellerProtectedRoute>
             <ShopAllEvents />
           </SellerProtectedRoute>} />
-          <Route path='/dashboard-coupons' element={
+        <Route path='/dashboard-coupons' element={
           <SellerProtectedRoute>
             <ShopAllCoupons />
           </SellerProtectedRoute>} />
