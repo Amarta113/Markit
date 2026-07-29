@@ -10,6 +10,7 @@ import {
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import PaymentInfo from '../UserComponents/PaymentInfo.jsx'
+import server from '../../server.js'
 
 const Payment = () => {
     const [orderData, setOrderData] = useState([])
@@ -24,7 +25,22 @@ const Payment = () => {
     }, [])
 
     const createOrder = (data, actions) => {
-
+        return actions.order.create({
+            purchase_units: [
+                {
+                    description: "Sunflower",
+                    amount: {
+                        currency_code: "USD",
+                        value: orderData?.totalPrice
+                    }
+                }
+            ],
+            application_context: {
+                shipping_preference = "NO_SHIPPING"
+            }
+        }).then((orderId) => {
+            return orderId
+        })
     }
 
     const onApprove = async(data, actions) =>{
@@ -39,8 +55,56 @@ const Payment = () => {
         amount: Math.round(orderData?.totalPrice * 100)
     }
 
+    const order = {
+        cart: orderData?.cart,
+        shippingAddress: orderData?.shippingAddress,
+        user: user && user,
+        totalPrice: orderData?.totalPrice
+    }
     const paymentHandler = async(e) => {
         e.preventDefault()
+        try{
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            const {data} = await axios.post(
+                `${server}/payment/process`,
+                paymentData,
+                config
+            )
+            const client_secret = data.client_secret;
+            if(!stripe || !elements) return;
+            const result = await stripe.confirmCardPayment(
+                client_secret, {
+                    payment_method: {
+                        card: elements.getElement(CardNumberElement)
+                    }
+            })
+            if(result.error){
+                toast.error(result.error.message) 
+            }else{
+                if(result.paymentIntent.status == 'succeeded'){
+                    order.paymentInfo = {
+                        if: result.paymentIntent.id,
+                        status: result.paymentIntent.status,
+                        type: "Credit Card"
+                    }
+                    await axios.post(`${server}/order/create-order`, order, config, 
+                  ).then((res) => {
+                        setOpen(false)
+                        navigate("/order/success")
+                        toast.success("Order Successful")
+                        localStorage.setItem("cartItems", JSON.stringify([]))
+                        localStorage.setItem("latestOrder", JSON.stringify([]))
+                        window.location.reload()
+                    })
+                }
+            }
+        }catch(error){
+            toast.error(error)
+        }
     }
 
     const cashOnDeliveryHandler = async(e) => {
