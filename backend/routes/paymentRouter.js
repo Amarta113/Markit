@@ -4,7 +4,7 @@ import { processStripePayment } from '../controller/paymentController.js'
 
 const paymentRouter = express.Router()
 
-paymentRouter.post("/payment/process", processStripePayment)
+paymentRouter.post("/process", processStripePayment)
 paymentRouter.get("/stripeapikey", getStripeApiKey)
 
 export default paymentRouter;
