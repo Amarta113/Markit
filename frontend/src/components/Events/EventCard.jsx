@@ -3,18 +3,33 @@ import mobile from "../../assets/mobile-img.jpg"
 import styles from '../../styles/styles'
 import CountDown from "./CountDown.jsx"
 import { backend_url } from '../../server.js'
+import {useDispatch, useSelector } from 'react-redux'
 
-export default function EventCard({active, data}){
+export default function EventCard({ active, data }) {
+    const { cart } = useSelector((state) => state.cart)
+    const dispatch = useDispatch()
     if (!data) return null
 
     const imageSrc = data?.images?.[0]
         ? `${backend_url}${data.images[0]}`
         : mobile
-
+    const addToCartHandler = () => {
+        const isItemExist = cart && cart.find((i) => i._id === data._id)
+        if (!isItemExist) {
+            toast.error("Item already in cart!")
+        } else {
+            if (data.stock < 1) {
+                return toast.error("Product stock is limited")
+            } else {
+                const cartData = { ...data, qty: 1 }
+                dispatch(addToCart(cartData))
+                toast.success("Item added to cart successfully.")
+            }
+        }
+    }
     return (
-        <div className={`w-full block bg-white rounded-lg ${
-        active ? "unset" : "mb-12"
-      } lg:flex p-14`}
+        <div className={`w-full block bg-white rounded-lg ${active ? "unset" : "mb-12"
+            } lg:flex p-14`}
         >
             <div className="mb-8 flex w-full shrink-0 justify-center lg:mb-0 lg:w-[46%] lg:justify-end">
                 <img
@@ -36,7 +51,19 @@ export default function EventCard({active, data}){
                     <span className="font-[400] text-[17px] text-[#44a55e]">120 Sold</span>
                 </div>
                 <div className="mt-6">
-                    <CountDown data={data}/>
+                    <CountDown data={data} />
+                </div>
+                <br />
+                <div className="flex items-center">
+                    <Link to={`/product/${data._id}? isEvent=true`}>
+                        <div className={`${styles.button} text-[#fff]`}>
+                            See Details
+                        </div>
+                    </Link>
+                    <div className={`${styles.button} text-[#fff] ml-5`}
+                        onClick={(e) => addToCartHandler(data)}>
+                        Add to Cart
+                    </div>
                 </div>
             </div>
         </div>
