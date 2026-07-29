@@ -67,7 +67,7 @@ export default function App() {
             <CheckoutPage />
           </ProtectedRoute>
         } />
-        <Route path="/order/success/:id" element={<OrderSuccessPage />} />
+        <Route path="/order/success" element={<OrderSuccessPage />} />
         <Route path='/profile' element={
           <ProtectedRoute >
             <ProfilePage />
