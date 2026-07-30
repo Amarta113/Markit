@@ -36,3 +36,18 @@ export const createOrder = catchAsyncError(async(req, res, next) => {
         return next(new ErrorHandler(error.message, 500))
     }
 })
+
+export const getAllOrders = catchAsyncError(async(req, res, next) => {
+    try{
+        const orders = (
+            await Order.find({"user._id": req.params.userId})).toSorted({
+            createdAt: -1
+        })
+        res.status(200).json({
+            success: true,
+            orders
+        })
+    }catch{
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
