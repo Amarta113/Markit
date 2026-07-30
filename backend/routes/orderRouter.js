@@ -1,5 +1,6 @@
 import express from 'express'
 import {isAuthenticated, isSeller} from '../middleware/auth.js'
+import { createOrder, getAllOrders } from '../controller/orderController.js'
 
 const orderRouter = express.Router()
 
