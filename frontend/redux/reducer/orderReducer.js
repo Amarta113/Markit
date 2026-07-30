@@ -1,0 +1,40 @@
+import { createReducer } from "@reduxjs/toolkit";
+import { clearErrors, getAllOrdersShop, getAllOrdersUser } from "../actions/orderActions";
+
+const initialState = {
+    isLoading: true
+}
+
+export const orderReducer = createReducer(
+    initialState, builder => {
+        builder
+        // Get All the Products for Specific Shop
+        .addCase(getAllOrdersUser.pending, (state, action)=> {
+            state.isLoading = true;
+        })
+        .addCase(getAllOrdersUser.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.orders = action.payload
+        })
+        .addCase(getAllOrdersUser.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        })
+        // Get all orders of shop
+        .addCase(getAllOrdersShop.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(getAllOrdersShop.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.shopOrders = action.payload
+        })
+        .addCase(getAllOrdersShop.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        })
+        .addCase(clearErrors, state => {
+            state.error = null;
+        })
+    }
+)
+
