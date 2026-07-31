@@ -51,3 +51,18 @@ export const getAllOrders = catchAsyncError(async(req, res, next) => {
         return next(new ErrorHandler(error.message, 500))
     }
 })
+
+export const getAllOrdersShop = catchAsyncError( async(req, res, next) => {
+    try{
+        const orders = (
+            await Order.find({"cart.shopId": req.params.shopId})).toSorted({
+            createdAt: -1
+        })
+        res.status(200).json({
+            success: true,
+            orders
+        })
+    }catch{
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
