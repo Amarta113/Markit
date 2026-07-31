@@ -14,12 +14,12 @@ import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import { ShopHomePage } from './ShopRoutes.jsx'
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { loadSeller } from '../redux/actions/sellerActions.js';
-import { ShopDashboardPage, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons } from './routes/ShopRoutes.jsx';
+import { ShopDashboardPage, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons, ShopAllOrders, ShopOrderDetails} from './routes/ShopRoutes.jsx';
 import ShopCreateProducts from './routes/ShopCreateProducts.jsx';
 import { getAllEvents } from '../redux/actions/eventActions.js';
 import { getAllProducts } from '../redux/actions/productActions.js';
 import axios from 'axios';
-import {loadStripe} from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js';
 
 
@@ -86,6 +86,14 @@ export default function App() {
         <Route path='/dashboard-create-product' element={
           <SellerProtectedRoute>
             <ShopCreateProducts />
+          </SellerProtectedRoute>} />
+        <Route path='/dashboard-orders' element={
+          <SellerProtectedRoute>
+            <ShopAllOrders />
+          </SellerProtectedRoute>} />
+        <Route path='/order/:id' element={
+          <SellerProtectedRoute>
+            <ShopOrderDetails />
           </SellerProtectedRoute>} />
         <Route path='/dashboard-products' element={
           <SellerProtectedRoute>
