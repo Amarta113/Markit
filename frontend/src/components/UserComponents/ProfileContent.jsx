@@ -14,6 +14,7 @@ import { clearErrors, updateAddresses, updateUser } from '../../../redux/actions
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import { getAllOrdersUser } from '../../../redux/actions/orderActions.js'
 
 const ProfileContent = ({ active }) => {
     const { user, error } = useSelector((state) => state.user)
@@ -183,8 +184,10 @@ const ProfileContent = ({ active }) => {
 }
 
 const AllOrders = () => {
-    const { orders } = useSelector(state => state.orders);
+    const { orders } = useSelector(state => state.order);
     const { user } = useSelector(state => state.user);
+    const dispatch = useDispatch()
+    
     const columns = [
         {
             field: "id",
@@ -230,6 +233,11 @@ const AllOrders = () => {
         },
     ]
     const row = [];
+
+    useEffect(() => {
+        dispatch(getAllOrdersUser(user._id))
+    }, [])
+
     orders && orders.forEach((item) => {
         row.push({
             id: item._id,
