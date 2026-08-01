@@ -1,6 +1,6 @@
 import React from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
-import { LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage, ShopLoginPage } from "./routes/Routes.jsx"
+import { LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage, ShopLoginPage, OrderDetailsPage } from "./routes/Routes.jsx"
 import { ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
 import store from '../redux/store.js';
@@ -71,6 +71,11 @@ export default function App() {
         <Route path='/profile' element={
           <ProtectedRoute >
             <ProfilePage />
+          </ProtectedRoute>
+        } />
+        <Route path='/user/order/:id' element={
+          <ProtectedRoute >
+            <OrderDetailsPage />
           </ProtectedRoute>
         } />
         <Route path='/shop-create' element={<ShopCreatePage />} />
