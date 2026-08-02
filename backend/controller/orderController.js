@@ -66,3 +66,38 @@ export const getAllOrdersShop = catchAsyncError( async(req, res, next) => {
         return next(new ErrorHandler(error.message, 500))
     }
 })
+
+export const updateOrderStatus = catchAsyncError(async(req, res, next) => {
+    try{
+        const order = await Order.findById(req.params.id)
+        if(!order){
+            return next(new ErrorHandler("Order not found with this id", 400))
+        }
+        if(req.body.status === "Transfered to delivery parter"){
+            order.cart.forEach(async(o) => {
+                await updateOrder(o._id, o.qty)
+            })
+        }
+
+        order.status = req.body.status;
+        if(req.body.status === "Delivered"){
+            order.deliveredAt = Date.now()
+            order.paymentInfo.status = "Succeeded"
+        }
+
+        await order.save({validateBeforeSave: false})
+        res.status(200).json({
+            success: true,
+            order
+        })
+        async function updateOrder(id, qty){
+            const product = await Product.findById(id)
+            product.stock -= qty
+            product.sold_out += qty
+            await product.save({validateBeforeSave: false})
+        }
+        
+    } catch{
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
