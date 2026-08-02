@@ -10,7 +10,7 @@ import {
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import PaymentInfo from '../UserComponents/PaymentInfo.jsx'
-import server from '../../server.js'
+import {server} from '../../server'
 
 const Payment = () => {
     const [orderData, setOrderData] = useState([])
@@ -36,7 +36,7 @@ const Payment = () => {
                 }
             ],
             application_context: {
-                shipping_preference = "NO_SHIPPING"
+                shipping_preference: "NO_SHIPPING"
             }
         }).then((orderId) => {
             return orderId
