@@ -6,8 +6,10 @@ import { MdOutlineLocalOffer } from 'react-icons/md';
 import { RxDashboard } from "react-icons/rx";
 import { Link } from 'react-router-dom';
 import { CiMoneyBill, CiSettings } from "react-icons/ci";
+import { VscNewFile } from 'react-icons/vsc';
+import { HiOutlineReceiptRefund } from 'react-icons/hi';
 
-const DashboardSidebar = () => {
+const DashboardSidebar = ({ activeHeading }) => {
     return (
         <div className='w-full h-[100vh] bg-white shadow-sm sticky top-0 left-0 z-10'>
             {/* single item */}
