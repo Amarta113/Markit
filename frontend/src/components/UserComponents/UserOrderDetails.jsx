@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { use, useState } from 'react'
 import { BsFillBagFill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -11,7 +11,8 @@ const UserOrderDetails = () => {
     const { user } = useSelector((state) => state.user)
     const dispatch = useDispatch()
     const [status, setStatus] = useState("")
-
+    const [open, setOpen] = useState(false)
+    const [selectedItem, setSelectedItem] = useState(false)
     const { id } = useParams()
 
     useEffect(() => {
@@ -56,14 +57,21 @@ const UserOrderDetails = () => {
                             </div>
                             {
                                 data?.status === "Delivered" && (
-                                    <div className={`${styles.button} text-[#fff]`}>
+                                    <div className={`${styles.button} text-[#fff]`}
+                                    onClick={() => setOpen(true) || setSelectedItem(item) }>
                                         Write a review
                                     </div>
-                                )
-                            }
+                            )}
                         </div>
+                    })}
+                    {/* Review Popup */}
+                    {
+                        opne && (
+                            <div className="w-full fixed top-0 left-0 h-screen bg-[#0005] z-50">
+                                
+                            </div>
+                        )
                     }
-                    )}
                 <div className="w-full border-t text-right">
                     <h5 className='pt-3 text-[18px]'>
                         Total Price: <strong>US${data?.totalPrice}</strong>
