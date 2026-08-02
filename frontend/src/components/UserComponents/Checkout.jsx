@@ -56,7 +56,7 @@ function Checkout() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const couponCode;
+        const name = couponCode
         await axios.get(`{server}/coupon/get-coupon-value/${name}`).then(
             (res) => {
                 const shopId = res.data.couponCode?.shopId
