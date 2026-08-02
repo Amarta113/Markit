@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../styles/styles'
 import { BsFillBagFill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getAllOrdersShop } from '../../redux/actions/orderActions'
 import { backend_url } from '../server'
 
@@ -10,6 +10,7 @@ const OrderDetails = () => {
     const { orders } = useSelector((state) => state.order)
     const { seller } = useSelector((state) => state.seller)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [status, setStatus] = useState("")
 
     const { id } = useParams()
@@ -20,7 +21,19 @@ const OrderDetails = () => {
 
     const data = orders && orders.find((item) => item._id === id)
     const orderUpdateHandler = (e) => {
-
+        await axios.put(`${server}/order/update-order-status/${id}`, 
+        { 
+            status
+        },
+        {
+            withCredentials: true
+        }).then((res) => {
+                toast.success("Order Updated successfully!")
+                navigate('/dashboard-orders')
+            }
+        ).catch(error => {
+            toast.error(error.response.data.message) 
+        })
     }
     return (
         <div className={`py-4 min-h-screen ${styles.section}`}>
