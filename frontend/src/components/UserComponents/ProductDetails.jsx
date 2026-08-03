@@ -236,8 +236,26 @@ const ProductDetailsInfo = (data, products) => {
 
             {
                 active === 2 ? (
-                    <div className='w-full justify-center min-h-[40vh] flex items-center'>
-                        <p>No Reviews Yet</p>
+                    <div className='w-full justify-center min-h-[40vh] flex flex-col items-center'>
+                        {
+                            data && data.reviews.map((item, index) => (
+                                <div className="w-full flex my-2">
+                                   <div className='pl-2'>
+                                    <img src={`${backend_url}/${item.user.avatar}`}
+                                        className='w-[50px] h-[50px] rounded-full'/>
+                                    <h1 className='font-[500]'>{item.user.name}</h1>
+                                    <p>{item.comment}</p>
+                                    </div> 
+                                </div>
+                            ))
+                        }
+                        <div className="w-full flex justify-center">
+                        {
+                            data && data.reviews.length === 0 && (
+                                <h5>No Reviews have for this product! </h5>
+                            )
+                        }
+                        </div>
                     </div>
                 ) : null
             }
