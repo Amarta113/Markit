@@ -42,6 +42,7 @@ const UserOrderDetails = () => {
             }
         ).then((res) => {
             toast.success(res.data.message)
+            dispatch(getAllOrdersOfUser(user._id))
             setComment("")
             setRating(null)
             setOpen(false)
@@ -82,12 +83,16 @@ const UserOrderDetails = () => {
                                 <h5 className='pl-3 text-[20px] text-[#00000091]'>US${item.discountPrice} x {item.qty}</h5>
                             </div>
                             {
-                                data?.status === "Delivered" && (
-                                    <div className={`${styles.button} text-[#fff]`}
-                                        onClick={() => setOpen(true) || setSelectedItem(item)}>
+                            item.isReviewed? (
+                                null
+                            ): (
+                                <div 
+                                className={`${styles.button} text-[#fff]`}
+                                onClick={() => setOpen(true) || setSelectedItem(item)}>
                                         Write a review
-                                    </div>
-                                )}
+                                </div>
+                            )
+                            }
                         </div>
                     })}
                 {/* Review Popup */}
@@ -149,7 +154,7 @@ const UserOrderDetails = () => {
                                             Write a comment
                                         <span className='ml-1 font-[400] text-[16px] text-[#00000052]'
                                         >
-                                            {optional}
+                                        {optional}
                                         </span>
                                         </label>
                                         <textarea 
