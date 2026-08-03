@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import styles from '../../styles/styles'
 import { backend_url } from '../../server'
 import { getAllOrdersUser } from '../../../redux/actions/orderActions'
+import toast from 'react-toastify'
 
 const UserOrderDetails = () => {
     const { orders } = useSelector((state) => state.order)
@@ -12,7 +13,10 @@ const UserOrderDetails = () => {
     const dispatch = useDispatch()
     const [status, setStatus] = useState("")
     const [open, setOpen] = useState(false)
-    const [selectedItem, setSelectedItem] = useState(false)
+    const [comment, setComment] = useState()
+    const [selectedItem, setSelectedItem] = useState(null)
+    const [rating, setRating] = useState(1)
+    
     const { id } = useParams()
 
     useEffect(() => {
@@ -22,6 +26,28 @@ const UserOrderDetails = () => {
     const data = orders && orders.find((item) => item._id === id)
     const orderUpdateHandler = (e) => {
 
+    }
+
+    const reviewHandler = async(e) => {
+        await axios.put(`${server}/product/create-new-review`, 
+            {
+                user,
+                rating,
+                comment,
+                productId: selectedItem?._id,
+                orderId: id
+            },
+            {
+                withCredentials = true
+            }
+        ).then((res) => {
+            toast.success(res.data.message)
+            setComment("")
+            setRating(null)
+            setOpen(false)
+        }).catch((error) => {
+            toast.error(error)
+        })
     }
     return (
         <div className={`py-4 min-h-screen ${styles.section}`}>
@@ -58,20 +84,94 @@ const UserOrderDetails = () => {
                             {
                                 data?.status === "Delivered" && (
                                     <div className={`${styles.button} text-[#fff]`}
-                                    onClick={() => setOpen(true) || setSelectedItem(item) }>
+                                        onClick={() => setOpen(true) || setSelectedItem(item)}>
                                         Write a review
                                     </div>
-                            )}
+                                )}
                         </div>
                     })}
-                    {/* Review Popup */}
-                    {
-                        opne && (
-                            <div className="w-full fixed top-0 left-0 h-screen bg-[#0005] z-50">
-                                
+                {/* Review Popup */}
+                {
+                    opne && (
+                        <div className="w-full fixed top-0 left-0 h-screen bg-[#0005] z-50 flex items-center justify-center">
+                            <div className="w-[50%] h-[85vh] bg-[#fff] shadow rounded-md p-3">
+                                <div className="w-full justify-end p-3">
+                                    <RxCross1
+                                        size={30}
+                                        onClick={() => setOpen(false)}
+                                        className='cursor-pointer'
+                                    />
+                                    <h2 className='text-[30px] font-[500] font-Popins text-center'>
+                                        Give a review
+                                    </h2>
+                                    <br />
+                                    <div className="w-full flex">
+                                        <img src={`${backend_url}/${selectedItem?.images[0]}`}
+                                            alt=""
+                                            className='w-[80px] h-[80px]' />
+                                        <div>
+                                            <div className="pl-3 text-[20px]">
+                                                {selectedItem?.name}
+                                            </div>
+                                            <h4 className='pl-3 text-[20px]'>
+                                                US${selectedItem?.discountPrice} x {selectedItem?.qty}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <h5 className='pl-3 text-[20px]'>
+                                        Give a Rating <span className='text-red-500'>*</span>
+                                    </h5>
+                                    <div className="flex w-full ml-2 pt-l">
+                                        {
+                                        [1,2,3,4,5].map((i) => rating >= i?
+                                        (
+                                            <AiFillStar 
+                                            key={i} 
+                                            className='mr-1 cursor-pointer' 
+                                            size={25}
+                                            onClick={() => setRating(i)}
+                                            />
+                                        ) : (
+                                            <AiOutlineStar 
+                                            key={i} 
+                                            className='mr-1 cursor-pointer' 
+                                            size={25}
+                                            onClick={() => setRating(i)}
+                                            />
+                                        )
+                                    )}
+                                    </div>
+                                    <br />
+                                    <div className="w-full ml-3">
+                                        <label className='block text-[20px] font-[500]'>
+                                            Write a comment
+                                        <span className='ml-1 font-[400] text-[16px] text-[#00000052]'
+                                        >
+                                            {optional}
+                                        </span>
+                                        </label>
+                                        <textarea 
+                                        name="comment" 
+                                        cols="20" 
+                                        rows="5" 
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                        className='mt-2 w-[95%] border p-2 outline-none'
+                                        placeholder='How was your product? write your expression about it'
+                                        ></textarea>
+                                        </div>
+                                        <div className={`${styles.button} text-white text-[20px] ml-3`}
+                                        onClick={reviewHandler}
+                                        >
+                                            Submit
+                                        </div>
+                                </div>
                             </div>
-                        )
-                    }
+                        </div>
+                    )
+                }
                 <div className="w-full border-t text-right">
                     <h5 className='pt-3 text-[18px]'>
                         Total Price: <strong>US${data?.totalPrice}</strong>
