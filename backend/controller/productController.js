@@ -2,7 +2,7 @@ import { Shop } from "../models/shop.js";
 import Product from '../models/product.js'
 import cloudinary from "../config/cloudinary.js";
 import { catchAsyncError } from '../middleware/catchAsyncError.js'
-
+import Order from '../models/order.js'
 export async function createProduct(req, res) {
     try {
         const shopId = req.body.shopId
@@ -43,13 +43,13 @@ export async function getAllProductsShop(req, res) {
 }
 
 export async function createReviewForProduct(req, res) {
-    try{
-        const {user, rating, message, productId, orderId} = req.body
-        
+    try {
+        const { user, rating, message, productId, orderId } = req.body
+
         const product = await Product.findById(productId)
-        
+
         const isReviewed = product.reviews.find((rev) => rev.user._id === req.user._id)
-        
+
         const review = {
             user,
             rating,
@@ -57,15 +57,15 @@ export async function createReviewForProduct(req, res) {
             productId
         }
 
-        if(isReviewed){
+        if (isReviewed) {
             product.reviews.forEach((rev) => {
-                if(rev.user._id === req.user._id){
+                if (rev.user._id === req.user._id) {
                     (rev.rating = rating),
-                    (rev.comment = comment),
-                    (rev.user = user)
+                        (rev.comment = comment),
+                        (rev.user = user)
                 }
             })
-        }else{
+        } else {
             product.reviews.push(review)
         }
 
@@ -76,12 +76,21 @@ export async function createReviewForProduct(req, res) {
 
         product.ratings = avg / product.reviews.length
 
-        await product.save({validateBeforeSave: false})
+        await product.save({ validateBeforeSave: false })
+        await Order.findByIdAndUpdate(orderId,
+            {
+                $set: { "cart.$[elem].isReviewed": true }
+            },
+            {
+                arrayFilters: [{ "elem._id": productId }],
+                new: true
+            }
+        )
         res.status(200).json({
             success: true,
             message: "Review successfully!"
         })
-    } catch(error){    
+    } catch (error) {
         console.error(error)
         res.status(500).json({ message: "Internal server Error" })
     }
