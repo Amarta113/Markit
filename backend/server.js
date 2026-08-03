@@ -26,8 +26,8 @@ app.use('/api/v1/user', userRouter)
 app.use('/api/v1/seller', shopRouter)
 app.use('/api/v1/product', productRouter)
 app.use('/api/v1/event', eventsRouter)
-app.use('api/v1/coupon', couponCodeRouter)
-app.use('api/v1/payment', paymentRouter)
+app.use('/api/v1/coupon', couponCodeRouter)
+app.use('/api/v1/payment', paymentRouter)
 
 
 app.get('/', (req, res) => {res.json({success: true, message: "server is running"})})
