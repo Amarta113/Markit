@@ -78,7 +78,7 @@ const ProductCard = ({ data }) => {
                             </h4>
                         </div>
                         <span className='font-[400] text-[17px] text-[#68d284]'>
-                            {data.total_sell}sold
+                            {data?.sold_out} Sold 
                         </span>
                     </div>
                 </Link>
