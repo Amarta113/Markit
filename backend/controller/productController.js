@@ -22,7 +22,6 @@ export async function createProduct(req, res) {
         }
         const product = await Product.create(productData)
         res.status(201).json({ success: true, product })
-
     }
     catch (error) {
         return next(new ErrorHandler(error, 400))
@@ -43,7 +42,50 @@ export async function getAllProductsShop(req, res) {
     }
 }
 
+export async function createReviewForProduct(req, res) {
+    try{
+        const {user, rating, message, productId, orderId} = req.body
+        
+        const product = await Product.findById(productId)
+        
+        const isReviewed = product.reviews.find((rev) => rev.user._id === req.user._id)
+        
+        const review = {
+            user,
+            rating,
+            comment,
+            productId
+        }
 
+        if(isReviewed){
+            product.reviews.forEach((rev) => {
+                if(rev.user._id === req.user._id){
+                    (rev.rating = rating),
+                    (rev.comment = comment),
+                    (rev.user = user)
+                }
+            })
+        }else{
+            product.reviews.push(review)
+        }
+
+        let avg = 0;
+        product.reviews.forEach((rev) => {
+            avg += rev.rating
+        })
+
+        product.ratings = avg / product.reviews.length
+
+        await product.save({validateBeforeSave: false})
+        res.status(200).json({
+            success: true,
+            message: "Review successfully!"
+        })
+    } catch(error){    
+        console.error(error)
+        res.status(500).json({ message: "Internal server Error" })
+    }
+}
 
 export async function deleteProduct(req, res) {
     try {
