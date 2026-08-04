@@ -3,7 +3,7 @@ import { BsFillBagFill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import styles from '../../styles/styles'
-import { backend_url } from '../../server'
+import { backend_url, server } from '../../server'
 import { getAllOrdersUser } from '../../../redux/actions/orderActions'
 import toast from 'react-toastify'
 
@@ -16,7 +16,7 @@ const UserOrderDetails = () => {
     const [comment, setComment] = useState()
     const [selectedItem, setSelectedItem] = useState(null)
     const [rating, setRating] = useState(1)
-    
+
     const { id } = useParams()
 
     useEffect(() => {
@@ -28,8 +28,8 @@ const UserOrderDetails = () => {
 
     }
 
-    const reviewHandler = async(e) => {
-        await axios.put(`${server}/product/create-new-review`, 
+    const reviewHandler = async (e) => {
+        await axios.put(`${server}/product/create-new-review`,
             {
                 user,
                 rating,
@@ -50,6 +50,16 @@ const UserOrderDetails = () => {
             toast.error(error)
         })
     }
+
+    const refundHandler = async() => {
+        await axios.put(`${server}/order/order-refund/${id}`, {status: "Processing"}).then(
+            (res) => {
+                toast.success(res.data.message)
+            }
+        ).catch((error) => {
+            toast.error(error.response.data.message)
+        })
+    }
     return (
         <div className={`py-4 min-h-screen ${styles.section}`}>
             <div className="w-full flex items-center justify-between">
@@ -60,7 +70,6 @@ const UserOrderDetails = () => {
                     />
                     <h1 className='pl-2 text-[25px]'>Order Details</h1>
                 </div>
-
             </div>
             <div className="w-full flex items-center justify-between pt-6">
                 <h5 className='text-[#00000084]'>
@@ -83,21 +92,21 @@ const UserOrderDetails = () => {
                                 <h5 className='pl-3 text-[20px] text-[#00000091]'>US${item.discountPrice} x {item.qty}</h5>
                             </div>
                             {
-                            item.isReviewed? (
-                                null
-                            ): (
-                                <div 
-                                className={`${styles.button} text-[#fff]`}
-                                onClick={() => setOpen(true) || setSelectedItem(item)}>
+                                item.isReviewed ? (
+                                    null
+                                ) : (
+                                    <div
+                                        className={`${styles.button} text-[#fff]`}
+                                        onClick={() => setOpen(true) || setSelectedItem(item)}>
                                         Write a review
-                                </div>
-                            )
+                                    </div>
+                                )
                             }
                         </div>
                     })}
                 {/* Review Popup */}
                 {
-                    opne && (
+                    open && (
                         <div className="w-full fixed top-0 left-0 h-screen bg-[#0005] z-50 flex items-center justify-center">
                             <div className="w-[50%] h-[85vh] bg-[#fff] shadow rounded-md p-3">
                                 <div className="w-full justify-end p-3">
@@ -130,48 +139,48 @@ const UserOrderDetails = () => {
                                     </h5>
                                     <div className="flex w-full ml-2 pt-l">
                                         {
-                                        [1,2,3,4,5].map((i) => rating >= i?
-                                        (
-                                            <AiFillStar 
-                                            key={i} 
-                                            className='mr-1 cursor-pointer' 
-                                            size={25}
-                                            onClick={() => setRating(i)}
-                                            />
-                                        ) : (
-                                            <AiOutlineStar 
-                                            key={i} 
-                                            className='mr-1 cursor-pointer' 
-                                            size={25}
-                                            onClick={() => setRating(i)}
-                                            />
-                                        )
-                                    )}
+                                            [1, 2, 3, 4, 5].map((i) => rating >= i ?
+                                                (
+                                                    <AiFillStar
+                                                        key={i}
+                                                        className='mr-1 cursor-pointer'
+                                                        size={25}
+                                                        onClick={() => setRating(i)}
+                                                    />
+                                                ) : (
+                                                    <AiOutlineStar
+                                                        key={i}
+                                                        className='mr-1 cursor-pointer'
+                                                        size={25}
+                                                        onClick={() => setRating(i)}
+                                                    />
+                                                )
+                                            )}
                                     </div>
                                     <br />
                                     <div className="w-full ml-3">
                                         <label className='block text-[20px] font-[500]'>
                                             Write a comment
-                                        <span className='ml-1 font-[400] text-[16px] text-[#00000052]'
-                                        >
-                                        {optional}
-                                        </span>
+                                            <span className='ml-1 font-[400] text-[16px] text-[#00000052]'
+                                            >
+                                                {optional}
+                                            </span>
                                         </label>
-                                        <textarea 
-                                        name="comment" 
-                                        cols="20" 
-                                        rows="5" 
-                                        value={comment}
-                                        onChange={(e) => setComment(e.target.value)}
-                                        className='mt-2 w-[95%] border p-2 outline-none'
-                                        placeholder='How was your product? write your expression about it'
+                                        <textarea
+                                            name="comment"
+                                            cols="20"
+                                            rows="5"
+                                            value={comment}
+                                            onChange={(e) => setComment(e.target.value)}
+                                            className='mt-2 w-[95%] border p-2 outline-none'
+                                            placeholder='How was your product? write your expression about it'
                                         ></textarea>
-                                        </div>
-                                        <div className={`${styles.button} text-white text-[20px] ml-3`}
+                                    </div>
+                                    <div className={`${styles.button} text-white text-[20px] ml-3`}
                                         onClick={reviewHandler}
-                                        >
-                                            Submit
-                                        </div>
+                                    >
+                                        Submit
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -211,6 +220,16 @@ const UserOrderDetails = () => {
                     <div className="w-full md:w-[40%]">
                         <h4 className='pt-3 text-[20px]'>Payment Info:</h4>
                         <h4>Status: {data?.paymentInfo?.status ? data?.paymentInfo?.status : "Not Paid"}</h4>
+                        <br />
+                        {
+                            data?.status === "Delivered" && (
+                                <div 
+                                className={`${styles.button} text-white`}
+                                onClick={refundHandler}>
+                                    Give a Refund
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
                 <Link to="/">
