@@ -45,7 +45,7 @@ const AllOrders = () => {
             renderCell: params => {
                 return (
                     <>
-                        <Link to={`user/order/${params.id}`}>
+                        <Link to={`/user/order/${params.id}`}>
                             <Button>
                                 <AiOutlineEye size={20} />
                             </Button>
