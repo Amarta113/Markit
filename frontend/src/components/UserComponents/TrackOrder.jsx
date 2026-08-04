@@ -1,89 +1,59 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { MdTrackChanges } from "react-icons/md";
-import { DataGrid } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
-
+import { getAllOrdersShop } from '../../../redux/actions/orderActions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const TrackOrder = () => {
-    const orders = [
-        {
-            _id: "746hvbfbhfbrtr28820221",
-            orderItems: [
-                {name: "Iphone 14 pro max"}
-            ],
-            totalPrice: 120,
-            orderStatus: "Processing"
-        }
-    ]
-  const columns = [
-    {
-      field: "id",
-      headerName: "Order ID",
-      minWidth: 150,
-      flex: 0.7,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
-      flex: 0.7,
-      cellClassName: params =>
-        params.row.status === "Delivered" ? "greenColor" : "redColor",
-    },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
-    },
-    {
-      field: "actions",
-      headerName: "",
-      sortable: false,
-      minWidth: 150,
-      flex: 1,
-      renderCell: params => (
-        <Link to={`/user/track-order/${params.id}`}>
-          <Button>
-            <MdTrackChanges size={20} />
-          </Button>
-        </Link>
-      ),
-    },
-  ];
-  const row = [];
+  const { orders, isLoading } = useSelector((state) => state.order)
+  const { user } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
 
-  orders &&
-    orders.forEach(item => {
-      row.push({
-        id: item._id,
-        itemsQty: item?.cart?.length,
-        total: "US$" + item?.totalPrice,
-        status: item?.status,
-      });
-    });
+  const {id} = useParams()
+
+  useEffect(() => {
+    dispatch(getAllOrdersShop(user._id))
+  }, [])
+
+
+  const data = orders && orders.find((item) => item._id === id)
 
   return (
-    <div className="pl-8 pt-1 flex flex-col  min-h-[200px] max-h-[600px]">
-      <DataGrid
-        rows={row}
-        columns={columns}
-        pageSizeOptions={[10]}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10, page: 0 } },
-        }}
-        disableRowSelectionOnClick
-        sx={{ flexGrow: 1 }}
-      />
+       <div className="w-full h-[80vh] flex justify-center items-center">
+      {
+        data && data?.status === "Processing"? (
+            <h1 className='text-[20px]'>Your Order is processing in Ship</h1>
+        ): (
+          data?.status === "Transferred to delivery parter"? (
+            <h1 className='text-[20px]'>Your Order is on the way for delivery parter.</h1>
+          ):
+          (
+            data?.status === "Shipping"? (
+                <h1 className='text-[20px]'>Your Order is coming from our delivery parter.</h1>
+            ): data?.status === "Received"? (
+               <h1 className='text-[20px]'>Your Order is in your city. Our delivery man will deliver it.</h1>
+            ): (
+              data?.status === "On the way"? (
+                <h1 className='text-[20px]'>Your Delivery man going to deliver your order.</h1>
+              ): (
+                data?.status === "Delivered"? (
+                  <h1 className='text-[20px]'>Your Order is delivered.</h1>
+                ): (
+                  data?.status === "Processing refund"? (
+                    <h1 className='text-[20px]'>Your Refund is processing.</h1>
+                  ): 
+                  data?.status === "Refund Success"? (
+                   <h1 className='text-[20px]'>Your refund is success!</h1>
+                  ): (
+                    null
+                  )
+                )
+              )
+            )
+          )
+        )
+      }
     </div>
   );
 }
