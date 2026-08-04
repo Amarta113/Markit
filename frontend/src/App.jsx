@@ -1,6 +1,6 @@
 import React from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
-import { LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage, ShopLoginPage, OrderDetailsPage } from "./routes/Routes.jsx"
+import { LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage, ShopLoginPage, OrderDetailsPage, TrackOrderPage } from "./routes/Routes.jsx"
 import { ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
 import store from '../redux/store.js';
@@ -32,12 +32,12 @@ export default function App() {
     setStripeApiKey(data.stripeApiKey)
   }
   useEffect(() => {
-    store.dispatch(loadUser())
-    store.dispatch(loadSeller())
-    store.dispatch(getAllProducts())
-    store.dispatch(getAllEvents())
+    dispatch(loadUser())
+    dispatch(loadSeller())
+    dispatch(getAllProducts())
+    dispatch(getAllEvents())
     getStripeApikey()
-  }, [])
+  }, [dispatch])
   return (
     <>
       {stripeApiKey && (
@@ -77,6 +77,11 @@ export default function App() {
         <Route path='/user/order/:id' element={
           <ProtectedRoute >
             <OrderDetailsPage />
+          </ProtectedRoute>
+        } />
+        <Route path='/user/track/order/:id' element={
+          <ProtectedRoute >
+            <TrackOrderPage />
           </ProtectedRoute>
         } />
         <Route path='/shop-create' element={<ShopCreatePage />} />
