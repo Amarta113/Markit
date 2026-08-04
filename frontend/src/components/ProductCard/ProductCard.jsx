@@ -6,6 +6,7 @@ import ProductDetailsCard from '../ProductDetailsCard/ProductDetailsCard.jsx'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlistActions.js';
 import { toast } from 'react-toastify';
+import Ratings from '../UserComponents/Ratings.jsx';
 
 const ProductCard = ({ data }) => {
     const {wishlist} = useSelector((state) => state.wishlist)
@@ -62,11 +63,7 @@ const ProductCard = ({ data }) => {
                         {data.name.length > 40 ? data.name.slice(0, 40) + "...." : data.name}
                     </h4>
                     <div className='flex'>
-                        <AiFillStar className='mr-2 cursor-pointer' size={20} color='#F6BA00' />
-                        <AiFillStar className='mr-2 cursor-pointer' size={20} color='#F6BA00' />
-                        <AiFillStar className='mr-2 cursor-pointer' size={20} color='#F6BA00' />
-                        <AiFillStar className='mr-2 cursor-pointer' size={20} color='#F6BA00' />
-                        <AiOutlineStar className='mr-2 cursor-pointer' size={20} color='#F6BA00' />
+                        <Ratings rating={data?.ratings} />
                     </div>
                     <div className="py-2 flex items-center justify-between">
                         <div className='flex'>
