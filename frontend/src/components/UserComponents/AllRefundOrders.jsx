@@ -1,73 +1,80 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
-import { AiOutlineArrowRight } from "react-icons/ai";import { Link } from "react-router-dom";
+import { AiOutlineArrowRight } from "react-icons/ai"; import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllOrdersShop } from '../../../redux/actions/orderActions';
 
 
 const AllRefundOrders = () => {
-    const columns = [
-    {
-      field: "id",
-      headerName: "Order ID",
-      minWidth: 150,
-      flex: 0.7,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
-      flex: 0.7,
-      cellClassName: params =>
-        params.row.status === "Delivered" ? "greenColor" : "redColor",
-    },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
-    },
-    {
-      field: "actions",
-      headerName: "",
-      sortable: false,
-      minWidth: 150,
-      flex: 1,
-      renderCell: params => (
-        <Link to={`/user/order/${params.id}`}>
-          <Button>
-            <AiOutlineArrowRight size={20} />
-          </Button>
-        </Link>
-      ),
-    },
-  ];
+  const { orders, isLoading } = useSelector((state) => state.order)
+  const { user } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
 
-  const row = []
-  orders && orders.forEach((item) => {
-        row.push({
-            id: item._id,
-            itemsQty: item.orderItems.length,
-            total: "US$ " + item.totalPrice,
-            status: item.orderStatus
-        })
-    })
-    
+  useEffect(() => {
+    dispatch(getAllOrdersShop(user._id))
+  }, [])
+
+  const eligibleOrders = orders && orders.filter((item) => item.status === "Processing refund")
+  const columns = [
+    { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
+    { field: "name", headerName: "Name", minWidth: 180, flex: 1.4 },
+    { field: "price", headerName: "Price", minWidth: 100, flex: 0.6 },
+    {
+      field: "stock",
+      headerName: "Stock",
+      type: "number",
+      minWidth: 80,
+      flex: 0.5,
+    },
+    {
+      field: "sold",
+      headerName: "Sold out",
+      type: "number",
+      minWidth: 130,
+      flex: 0.6,
+    },
+    {
+      field: "Preview",
+      headerName: "",
+      type: "number",
+      sortable: false,
+      minWidth: 100,
+      flex: 0.8,
+      renderCell: params => {
+        return (
+          <>
+            <Link to={`/user/order/${params.id}`}>
+              <Button>
+                <AiOutlineEye size={20} />
+              </Button>
+            </Link>
+          </>
+        );
+      },
+    },
+
+  ];
+  const row = [];
+  eligibleOrders && eligibleOrders.forEach(
+    item => {
+      row.push({
+        id: item._id,
+        name: item.name,
+        price: "US$" + item.discountPrice,
+        sold: 10
+      })
+    }
+  )
+
   return (
     <div className='pl-8 pt-1'>
-      <DataGrid 
+      <DataGrid
         row={row}
-        columns = {columns}
+        columns={columns}
         pageSizeOptions={[10]}
         initialState={{
-            pagination: {paginationModel: {pageSize: 10, page: 0}}
+          pagination: { paginationModel: { pageSize: 10, page: 0 } }
         }}
         disableRowSelectionOnClick
         sx={{ flexGrow: 1 }}
