@@ -1,4 +1,5 @@
 import { catchAsyncError } from '../middleware/catchAsyncError.js'
+import ErrorHandler from '../middleware/error.js';
 import Order from '../models/order.js';
 
 export const createOrder = catchAsyncError(async(req, res, next) => {
@@ -116,6 +117,39 @@ export const orderRefund = catchAsyncError(async(req, res, next) => {
             message: "Order Refund Request successfully!"
         })
     }catch(error){
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
+
+export const orderRefundSuccess = catchAsyncError(async(req, res, next) => {
+    try{
+        const order = await Order.findById(req.params.id)
+        if(!order){
+            return next(new ErrorHandler("Order not found with this id.", 400))
+        }
+        order.status = req.body.status;
+        await Order.save()
+
+        res.status(200).json({
+            success: true,
+            message: "Order Refund Succcessfully!"
+        })
+        if(req.body.status === "Refund Success"){
+            order.cart.forEach(async(o) => {
+                await updateOrder(o._id, o.qty)
+            })
+        }
+
+        async function updateOrder(id, qty){
+            const product = await Product.findById(id)
+            product.stock += qty
+            product.sold_out -= qty
+
+            await product.save({validateBeforeSave: false})
+        }
+        
+        
+    } catch(error){
         return next(new ErrorHandler(error.message, 500))
     }
 })
