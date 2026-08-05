@@ -14,20 +14,20 @@ const ShopInfo = ({ isOwner }) => {
     useEffect(() => {
         setIsLoading(true)
         axios.get(`${server}/shop/get-shop-info/${id}`)
-        .then((res) => {
-            setData(res.data.shop)
-            setIsLoading(false)
-        })
-        .catch((error) => {
-            console.log(error)
-            setIsLoading(false)
-        })
+            .then((res) => {
+                setData(res.data.shop)
+                setIsLoading(false)
+            })
+            .catch((error) => {
+                console.log(error)
+                setIsLoading(false)
+            })
     }, [])
 
-    async function logoutHandler () {
+    async function logoutHandler() {
         try {
             setIsLoading(true)
-            const res = await axios.get( `${server}/seller/seller-logout`,
+            const res = await axios.get(`${server}/seller/seller-logout`,
                 {
                     withCredential: true
                 })
@@ -36,7 +36,7 @@ const ShopInfo = ({ isOwner }) => {
             } else {
                 console.error('Seller logout failed! ', res.data.message)
             }
-        } catch (error){
+        } catch (error) {
             console.error("Seller logout error", error)
         }
     }
@@ -78,12 +78,14 @@ const ShopInfo = ({ isOwner }) => {
                 </h4>
             </div>
             {isOwner && (
-                <div className="py-">
-                    <div className={`${styles.button} !w-full h-[42px] rounded-[5px]`}>
-                        <span className='text-white'>Edit Shop</span>
-                    </div>
+                <div className="py-3 px-4">
+                    <Link to="/settings">
+                        <div className={`${styles.button} !w-full h-[42px] rounded-[5px]`}>
+                            <span className='text-white'>Edit Shop</span>
+                        </div>
+                    </Link>
                     <div className={`${styles.button} !w-full h-[42px] rounded-[5px]`}
-                    onClick={logoutHandler}>
+                        onClick={logoutHandler}>
                         <span className='text-white'>Log Out</span>
                     </div>
                 </div>
