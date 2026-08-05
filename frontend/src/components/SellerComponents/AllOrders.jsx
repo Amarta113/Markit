@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '@mui/material/Button'
-import { AiOutlineEye } from 'react-icons/ai'
+import { AiOutlineArrowRight } from 'react-icons/ai'
 import { DataGrid } from '@mui/x-data-grid'
 import Loader from '../Layout/Loader'
 import { getAllOrdersShop } from '../../../redux/actions/orderActions'
@@ -47,7 +47,7 @@ const AllOrders = () => {
                     <>
                         <Link to={`/user/order/${params.id}`}>
                             <Button>
-                                <AiOutlineEye size={20} />
+                                <AiOutlineArrowRight size={20} />
                             </Button>
                         </Link>
                     </>
@@ -75,7 +75,7 @@ const AllOrders = () => {
             ): (
             <div className='w-full mx-8 pt-1 bg-white flex flex-col min-h-[200px] max-h-[600px]'>
                 <DataGrid
-                    row={row}
+                    rows={row}
                     columns={columns}
                     pageSizeOptions={[10]}
                     disableRowSelectionOnClock

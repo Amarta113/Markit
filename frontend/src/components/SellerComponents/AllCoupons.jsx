@@ -167,7 +167,7 @@ const AllCoupons = () => {
                 </div>
                 <br />
                 <DataGrid
-                    row={row}
+                    rows={row}
                     columns={columns}
                     pageSizeOptions={[10]}
                     disableRowSelectionOnClock
