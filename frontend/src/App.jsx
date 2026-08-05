@@ -14,7 +14,7 @@ import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import { ShopHomePage } from './ShopRoutes.jsx'
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { loadSeller } from '../redux/actions/sellerActions.js';
-import { ShopDashboardPage, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons, ShopAllOrders, ShopOrderDetails} from './routes/ShopRoutes.jsx';
+import { ShopDashboardPage, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons, ShopAllOrders, ShopOrderDetails, ShopAllRefunds} from './routes/ShopRoutes.jsx';
 import ShopCreateProducts from './routes/ShopCreateProducts.jsx';
 import { getAllEvents } from '../redux/actions/eventActions.js';
 import { getAllProducts } from '../redux/actions/productActions.js';
@@ -101,6 +101,10 @@ export default function App() {
         <Route path='/dashboard-orders' element={
           <SellerProtectedRoute>
             <ShopAllOrders />
+          </SellerProtectedRoute>} />
+         <Route path='/dashboard-refunds' element={
+          <SellerProtectedRoute>
+            <ShopAllRefunds />
           </SellerProtectedRoute>} />
         <Route path='/order/:id' element={
           <SellerProtectedRoute>
