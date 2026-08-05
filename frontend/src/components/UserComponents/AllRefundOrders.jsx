@@ -8,14 +8,16 @@ import { getAllOrdersShop } from '../../../redux/actions/orderActions';
 
 const AllRefundOrders = () => {
   const { orders, isLoading } = useSelector((state) => state.order)
-  const { user } = useSelector((state) => state.user)
+  const { seller } = useSelector((state) => state.seller)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getAllOrdersShop(user._id))
+    dispatch(getAllOrdersShop(seller._id))
   }, [])
 
-  const eligibleOrders = orders && orders.filter((item) => item.status === "Processing refund")
+  const refundOrders = orders && orders.filter((item) => item.status === "Processing refund" && item.status === "Refund Success")
+  
   const columns = [
     { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
     { field: "name", headerName: "Name", minWidth: 180, flex: 1.4 },
@@ -56,7 +58,7 @@ const AllRefundOrders = () => {
 
   ];
   const row = [];
-  eligibleOrders && eligibleOrders.forEach(
+  refundOrders && refundOrders.forEach(
     item => {
       row.push({
         id: item._id,
@@ -70,7 +72,7 @@ const AllRefundOrders = () => {
   return (
     <div className='pl-8 pt-1'>
       <DataGrid
-        row={row}
+        rows={row}
         columns={columns}
         pageSizeOptions={[10]}
         initialState={{
