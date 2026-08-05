@@ -250,7 +250,7 @@ const AllOrders = () => {
     return (
         <div className="pl-8 pt-l flex flex-col min-h-[200px] max-h-[600px]">
             <DataGrid
-                row={row}
+                rows={row}
                 columns={columns}
                 pageSizeOptions={[10]}
                 initialState={{
