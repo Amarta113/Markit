@@ -1,5 +1,5 @@
 import express from 'express'
-import { createShop, activateSeller, loginSeller, loadSeller, logoutSeller, getShopInfo} from '../controller/shopController.js';
+import { createShop, activateSeller, loginSeller, loadSeller, logoutSeller, getShopInfo, updateShopAvatar} from '../controller/shopController.js';
 import upload from '../multer.js';
 import { catchAsyncError } from '../middleware/catchAsyncError.js';
 import { isSeller } from '../middleware/auth.js';
@@ -11,4 +11,5 @@ shopRouter.post("/login-seller", loginSeller);
 shopRouter.get("/get-seller", isSeller, loadSeller)
 shopRouter.get("/logout-seller", isSeller, logoutSeller)
 shopRouter.get('/get-shop-info/:id', getShopInfo)
+shopRouter.put("/update-shop-avatar", isSeller, upload.single("image"), updateShopAvatar);
 export default shopRouter;
