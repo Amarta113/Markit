@@ -1,6 +1,5 @@
 import express from 'express'
-import { catchAsyncError } from '../middleware/catchAsyncError'
-import { processStripePayment } from '../controller/paymentController.js'
+import { getStripeApiKey, processStripePayment } from '../controller/paymentController.js'
 
 const paymentRouter = express.Router()
 
