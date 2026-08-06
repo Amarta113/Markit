@@ -1,24 +1,24 @@
 import ErrorHandler from '../middleware/error.js'
 import { catchAsyncError } from '../middleware/catchAsyncError.js'
-import {Shop}  from '../models/shop.js'
+import { Shop } from '../models/shop.js'
 import cloudinary from '../config/cloudinary.js'
 import jwt from 'jsonwebtoken'
 import sendEmail from '../utils/sendEmail.js'
-import {sendShopTokens} from '../config/sendTokens.js'
+import { sendShopTokens } from '../config/sendTokens.js'
 
-export const createShop = catchAsyncError(async(req, res, next) => {
-    try{
+export const createShop = catchAsyncError(async (req, res, next) => {
+    try {
         const { name, phoneNumber, address, zipCode, email, password } = req.body;
-        const sellerEmail = await Shop.findOne({email})
-        if(sellerEmail){
-            if(req.file.filename){
+        const sellerEmail = await Shop.findOne({ email })
+        if (sellerEmail) {
+            if (req.file.filename) {
                 const public_id = req.file.filename.split(".")[0]
                 await cloudinary.uploader.destroy(`ecommerce_uploads/${public_id}`)
             }
             return next(new ErrorHandler("User already exists", 400))
         }
 
-        if(!req.file?.path || !req.file?.filename){
+        if (!req.file?.path || !req.file?.filename) {
             return next(new ErrorHandler("Please upload an avatar!", 400))
         }
 
@@ -38,17 +38,17 @@ export const createShop = catchAsyncError(async(req, res, next) => {
         const activationTokens = createActivationTokens(sellerData)
         const activationURL = `http://localhost:5173/seller/activation/${activationTokens}`;
         await sendEmail({
-                email: sellerData.email,
-                subject: "Activate your account",
-                message: generateEmailTemplate(activationURL, sellerData.name)
-            })
+            email: sellerData.email,
+            subject: "Activate your account",
+            message: generateEmailTemplate(activationURL, sellerData.name)
+        })
 
         res.status(201).json({
-                success: true,
-                message: `Please check your email - ${sellerData.email} to activate your account!`
-            })
+            success: true,
+            message: `Please check your email - ${sellerData.email} to activate your account!`
+        })
 
-    } catch(error){
+    } catch (error) {
         next(error)
     }
 })
@@ -103,22 +103,22 @@ function generateEmailTemplate(activationURL, name) {
         `
 }
 
-export const activateSeller = catchAsyncError(async(req, res, next) => {
-    try{
+export const activateSeller = catchAsyncError(async (req, res, next) => {
+    try {
         const seller_token = req.body?.activation_token || req.body?.seller_token || req.body?.activationToken
-        if(!seller_token){
+        if (!seller_token) {
             return next(new ErrorHandler("Activation token is required", 400))
         }
-        if(!process.env.JWT_SECRET){
+        if (!process.env.JWT_SECRET) {
             return next(new ErrorHandler("Server configuration error", 500))
         }
         const seller = jwt.verify(seller_token, process.env.JWT_SECRET)
-        if(!seller){
+        if (!seller) {
             return next(new ErrorHandler("Invalid seller token", 400))
         }
-        const {name, email, password, avatar, zipCode, address, phoneNumber} = seller
-        let existingSeller = await Shop.findOne({email})
-        if(existingSeller){
+        const { name, email, password, avatar, zipCode, address, phoneNumber } = seller
+        let existingSeller = await Shop.findOne({ email })
+        if (existingSeller) {
             return next(new ErrorHandler("Seller already exists", 400))
         }
         const newSeller = await Shop.create({
@@ -131,10 +131,10 @@ export const activateSeller = catchAsyncError(async(req, res, next) => {
             phoneNumber
         })
         sendShopTokens(newSeller, 201, res)
-    } catch(error){
+    } catch (error) {
         console.error("Activation error:", error)
         // Let error middleware handle JWT errors (JsonWebTokenError, TokenExpiredError)
-        if(error.name === "JsonWebTokenError" || error.name === "TokenExpiredError"){
+        if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
             return next(error)
         }
         return next(new ErrorHandler(error?.message ?? "Activation failed", 500))
@@ -142,70 +142,96 @@ export const activateSeller = catchAsyncError(async(req, res, next) => {
 })
 
 
-export const loginSeller = catchAsyncError(async(req, res, next) => {
-    try{
-        const {email, password} = req.body
-        if(!email || !password){
+export const loginSeller = catchAsyncError(async (req, res, next) => {
+    try {
+        const { email, password } = req.body
+        if (!email || !password) {
             return next(new ErrorHandler("Please provide email and password", 400))
         }
 
-        const seller = await Shop.findOne({email}).select("+password")
-        if(!seller){
-            return next(new ErrorHandler("Invalid email or password, This seller doesn't exist!", 401 ))
+        const seller = await Shop.findOne({ email }).select("+password")
+        if (!seller) {
+            return next(new ErrorHandler("Invalid email or password, This seller doesn't exist!", 401))
         }
-        
+
         const isPasswordMatched = await seller.comparePassword(password)
-        if(!isPasswordMatched){
+        if (!isPasswordMatched) {
             return next(new ErrorHandler("Invalid email or password", 401))
         }
         sendShopTokens(seller, 200, res)
-    } catch(error){
+    } catch (error) {
         next(error)
     }
 })
 
-export const loadSeller = catchAsyncError(async(req, res, next) => {
-    try{
+export const loadSeller = catchAsyncError(async (req, res, next) => {
+    try {
         const seller = await Shop.findById(req.seller.id)
-        if(!seller){
+        if (!seller) {
             return next(new ErrorHandler("Seller not found", 404))
         }
         res.status(200).json({
             success: true,
             seller
         })
-    } catch(error){
+    } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
 })
 
 // log out user
-export const logoutSeller = catchAsyncError(async(req, res, next) => {
-    try{
+export const logoutSeller = catchAsyncError(async (req, res, next) => {
+    try {
         res.cookie("seller_token", null, {
             expires: new Date(Date.now()),
             httpOnly: true,
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             secure: process.env.NODE_ENV === "production"
-        })  
+        })
         res.status(201).json({
             success: true,
             message: "Logout successfully!"
-        })     
-    } catch(error){
+        })
+    } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
-}) 
+})
 
 // get shop information
-export const getShopInfo = catchAsyncError(async(req, res, next) => {
+export const getShopInfo = catchAsyncError(async (req, res, next) => {
     try {
         const shop = await Shop.findById(req.params.id)
         res.status(201).json({
             success: true,
             shop
         })
-    } catch(error){
+    } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
 })
+
+export const updateShopAvatar = catchAsyncError(async (req, res, next) => {
+        try {
+            const existUser = await Shop.findById(req.seller.id)
+            const oldPublicId = existUser?.avatar.public_id;
+            if (oldPublicId) {
+                await cloudinary.uploader.destroy(`ecommerce_uploads/${oldPublicId}`)
+            }
+            const newPublicId = req.file.filename.split(".")[0]
+            const newUrl = req.file.path;
+            const user = await Shop.findByIdAndUpdate(
+                req.seller.id,
+                {
+                    avatar: {
+                        public_id: newPublicId,
+                        url: newUrl
+                    }
+                },
+                { new: true }
+            )
+            res.status(201).json({ success: true, user })
+        } catch (error) {
+            return next(new ErrorHandler(error.message, 500))
+        }
+    }
+)
