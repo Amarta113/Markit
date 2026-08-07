@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { backend_url } from '../server'
+import { useDispatch, useSelector } from 'react-redux'
+import { backend_url, server } from '../server'
 import { AiOutlineCamera } from 'react-icons/ai'
 import styles from '../styles/styles'
+import axios from 'axios'
 
 const ShopSettings = () => {
     const { seller } = useSelector(state => state.seller)
     const [avatar, setAvatar] = useState()
+    const [name, setName] = useState(seller & seller.name)
+    const [description, setDescription] = useState(seller && seller.description ? seller.description : "")
+    const [address, setAddress] = useState(seller && seller.address)
+    const [phoneNumber, setPhoneNumber] = useState(seller && seller.phoneNumber)
+    const [zipCode, setZipCode] = useState(seller && seller.zipCode)
+    const dispatch = useDispatch()
 
     const handleImage = async(e) => {
         e.preventDefault()
@@ -14,9 +21,35 @@ const ShopSettings = () => {
         setAvatar(file)
         const formData = new FormData()
         formData.append("image", e.target.files[0])
+        await axios.put(`${server}/seller/shop/update-shop-avatar`, 
+            formData,
+        {   
+            headers: {"Content-Type" : "multipart/form-data"},
+            withCredentials: true
+        }).then((res) => {
+            dispatch(loadSeller())
+            toast.success("Avatar updated Successfully!")
+        }).catch((error)=> {
+            toast.error(error.response.data)
+        })
     }
+
     const updateHandler = async(e) => {
         e.preventDefault()
+        await axios.put(`${server}/shop/update-seller-info`,
+        {   name,
+            description,
+            address,
+            phoneNumber,
+            zipCode
+        },
+        { withCredentials: true}
+        ).then((res) => {
+            toast.success("Shop info updated succesffully!")
+            dispatch(loadSeller())
+        }).catch((error) => {
+            toast.error(error.data.message)
+        })
     }
 
     return (
@@ -55,7 +88,8 @@ const ShopSettings = () => {
                             type="name"
                             className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                             required
-                            value={seller.name}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             placeholder={`${seller.name}`}
                         />
                     </div>
@@ -68,7 +102,8 @@ const ShopSettings = () => {
                         <input
                             type="name"
                             className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
-                            value={seller?.description? seller.description : null}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value) }
                             placeholder={`${seller?.description ? seller.description : "Enter your shop description"}`}
                         />
                     </div>
@@ -82,7 +117,8 @@ const ShopSettings = () => {
                             type="name"
                             className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                             required
-                            value={seller?.address}
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
                             placeholder={`${seller?.address}`}
                         />
                     </div>
@@ -96,7 +132,8 @@ const ShopSettings = () => {
                             type="number"
                             className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                             required
-                            value={seller?.phoneNumber}
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
                             placeholder={`${seller?.phoneNumber}`}
                         />
                     </div>
@@ -110,7 +147,8 @@ const ShopSettings = () => {
                             type="number"
                             className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                             required
-                            value={seller?.zipCode}
+                            value={zipCode}
+                            onChange={(e) => setZipCode(e.target.value)}
                             placeholder={`${seller?.zipCode}`}
                         />
                     </div>
