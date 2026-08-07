@@ -219,7 +219,7 @@ export const updateShopAvatar = catchAsyncError(async (req, res, next) => {
             }
             const newPublicId = req.file.filename.split(".")[0]
             const newUrl = req.file.path;
-            const user = await Shop.findByIdAndUpdate(
+            const seller = await Shop.findByIdAndUpdate(
                 req.seller.id,
                 {
                     avatar: {
@@ -229,9 +229,34 @@ export const updateShopAvatar = catchAsyncError(async (req, res, next) => {
                 },
                 { new: true }
             )
-            res.status(201).json({ success: true, user })
+            res.status(201).json({ success: true, seller })
         } catch (error) {
             return next(new ErrorHandler(error.message, 500))
         }
     }
 )
+
+export const updateSellerInfo = catchAsyncError(async(req, res, next) => {
+    try{
+        const {name, description, address, phoneNumber, zipCode} = req.body
+        const shop = await Shop.findOne(req.seller._id)
+        if(!shop){
+            return next(new ErrorHandler("User not found", 400))
+        }
+
+        shop.name = name
+        shop.description = description
+        shop.address = address
+        shop.phoneNumber = phoneNumber
+        shop.zipCode = zipCode
+
+        await shop.save()
+        res.status(201).json({
+            success: true,
+            shop
+        })
+
+    }catch(error) {
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
