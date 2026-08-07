@@ -1,5 +1,5 @@
 import ShopHomePage from '../pages/Shop/ShopHomePage'
-import ShopDashboardPage from '../pages/Shop/ShopDashboardPage'
+import ShopDashboardPage from '../pages/Shop/ShopDashboardPage.jsx'
 import ShopAllProducts from '../pages/Shop/ShopAllProducts.jsx'
 import ShopAllOrders from '../pages/Shop/ShopAllOrders.jsx'
 import ShopCreateEvents from '../pages/Shop/ShopCreateEvents.jsx'
@@ -8,6 +8,7 @@ import ShopAllCoupons from '../pages/Shop/ShopAllCoupons.jsx'
 import ShopOrderDetails from '../pages/Shop/ShopOrderDetails.jsx'
 import ShopAllRefunds from "../pages/Shop/ShopAllRefunds.jsx"
 import ShopSettingsPage from '../pages/Shop/ShopSettingsPage.jsx'
+import ShopWithDrawMoneyPage from '../pages/Shop/ShopWithDrawMoneyPage.jsx'
 export {
     ShopHomePage,
     ShopDashboardPage,
@@ -18,5 +19,6 @@ export {
     ShopAllOrders,
     ShopOrderDetails,
     ShopAllRefunds,
-    ShopSettingsPage
+    ShopSettingsPage,
+    ShopWithDrawMoneyPage
 }
