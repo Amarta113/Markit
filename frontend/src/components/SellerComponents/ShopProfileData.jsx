@@ -6,6 +6,7 @@ import { getAllProductsShop } from '../../../redux/actions/productActions'
 import { getAllEventShop } from '../../../redux/actions/eventActions'
 import Ratings from '../UserComponents/Ratings'
 import { backend_url } from '../../server';
+import ProductCard from '../ProductCard/ProductCard'
 
 const ShopProfileData = ({ isOwner }) => {
   const [active, setActive] = useState(1)
@@ -68,6 +69,18 @@ const ShopProfileData = ({ isOwner }) => {
         )
       }
       {
+        active === 2 && (
+          <div className='grid grid-cols-1 gap-[20px] md:grid:cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0'>
+            {
+              events && events.map((i, index) => (
+                <ProductCard data={i} key={index} isShop={true} isEvent={true} />
+              ))
+            }
+          </div>
+        )
+      }
+
+      {
         active === 3 && (
           <div className="w-full">
             {
@@ -82,6 +95,7 @@ const ShopProfileData = ({ isOwner }) => {
                         <h1 className='font-[600]'>{item.user.name}</h1>
                         <Ratings rating={item.rating} />
                     </div>
+                    <p className='text-[#000000a7] font-[14px]'>{item.createdAt}</p>
                     <p className='font-[400] text-[#000000a7]'>{item?.comment}</p>
                   </div>
                 </div>
