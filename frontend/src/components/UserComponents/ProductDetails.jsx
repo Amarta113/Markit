@@ -16,6 +16,7 @@ import Ratings from '../UserComponents/Ratings'
 const ProductDetails = ({ data }) => {
     const { products } = useSelector(state => state.products)
     const { seller } = useSelector(state => state.seller)
+    const {user, isAuthenticated} = useSelector(state => state.user)
     const { wishlist } = useSelector(state => state.wishlist)
     const { cart } = useSelector(state => state.cart)
     const [count, setCount] = useState(1)
@@ -71,7 +72,20 @@ const ProductDetails = ({ data }) => {
     const totalRatings = products && products.reduce((acc, product) => acc + product.reviews.reduce((sum, review) => sum + review.rating, 0))
     const averageRating = totalRatings / totalReviewsLength || 0
     const handleMessageSubmit = () => {
-        navigate('/inbox?conversation=507ebjver884ehfdjeriv84')
+        if(isAuthenticated){
+            const groupTitle = data._id + user._id 
+            const userId = user._id 
+            const sellerId = data.shop._id 
+            await axios.post(`${server}/conversation/create-new-conversation`, {
+                groupTitle, userId, sellerId
+            }).then((res) => {
+                navigate(`/conversation/${res.data.conversation._id}`)
+            }).catch((error) => {
+                toast.error(error.response.data.message)
+            })
+        }else{
+            toast.error("Please login to create a conversation")
+        }
     }
     return (
         <div className="bg-white">
