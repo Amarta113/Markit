@@ -20,5 +20,5 @@ const conversationSchema =  mongoose.Schema(
     }
 )
 
-const Messages = mongoose.model("Messages", conversationSchema)
-export default Messages
+const Conversation = mongoose.model("Conversation", conversationSchema)
+export default Conversation
