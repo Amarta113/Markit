@@ -14,7 +14,7 @@ import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import { ShopHomePage } from './ShopRoutes.jsx'
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { loadSeller } from '../redux/actions/sellerActions.js';
-import { ShopDashboardPage, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons, ShopAllOrders, ShopOrderDetails, ShopAllRefunds, ShopSettingsPage,ShopWithDrawMoneyPage } from './routes/ShopRoutes.jsx';
+import { ShopDashboardPage, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons, ShopAllOrders, ShopOrderDetails, ShopAllRefunds, ShopSettingsPage,ShopWithDrawMoneyPage, ShopInboxPage } from './routes/ShopRoutes.jsx';
 import ShopCreateProducts from './routes/ShopCreateProducts.jsx';
 import { getAllEvents } from '../redux/actions/eventActions.js';
 import { getAllProducts } from '../redux/actions/productActions.js';
@@ -129,11 +129,18 @@ export default function App() {
         <Route path='/dashboard-coupons' element={
           <SellerProtectedRoute>
             <ShopAllCoupons />
-          </SellerProtectedRoute>} />
+          </SellerProtectedRoute>} 
+        />
         <Route path='/dashboard-withdraw-money' element={
           <SellerProtectedRoute>
             <ShopWithDrawMoneyPage />
-          </SellerProtectedRoute>} />
+          </SellerProtectedRoute>}
+        />
+        <Route path='/dashboard-message' element={
+          <SellerProtectedRoute>
+            <ShopInboxPage />
+          </SellerProtectedRoute>}
+        />
       </Routes>
       <ToastContainer
         position="top-right"
