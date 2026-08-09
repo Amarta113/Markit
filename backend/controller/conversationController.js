@@ -45,3 +45,21 @@ export const getAllConversationSeller = catchAsyncError(async(req, res, next) =>
         return next(new ErrorHandler(error.response.message), 500)
     }
 })
+
+export const updateLastMessage = catchAsyncError(async(req, res, next) => {
+    try{
+        const { lastMessage, lastMessageId} = req.body
+
+        const conversation = await Conversation.findByIdAndUpdate(req.params.id, {
+            lastMessage,
+            lastMessageId
+        })
+
+        res.status(201).json({
+            success:true,
+            conversation
+        })
+    }catch(error){
+
+    }
+})
