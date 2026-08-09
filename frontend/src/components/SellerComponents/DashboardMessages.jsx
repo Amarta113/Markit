@@ -6,11 +6,36 @@ import axios from 'axios'
 import styles from '../../styles/styles'
 import { TfiGallery } from "react-icons/tfi";
 import { server } from '../../server'
+import { io } from 'socket.io-client'
+
+ENDPOINT = 'http://localhost:4000/'
+
+const socketId = io(ENDPOINT, { transports: ["websocket"] })
 
 const DashboardMessages = () => {
     const { seller } = useSelector((state) => state.seller)
     const [conversations, setConversations] = useState([])
+    const [arrivalMessage, setArrivalMessage] = useState(null)
+    const [messages, setMessages] = useState(null)
+    const [currentChat, setCurrentChat] = useState(null)
+    const [newMessage, setNewMessage] = useState("")
     const [open, setOpen] = useState(false)
+
+    useEffect(() => {
+        socketId.on('getMessage', (data) => {
+            setArrivalMessage({
+                sender: data.senderId,
+                text: data.text,
+                createdAt: Date.now()
+            })
+        })
+    }, [])
+
+    useEffect(() => {
+        arrivalMessage && 
+        currentChat?.members.includes(arrivalMessage.sender) &&
+        setArrivalMessage((prev) => [...prev, arrivalMessage])
+    }, [arrivalMessage, currentChat])
 
     useEffect(() => {
         if (!seller?._id) return
@@ -45,7 +70,11 @@ const DashboardMessages = () => {
             )}
             {
                 open && (
-                    <SellerInbox />
+                    <SellerInbox
+                    setOpen={setOpen}
+                    newMessage={newMessage}
+                    setNewMessage={setNewMessage} 
+                    />
                 )
             }
         </div>
@@ -80,7 +109,7 @@ const MessageList = ({ data, index, setOpen }) => {
     )
 }
 
-const SellerInbox = ({ setOpen }) => {
+const SellerInbox = ({ setOpen, newMessage, setNewMessage }) => {
     return (
         <div className="w-full min-h-full flex flex-col justify-between">
             {/* message header */}
@@ -104,20 +133,20 @@ const SellerInbox = ({ setOpen }) => {
 
             {/* messages */}
             <div className="px-3 h-[65vh] bg-red-100 py-2 overflow-y-scroll">
-               <div className="flex w-full my-2">
-                <img src=""
-                 alt=""
-                 className='w-[40px] h-[40px] rounded-full mr-3' />
-                <div className="w-max bg-green-[400] rounded p-2 text-[#fff] h-min">
-                    <p>Hello there!</p>
+                <div className="flex w-full my-2">
+                    <img src=""
+                        alt=""
+                        className='w-[40px] h-[40px] rounded-full mr-3' />
+                    <div className="w-max bg-green-[400] rounded p-2 text-[#fff] h-min">
+                        <p>Hello there!</p>
+                    </div>
                 </div>
-               </div>
 
-               <div className="flex w-full my-2 justify-end">
-                <div className="w-max bg-green-[400] rounded p-2 text-[#fff] h-min">
-                    <p>Hello there!</p>
+                <div className="flex w-full my-2 justify-end">
+                    <div className="w-max bg-green-[400] rounded p-2 text-[#fff] h-min">
+                        <p>Hello there!</p>
+                    </div>
                 </div>
-               </div>
             </div>
 
             {/* send message input */}
@@ -134,6 +163,8 @@ const SellerInbox = ({ setOpen }) => {
                         type="text"
                         required
                         placeholder='Enter your message...'
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
                         className={`${styles.input}`} />
                     <input
                         type="submit"
