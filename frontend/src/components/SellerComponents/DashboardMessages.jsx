@@ -7,6 +7,7 @@ import styles from '../../styles/styles'
 import { TfiGallery } from "react-icons/tfi";
 import { server } from '../../server'
 import { io } from 'socket.io-client'
+import { text } from 'node:stream/iter'
 
 ENDPOINT = 'http://localhost:4000/'
 
@@ -14,6 +15,7 @@ const socketId = io(ENDPOINT, { transports: ["websocket"] })
 
 const DashboardMessages = () => {
     const { seller } = useSelector((state) => state.seller)
+    const { user } = useSelector((state) => state.user)   
     const [conversations, setConversations] = useState([])
     const [arrivalMessage, setArrivalMessage] = useState(null)
     const [messages, setMessages] = useState(null)
@@ -51,6 +53,37 @@ const DashboardMessages = () => {
             })
     }, [seller])
 
+    const sendMessageHandler = async(e) => {
+        e.preventDefault()
+
+        const message = {
+            sender: user._id,
+            text: newMessage,
+            conversationId: currentChat._id
+        }
+
+        const receiverId = currentChat.members.find((member) => member.id !== user._id)
+        socketId.emit("sendMessage", {
+            senderId: user._id,
+            receiverId,
+            text: newMessage
+        })
+
+        try{
+            if(newMessage !== ""){
+                await axios.post(`${server}/message/create-new-message`,
+                    message
+                ).then((res) => {
+                    setMessages([...messages, res.data.message])
+                }).catch((error) => {
+                    console.log(error)
+                })
+            }
+        }catch(error){
+            console.log(error)
+        }
+    }
+
     return (
         <div className='w-[90%] bg-white h-[85px] overflow-y-scroll rounded'>
             {!open && (
@@ -74,6 +107,7 @@ const DashboardMessages = () => {
                     setOpen={setOpen}
                     newMessage={newMessage}
                     setNewMessage={setNewMessage} 
+                    sendMessageHandler={sendMessageHandler}
                     />
                 )
             }
@@ -109,7 +143,7 @@ const MessageList = ({ data, index, setOpen }) => {
     )
 }
 
-const SellerInbox = ({ setOpen, newMessage, setNewMessage }) => {
+const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler}) => {
     return (
         <div className="w-full min-h-full flex flex-col justify-between">
             {/* message header */}
