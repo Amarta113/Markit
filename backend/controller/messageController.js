@@ -13,9 +13,12 @@ export const createNewMessage = catchAsyncError(async (req, res, next) => {
 
         messageData.conversationId = req.body.conversationId
         messageData.senderId = req.body.senderId
+        messageData.text = req.body.text
+
 
         const message = new Messages({
             conversationId: messageData.conversationId,
+            text: messsageData.text,
             sender: messageData.sender,
             images: messageData.images ? messagesData.images : undefined
         })
