@@ -49,8 +49,38 @@ io.on("connection", (socket) => {
     socket.on("sendMessage", ({senderId, receiverId, text, images}) => {
         const message = createMessage({senderId, receiverId, text, images})
         const user = getUser(receiverId)
+
+        // store the messages in the msg object
+        if(!message[receiverId]){
+            messages[receiverId] = [message]
+        } else{
+            messages[receiverId].push(message)
+        }
+
+        // Send the message to the receiver
+        io.to(user?.socketId).emit("getMessage", message)
+    })
+
+    socket.on("messageSeen", ({senderId, receiverId, messageId}) => {
+        const user = getUser(senderId)
+
+        // update the seen flag for the msg
+        if(message[senderId]){
+            const message = messages[senderId].find((message) => message.receiverId === receiverId && message.id === messageId)
+            if(message){
+                message.seen = true
+                
+                // send a message seen event to the sender
+                io.to(user?.socketId).emit("messageSeen", {
+                    senderId,
+                    receiverId,
+                    messageId
+                })
+            }
+        }
     })
 })
+
 
 app.get('/', (req, res) => {
     app.send("Hello socket")
