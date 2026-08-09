@@ -79,7 +79,16 @@ io.on("connection", (socket) => {
             }
         }
     })
+
+    // update and get last message
+    socket.on("updateLastMessage", ({lastMessage, lastMessagesId}) => {
+        io.emit("getLastMessage", {
+            lastMessage,
+            lastMessagesId
+        })
+    })
 })
+
 
 
 app.get('/', (req, res) => {
