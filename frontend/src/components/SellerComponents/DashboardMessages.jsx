@@ -53,7 +53,6 @@ const DashboardMessages = () => {
 
     const sendMessageHandler = async(e) => {
         e.preventDefault()
-
         const message = {
             sender: seller._id,
             text: newMessage,
@@ -80,6 +79,26 @@ const DashboardMessages = () => {
         }catch(error){
             console.log(error)
         }
+    }
+
+    const updateLastMessage = async() => {
+        socketId.emit("updateLastMessage", {
+            lastMessage: newMessage,
+            lastMessageId: seller?._id
+        })
+
+        await axios.put(
+            `${server}/conversation/update-last-message/${currentChat._id}`,
+            {
+                lastMessage: newMessage,
+                lastMessageId: seller._id
+            }
+        ).then((res) => {
+            console.log(res.data.conversation)
+            setNewMessage("")
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
     return (
