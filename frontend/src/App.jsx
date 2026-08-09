@@ -21,11 +21,13 @@ import { getAllProducts } from '../redux/actions/productActions.js';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js';
-import { useState } from 'react';
+import { useState } from 'react'
+import { useDispatch } from 'react-redux';
 
 
 export default function App() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [stripeApiKey, setStripeApiKey] = useState("")
   async function getStripeApikey() {
     const { data } = await axios.get(`${server}/payment/stipeapikey`)
