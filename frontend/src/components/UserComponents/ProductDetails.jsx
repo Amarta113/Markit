@@ -71,7 +71,7 @@ const ProductDetails = ({ data }) => {
     const totalReviewsLength = products && products.reduce((acc, product) => acc + product.reviews.length, 0)
     const totalRatings = products && products.reduce((acc, product) => acc + product.reviews.reduce((sum, review) => sum + review.rating, 0))
     const averageRating = totalRatings / totalReviewsLength || 0
-    const handleMessageSubmit = () => {
+    const handleMessageSubmit = async() => {
         if(isAuthenticated){
             const groupTitle = data._id + user._id 
             const userId = user._id 
