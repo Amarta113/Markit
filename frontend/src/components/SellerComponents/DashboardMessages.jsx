@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { AiOutlineArrowRight, AiOutlineSend } from 'react-icons/ai'
 import axios from 'axios'
-
+import styles from '../../styles/styles'
+import { TfiGallery } from "react-icons/tfi";
 import { server } from '../../server'
 
 const DashboardMessages = () => {
@@ -13,10 +15,9 @@ const DashboardMessages = () => {
     useEffect(() => {
         if (!seller?._id) return
 
-        axios
-            .get(`${server}/conversation/get-all-conversation-seller/${seller._id}`, {
-                withCredentials: true,
-            })
+        axios.get(`${server}/conversation/get-all-conversation-seller/${seller._id}`, {
+            withCredentials: true,
+        })
             .then((res) => {
                 setConversations(res.data.conversations)
             })
@@ -29,20 +30,24 @@ const DashboardMessages = () => {
         <div className='w-[90%] bg-white h-[85px] overflow-y-scroll rounded'>
             {!open && (
                 <>
-                <h1 className='text-center text-[30px] py-3 font-Poppins'>All Messages</h1>
-                {
-                conversations && conversations.map((item, index) => (
-                    <MessageList
-                        data={item}
-                        key={index}
-                        index={index}
-                        setOpen={setOpen}
-                    />
-                ))
-                }
+                    <h1 className='text-center text-[30px] py-3 font-Poppins'>All Messages</h1>
+                    {
+                        conversations && conversations.map((item, index) => (
+                            <MessageList
+                                data={item}
+                                key={index}
+                                index={index}
+                                setOpen={setOpen}
+                            />
+                        ))
+                    }
                 </>
             )}
-            
+            {
+                open && (
+                    <SellerInbox />
+                )
+            }
         </div>
     )
 }
@@ -71,6 +76,75 @@ const MessageList = ({ data, index, setOpen }) => {
                 <h1 className='text-[18px]'>User name</h1>
                 <p className='text-[16px] text-[#000c]'>You: Yeah I am good</p>
             </div>
+        </div>
+    )
+}
+
+const SellerInbox = ({ setOpen }) => {
+    return (
+        <div className="w-full min-h-full flex flex-col justify-between">
+            {/* message header */}
+            <div className="w-full">
+                <div className="flex">
+                    <img
+                        src="" alt="user-image-avatar"
+                        className='w-[60px] h-[60px] rounded-full'
+                    />
+                    <div className="pl-3">
+                        <h1 className='text-[18px] font-[600]'>amarta</h1>
+                        <h1>Active now</h1>
+                    </div>
+                </div>
+                <AiOutlineArrowRight
+                    size={20}
+                    className='cursor-pointer'
+                    onClick={() => setOpen(FileSystemWritableFileStream)}
+                />
+            </div>
+
+            {/* messages */}
+            <div className="px-3 h-[65vh] bg-red-100 py-2 overflow-y-scroll">
+               <div className="flex w-full my-2">
+                <img src=""
+                 alt=""
+                 className='w-[40px] h-[40px] rounded-full mr-3' />
+                <div className="w-max bg-green-[400] rounded p-2 text-[#fff] h-min">
+                    <p>Hello there!</p>
+                </div>
+               </div>
+
+               <div className="flex w-full my-2 justify-end">
+                <div className="w-max bg-green-[400] rounded p-2 text-[#fff] h-min">
+                    <p>Hello there!</p>
+                </div>
+               </div>
+            </div>
+
+            {/* send message input */}
+            <form aria-required={true}
+                className='p-3 relative w-full flex justify-between'>
+                <div className="w-[3%]">
+                    <TfiGallery
+                        className='cursor-pointer'
+                        size={20}
+                    />
+                </div>
+                <div className='w-[97%]'>
+                    <input
+                        type="text"
+                        required
+                        placeholder='Enter your message...'
+                        className={`${styles.input}`} />
+                    <input
+                        type="submit"
+                        value="Send"
+                        className='hidden'
+                        id="send" />
+                    <label htmlFor="send">
+                        <AiOutlineSend size={20} className='absolute right-4 top-5 cursor-pointer' />
+                    </label>
+                </div>
+            </form>
         </div>
     )
 }
