@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import styles from '../../styles/styles'
 import { backend_url, server } from '../../server'
 import { getAllOrdersUser } from '../../../redux/actions/orderActions'
-import toast from 'react-toastify'
+import { toast } from 'react-toastify'
 
 const UserOrderDetails = () => {
     const { orders } = useSelector((state) => state.order)
@@ -38,7 +38,7 @@ const UserOrderDetails = () => {
                 orderId: id
             },
             {
-                withCredentials = true
+                withCredentials: true
             }
         ).then((res) => {
             toast.success(res.data.message)
