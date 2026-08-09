@@ -7,7 +7,6 @@ import styles from '../../styles/styles'
 import { TfiGallery } from "react-icons/tfi";
 import { server } from '../../server'
 import { io } from 'socket.io-client'
-import { text } from 'node:stream/iter'
 
 ENDPOINT = 'http://localhost:4000/'
 
@@ -15,7 +14,6 @@ const socketId = io(ENDPOINT, { transports: ["websocket"] })
 
 const DashboardMessages = () => {
     const { seller } = useSelector((state) => state.seller)
-    const { user } = useSelector((state) => state.user)   
     const [conversations, setConversations] = useState([])
     const [arrivalMessage, setArrivalMessage] = useState(null)
     const [messages, setMessages] = useState(null)
@@ -57,14 +55,14 @@ const DashboardMessages = () => {
         e.preventDefault()
 
         const message = {
-            sender: user._id,
+            sender: seller._id,
             text: newMessage,
             conversationId: currentChat._id
         }
 
-        const receiverId = currentChat.members.find((member) => member.id !== user._id)
+        const receiverId = currentChat.members.find((member) => member.id !== seller._id)
         socketId.emit("sendMessage", {
-            senderId: user._id,
+            senderId: seller._id,
             receiverId,
             text: newMessage
         })
@@ -96,6 +94,7 @@ const DashboardMessages = () => {
                                 key={index}
                                 index={index}
                                 setOpen={setOpen}
+                                setCurrentChat={setCurrentChat}
                             />
                         ))
                     }
@@ -115,7 +114,7 @@ const DashboardMessages = () => {
     )
 }
 
-const MessageList = ({ data, index, setOpen }) => {
+const MessageList = ({ data, index, setOpen, setCurrentChat }) => {
     const [active, setActive] = useState(0)
     const navigate = useNavigate()
 
@@ -127,8 +126,9 @@ const MessageList = ({ data, index, setOpen }) => {
         <div
             className={`w-full flex ${active === index ? 'bg-[#000000010]' : 'bg-transparent'} p-3 px-3 cursor-pointer`}
             onClick={() => {
-                setActive(index)
-                handleClick(data._id)
+                setActive(index) || 
+                handleClick(data._id) ||
+                setCurrentChat(data)
             }}
         >
             <div className='relative'>
