@@ -17,13 +17,14 @@ const DashboardHero = () => {
     useEffect(() => {
         dispatch(getAllOrdersShop(seller._id))
         dispatch(getAllProductsShop(seller._id))
-        const orderData = orders && OrderDetails.filter((item) => item.status === "Delivered")
+
+        const orderData = orders && orders.filter((item) => item.status === "Delivered")
         setDeliveredOrder(orderData)
     }, [])
 
-    const totalEarningWithoutTax = deliveredOrder && deliveredOrder.reduce((acc, item) => acc + item.totalPrice, 0)
+    const totalEarningWithoutTax = deliveredOrder ? deliveredOrder.reduce((acc, item) => acc + item.totalPrice, 0) : 0
     const serviceCharge = totalEarningWithoutTax * 0.1
-    const availableBalance = totalEarningWithoutTax - serviceCharge.toFixed(2)
+    const availableBalance = totalEarningWithoutTax - serviceCharge.toFixed(2) || 0
 
     const columns = [
         { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
