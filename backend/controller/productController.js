@@ -3,6 +3,8 @@ import Product from '../models/product.js'
 import cloudinary from "../config/cloudinary.js";
 import { catchAsyncError } from '../middleware/catchAsyncError.js'
 import Order from '../models/order.js'
+
+
 export async function createProduct(req, res) {
     try {
         const shopId = req.body.shopId
@@ -38,6 +40,20 @@ export async function getAllProductsShop(req, res) {
     }
     catch (error) {
         console.error(error)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
+export async function getAllProducts(req, res) {
+    try{
+        const products = await Product.find().sort({createAt: -1})
+
+        res.status(201).json({
+            success: true,
+            products
+        })
+    }catch(error){
+        console.log(error)
         res.status(500).json({ message: "Internal Server Error" })
     }
 }
