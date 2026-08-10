@@ -15,7 +15,6 @@ export const createNewMessage = catchAsyncError(async (req, res, next) => {
         messageData.senderId = req.body.senderId
         messageData.text = req.body.text
 
-
         const message = new Messages({
             conversationId: messageData.conversationId,
             text: messsageData.text,
@@ -30,5 +29,20 @@ export const createNewMessage = catchAsyncError(async (req, res, next) => {
         })
     } catch (error) {
         return next(new ErrorHandler(error.response.message), 500)
+    }
+})
+
+export const getAllMessages = catchAsyncError(async(req, res, next) => {
+    try{
+        const messages = await Messages.find({
+            conversationId: req.params.id
+        })
+
+        res.status(201).json({
+            success: true,
+            messages
+        })
+    } catch(error){
+        return next(new ErrorHandler(error.response.message), 500)   
     }
 })
