@@ -307,3 +307,16 @@ export const updateUserPassword = catchAsyncError(async(req, res, next) => {
         return next(new ErrorHandler(error.message, 500))
     }
 })
+
+export const getUserInfo = catchAsyncError(async(req, res, next) => {
+    try{
+        const user = await User.findById(req.params.id)
+
+        res.status(201).json({
+            success:true,
+            user
+        })
+    }catch(error){
+    return next(new ErrorHandler(error.message, 500))
+    }
+})
