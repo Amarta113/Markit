@@ -93,7 +93,7 @@ export default function Header({ activeHeading }) {
                                 ) : null}
                             </div>
                             <div className="bg-black text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300">
-                                <Link to="/shop-create">
+                                <Link to={`${isSeller ? '/dashboard' : '/shop-create'}`}>
                                     <h1 className='text-white font-bold font-italic flex items-center'>
                                         {isSeller ? "Dashboard" : "Become Seller"}
                                         <IoIosArrowForward className='ml-1' />
