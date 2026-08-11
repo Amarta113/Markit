@@ -27,7 +27,7 @@ export const productReducer = createReducer(
         })
         .addCase(getAllProductsShop.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.product = action.payload
+            state.products = action.payload;
         })
         .addCase(getAllProductsShop.rejected, (state, action) => {
             state.isLoading = false;
