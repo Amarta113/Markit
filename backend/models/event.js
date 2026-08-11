@@ -17,7 +17,7 @@ const eventSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    Finish_Date: {
+    finish_Date: {
         type: Date,
         required: true
     },
