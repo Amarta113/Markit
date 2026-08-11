@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react'
-import { AiOutlineEye, AiOutlineMoneyCollect } from 'react-icons/ai'
+import React, {useEffect, useState} from 'react'
+import { AiOutlineArrowRight, AiOutlineEye, AiOutlineMoneyCollect } from 'react-icons/ai'
 import { MdBorderClear } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllOrdersShop } from '../../../redux/actions/orderActions'
+import { getAllOrdersShop } from '../../../redux/actions/orderActions.js'
+import {getAllProductsShop} from '../../../redux/actions/productActions.js'
 import styles from '../../styles/styles'
 import Button from '@mui/material/Button'
 import { Link } from 'react-router-dom'
@@ -10,7 +11,7 @@ import { Link } from 'react-router-dom'
 const DashboardHero = () => {
     const dispatch = useDispatch()
     const {seller} = useSelector(state => state.seller)
-    const { orders } = useSelector(state => state.orders)
+    const { orders } = useSelector(state => state.order)
     const { products } = useSelector(state => state.products)
     const [deliveredOrder, setDeliveredOrder] = useState(null)
 
@@ -136,12 +137,12 @@ const DashboardHero = () => {
                         <h5 className='pt-4 pl-2 text-[#077f9c]'>Product View</h5>
                     </Link>
                 </div>
+                </div>
 
                 <br />
                 <h3 className='text-[22px] font-Poppins pb-2'>Latest Orders</h3>
                 <div className="w-full min-h-[45vh] bg-white rounded">
-
-                </div>
+                
             </div>
         </div>
     )
