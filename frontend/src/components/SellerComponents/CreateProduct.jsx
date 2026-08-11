@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { categoriesData} from '../../static/data'
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { createProduct } from '../../../redux/actions/productActions';
+import { createProduct } from '../../../redux/actions/productActions.js';
 import { toast } from 'react-toastify'
 
 function CreateProduct() {
@@ -54,7 +55,7 @@ function CreateProduct() {
         setImages((prevImages) => [...prevImages, ...files])
     }
     return (
-        <div className='w-[90%] md:w-[50px] bg-white shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll'>
+        <div className='w-[90%] md:w-[50%] bg-white shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll'>
             <h5 className='text-[30px] font-Poppins text-center'>
                 Create Product
             </h5>
