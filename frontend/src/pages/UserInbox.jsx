@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { io } from 'socket.io-client'
 import { format } from 'timeago.js'
-import server, { backend_url } from '../server'
+import { backend_url,server } from '../server.js'
 
-ENDPOINT = 'http://localhost:4000/'
+const ENDPOINT = 'http://localhost:4000/'
 const socketId = io(ENDPOINT, { transports: ["websocket"] })
 
 const UserInbox = () => {
