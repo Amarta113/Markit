@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllProductsShop, deleteProduct } from '../../../redux/actions/productActions'
+import { getAllProductsShop, deleteProduct } from '../../../redux/actions/productActions.js'
 import { Link } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import { AiOutlineEye } from 'react-icons/ai'
@@ -8,7 +8,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import Loader from '../Layout/Loader'
 
 const AllProducts = () => {
-    const { products, isLoading } = useSelector((state) => state.products)
+    const { product, isLoading } = useSelector((state) => state.products)
     const { seller } = useSelector((state) => state.seller)
     const dispatch = useDispatch()
 
@@ -90,9 +90,7 @@ const AllProducts = () => {
 
     return (
         <>
-            isLoading? (
-            <Loader />
-            ): (
+            
             <div className='w-full mx-8 pt-1 bg-white flex flex-col min-h-[200px] max-h-[600px]'>
                 <DataGrid
                     row={row}
@@ -104,7 +102,7 @@ const AllProducts = () => {
                     }}
                     sx={{ flexGrow: 1 }} />
             </div>
-            )
+            
         </>
     )
 }
