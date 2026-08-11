@@ -49,7 +49,7 @@ const AllEvents = () => {
             renderCell: params => {
                 return (
                     <>
-                        <Link to={`/event/${params.id}`}>
+                        <Link to={`/product/${params.id}?isEvent=true`}>
                             <Button>
                                 <AiOutlineEye size={20} />
                             </Button>
@@ -83,7 +83,8 @@ const AllEvents = () => {
                 id: item._id,
                 name: item.name,
                 price: "US$" + item.discountPrice,
-                sold: 10
+                stock: item.stock,
+                sold: item.sold_out
             })
         }
     )
