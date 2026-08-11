@@ -14,7 +14,20 @@ const Events = () => {
                             <h1 className='font-[800] text-[2rem] font-[Roboto]'>Popular Events</h1>
                         </div>
                         <div className="w-full grid mb-14">
-                            <EventCard data={allEvents[0]} />
+                            {
+                                allEvents && allEvents?.length !== 0 &&
+                                allEvents?.map((event, i) => {
+                                    (
+                                        <EventCard 
+                                        data={event}
+                                        key={i}
+                                        active={true}
+                                        isLoading={isLoading}
+                                        />
+                                    )
+                                })
+                            }
+                            {allEvents?.length === 0 && <h4>No Product Events Running!</h4>}
                         </div>
                     </div>
                 )
