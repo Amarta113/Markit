@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import {categoriesData} from '../../static/data'
 import { toast } from 'react-toastify'
-import { createEvent } from '../../../redux/actions/eventActions';
+import { createEvent } from '../../../redux/actions/eventActions.js';
 
 function CreateEvent() {
     const { seller } = useSelector((state) => state.seller)
@@ -25,6 +26,8 @@ function CreateEvent() {
     const handleStartDateChange = (e) => {
         const startDate = new Date(e.target.value)
         const minEventDate = new Date(startDate.getTime()+ 3 * 24 * 60 * 60 * 1000);
+        setStartDate(startDate);
+        setEndDate(null);
         document.getElementById("end-date").min = minEventDate.toISOString().slice(0, 10)
     }
 
@@ -61,7 +64,7 @@ function CreateEvent() {
         }
         if (success) {
             toast.success("Event created successfully.")
-            navigate('/dashboard-event')
+            navigate('/dashboard-events')
             window.location.reload()
         }
     }, [dispatch, error, success])
@@ -73,8 +76,8 @@ function CreateEvent() {
     }
 
     return (
-        <div className='w-[90%] md:w-[50px] bg-white shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll'>
-            <h5 className='text-[30px] font-Poppins text-center'>
+        <div className='md:w-[90%] bg-white shadow h-[90vh] rounded-[4px] p-3 overflow-y-scroll my-4'>
+            <h5 className='text-[30px] font-Poppins text-center bg-slate-400'>
                 Create Event
             </h5>
             {/* Create Event form */}
