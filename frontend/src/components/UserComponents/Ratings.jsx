@@ -1,4 +1,6 @@
 import React from 'react'
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import { BsStarHalf } from "react-icons/bs";
 
 const Ratings = ({rating}) => {
   const stars = []
