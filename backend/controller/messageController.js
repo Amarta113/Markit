@@ -1,5 +1,5 @@
-import { catchAsyncError } from "../middleware/catchAsyncError";
-import ErrorHandler from "../middleware/error";
+import { catchAsyncError } from "../middleware/catchAsyncError.js";
+import ErrorHandler from "../middleware/error.js";
 import Messages from "../models/messages.js";
 
 export const createNewMessage = catchAsyncError(async (req, res, next) => {
@@ -17,8 +17,8 @@ export const createNewMessage = catchAsyncError(async (req, res, next) => {
 
         const message = new Messages({
             conversationId: messageData.conversationId,
-            text: messsageData.text,
-            sender: messageData.sender,
+            text: messageData.text,
+            sender: messageData.senderId,
             images: messageData.images ? messagesData.images : undefined
         })
         await message.save()
