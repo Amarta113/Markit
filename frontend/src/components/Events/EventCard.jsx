@@ -4,18 +4,16 @@ import styles from '../../styles/styles'
 import CountDown from "./CountDown.jsx"
 import { backend_url } from '../../server.js'
 import {useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-export default function EventCard({ active, data }) {
+export default function EventCard({ active, data, isLoading }) {
     const { cart } = useSelector((state) => state.cart)
     const dispatch = useDispatch()
     if (!data) return null
 
-    const imageSrc = data?.images?.[0]
-        ? `${backend_url}${data.images[0]}`
-        : mobile
     const addToCartHandler = () => {
         const isItemExist = cart && cart.find((i) => i._id === data._id)
-        if (!isItemExist) {
+        if (isItemExist) {
             toast.error("Item already in cart!")
         } else {
             if (data.stock < 1) {
@@ -33,21 +31,21 @@ export default function EventCard({ active, data }) {
         >
             <div className="mb-8 flex w-full shrink-0 justify-center lg:mb-0 lg:w-[46%] lg:justify-end">
                 <img
-                    src={imageSrc}
+                    src={`${data && data?.image}`}
                     alt="iPhone 17 Pro Max"
                     className="max-h-[320px] w-auto max-w-full object-contain lg:max-h-[380px]"
                 />
             </div>
             <div className="flex w-full flex-col justify-center gap-1 lg:w-[54%] lg:max-w-xl lg:pl-2">
-                <h2 className={`${styles.productTitle}`}>{data.name}</h2>
+                <h2 className={`${styles.productTitle}`}>{data?.name}</h2>
                 <p className="mt-3 text-base leading-relaxed text-gray-600">
-                    {data.description}
+                    {data?.description}
                 </p>
                 <div className="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2">
                     <h5 className="font-[500] text-[18px] text-[#d55b45] line-through">
-                        {data.originalPrice}$
+                        {data?.originalPrice}$
                     </h5>
-                    <h5 className="font-Roboto text-[20px] font-bold text-[#333]">{data.discountPrice}$</h5>
+                    <h5 className="font-Roboto text-[20px] font-bold text-[#333]">{data?.discountPrice}$</h5>
                     <span className="font-[400] text-[17px] text-[#44a55e]">120 Sold</span>
                 </div>
                 <div className="mt-6">
@@ -55,7 +53,7 @@ export default function EventCard({ active, data }) {
                 </div>
                 <br />
                 <div className="flex items-center">
-                    <Link to={`/product/${data._id}? isEvent=true`}>
+                    <Link to={`/product/${data._id}?isEvent=true`}>
                         <div className={`${styles.button} text-[#fff]`}>
                             See Details
                         </div>
