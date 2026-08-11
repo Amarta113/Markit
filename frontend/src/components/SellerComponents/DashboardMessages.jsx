@@ -9,7 +9,7 @@ import { backend_url, server } from '../../server'
 import { io } from 'socket.io-client'
 import { format } from 'timeago.js'
 
-ENDPOINT = 'http://localhost:4000/'
+const ENDPOINT = 'http://localhost:4000/'
 
 const socketId = io(ENDPOINT, { transports: ["websocket"] })
 
@@ -24,7 +24,7 @@ const DashboardMessages = () => {
     const [onlineUser, setOnlineUser] = useState([])
     const [activeStatus, setActiveStatus] = useState(false)
     const [open, setOpen] = useState(false)
-    const [image, setImage = useState(null)]
+    const [image, setImage] = useState(null)
 
     useEffect(() => {
         socketId.on('getMessage', (data) => {
