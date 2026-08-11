@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { backend_url } from '../../src/server'
+import { backend_url } from '../../src/server.js'
 
 export const clearErrors = createAction("order/clearErrors");
 
