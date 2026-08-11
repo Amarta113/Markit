@@ -23,6 +23,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js';
 import { useState } from 'react'
 import { useDispatch } from 'react-redux';
+import { server } from './server.js';
 
 
 export default function App() {
