@@ -1,6 +1,6 @@
 import express from "express";
-import upload from "../multer";
-import {createNewMessage, getAllMessages} from '../controller/messageController'
+import upload from "../multer.js";
+import {createNewMessage, getAllMessages} from '../controller/messageController.js'
 
 const messageRouter = express.Router()
 messageRouter.post('/create-new-message', upload.array('images'), createNewMessage)
