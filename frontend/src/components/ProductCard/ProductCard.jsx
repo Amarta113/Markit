@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlistActions.js';
 import { toast } from 'react-toastify';
 import Ratings from '../UserComponents/Ratings.jsx';
+import iphoneimg from '../../assets/mobile-img.jpg'
 
 const ProductCard = ({ data , isEvent}) => {
     const {wishlist} = useSelector((state) => state.wishlist)
@@ -49,29 +50,28 @@ const ProductCard = ({ data , isEvent}) => {
     return (
         <>
             <div className='bg-white shadow w-full h-[370px] rounded-lg shadow-sm p-3 relative cursor-pointer'>
-                <div className="flex justify-end">
-                </div>
+                <div className="flex justify-end"></div>
                 <Link to={`${isEvent === true ? `/products/${data._id}?isEvent=true` : `/products/${data._id}`}`}>
-                    <img src={data.image_Url[0].url} alt="product-image"
+                    <img src={`${data.images && data.images[0].url}`} alt="product-image"
                         className='w-full h-[170px] object-contain' />
                 </Link>
                 <Link to="/">
-                    <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
+                    <h5 className={`${styles.shop_name}`}>{data?.shop.name}</h5>
                 </Link>
-                <Link to={`${isEvent === true ? `/products/${data._id}?isEvent=true` : `/products/${data._id}`}`}>
+                <Link to={`${isEvent === true ? `/products/${data?._id}?isEvent=true` : `/products/${data?._id}`}`}>
                     <h4 className='pb-3 font-[500]'>
-                        {data.name.length > 40 ? data.name.slice(0, 40) + "...." : data.name}
+                        {data?.name.length > 40 ? data?.name.slice(0, 40) + "...." : data.name}
                     </h4>
                     <div className='flex'>
                         <Ratings rating={data?.ratings} />
                     </div>
-                    <div className="py-2 flex items-center justify-between">
+                    <div className="py-1 flex items-center justify-between">
                         <div className='flex'>
                             <h5 className={`${styles.productDiscountPrice}`}>
-                                {data.price === 0 ? data.price : data.discount_price} $
+                                {data?.discountPrice}$
                             </h5>
                             <h4 className={`${styles.price}`}>
-                                {data.price ? data.price + " $" : null}
+                                {data?.originalPrice}$
                             </h4>
                         </div>
                         <span className='font-[400] text-[17px] text-[#68d284]'>
