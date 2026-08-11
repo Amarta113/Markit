@@ -5,7 +5,7 @@ import Button from '@mui/material/Button'
 import { AiOutlineArrowRight } from 'react-icons/ai'
 import { DataGrid } from '@mui/x-data-grid'
 import Loader from '../Layout/Loader'
-import { getAllOrdersShop } from '../../../redux/actions/orderActions'
+import { getAllOrdersShop } from '../../../redux/actions/orderActions.js'
 
 const AllOrders = () => {
     const { orders, isLoading } = useSelector((state) => state.order)
