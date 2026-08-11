@@ -12,6 +12,7 @@ import eventsRouter from "./routes/eventRouter.js";
 import couponCodeRouter from "./routes/couponRouter.js";
 import paymentRouter from "./routes/paymentRouter.js";
 import conversationRouter from './routes/conversationRouter.js'
+import messageRouter from "./routes/messageRouter.js";
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
@@ -30,6 +31,7 @@ app.use('/api/v1/event', eventsRouter)
 app.use('/api/v1/coupon', couponCodeRouter)
 app.use('/api/v1/payment', paymentRouter)
 app.use('/api/v1/conversation', conversationRouter)
+app.use('/api/v1/message', messageRouter)
 
 app.get('/', (req, res) => {res.json({success: true, message: "server is running"})})
 app.use(errorMiddleware)
