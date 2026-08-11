@@ -1,8 +1,8 @@
-import { catchAsyncError } from "../middleware/catchAsyncError";
-import ErrorHandler from "../middleware/error";
+import { catchAsyncError } from "../middleware/catchAsyncError.js";
+import ErrorHandler from "../middleware/error.js";
 import Conversation from "../models/conversation.js";
 
-export const createNewConversation = catchAsyncError(async (req, res, next) => {
+export const createNewConversation = (async (req, res, next) => {
     try {
         const { groupTitle, userId, sellerId } = req.body
         const isConversationExist = await Conversation.findOn({ groupTitle })
