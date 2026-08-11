@@ -2,8 +2,9 @@ import { Shop } from "../models/shop.js";
 import cloudinary from "../config/cloudinary.js";
 import { catchAsyncError } from '../middleware/catchAsyncError.js'
 import Event from "../models/event.js";
+import ErrorHandler from "../middleware/error.js";
 
-export async function createEvent(req, res) {
+export async function createEvent(req, res, next) {
     try {
         const shopId = req.body.shopId
         const shop = await Shop.findById(shopId)
