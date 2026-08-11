@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { server } from '../../server'
-import { useParams } from 'react-router-dom'
-import { getAllProductsShop } from '../../../redux/actions/productActions'
+import { server } from '../../server.js'
+import { Link, useParams } from 'react-router-dom'
+import { getAllProductsShop } from '../../../redux/actions/productActions.js'
 import axios from 'axios'
+import logo from '../../assets/logo-img.png'
+import styles from '../../styles/styles.js'
 
 const ShopInfo = ({ isOwner }) => {
     const { products } = useSelector(state => state.products)
-    const { id } = useParams()
+    const { seller } = useSelector(state => state.seller)
     const [data, setData] = useState({})
     const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch()
+    const { id } = useParams()
 
     useEffect(() => {
-        setIsLoading(true)
-        axios.get(`${server}/shop/get-shop-info/${id}`)
-            .then((res) => {
+        async function getData() {
+            try {
+                setIsLoading(true)
+                dispatch(getAllProductsShop(id))
+                const res = await axios.get(`${server}/seller/get-shop-info/${id}`)
                 setData(res.data.shop)
                 setIsLoading(false)
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.log(error)
                 setIsLoading(false)
-            })
-    }, [])
+            }
+        }
+        getData()
+    }, [dispatch])
 
     async function logoutHandler() {
         try {
@@ -41,15 +48,17 @@ const ShopInfo = ({ isOwner }) => {
         }
     }
 
+
     const totalReviewsLength = products && products.reduce((acc, product) => acc + product.reviews.length, 0)
     const totalRatings = products && products.reduce((acc, product) => acc + product.reviews.reduce((sum, review) => sum + review.rating, 0))
     const averageRating = totalRatings / totalReviewsLength || 0
-    
+
+
     return (
         <div>
-            <div className='w-full py-5'>
+            <div className='w-full py-4'>
                 <div className="w-full flex item-center justify-center">
-                    <img src={`${seller?.avatar}`}
+                    <img src={logo}
                         alt=""
                         className='w-[150px] h-[150px] object-cover rounded-full' />
                 </div>
@@ -79,7 +88,7 @@ const ShopInfo = ({ isOwner }) => {
             <div className="p-3">
                 <h5 className='font-[600]' >Joined On</h5>
                 <h4 className='text-[#000000a6]'>
-                    {data?.createdAt.slice(0, 10)}
+                    {data?.createdAt?.slice(0, 10)}
                 </h4>
             </div>
             {isOwner && (
