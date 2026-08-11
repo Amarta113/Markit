@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { clearErrors, getAllOrdersShop, getAllOrdersUser } from "../actions/orderActions";
+import { clearErrors, getAllOrdersShop, getAllOrdersUser } from "../actions/orderActions.js";
 
 const initialState = {
     isLoading: true
