@@ -10,7 +10,6 @@ import { toast } from 'react-toastify'
 export default function EventCard({ active, data, isLoading }) {
     const { cart } = useSelector((state) => state.cart)
     const dispatch = useDispatch()
-    if (!data) return null
 
     const addToCartHandler = () => {
         const isItemExist = cart && cart.find((i) => i._id === data._id)
@@ -32,8 +31,8 @@ export default function EventCard({ active, data, isLoading }) {
         >
             <div className="mb-8 flex w-full shrink-0 justify-center lg:mb-0 lg:w-[46%] lg:justify-end">
                 <img
-                    src={`${data && data?.image}`}
-                    alt="iPhone 17 Pro Max"
+                    src={`${data?.images[0]?.url}`}
+                    alt="iPhone Pro Max"
                     className="max-h-[320px] w-auto max-w-full object-contain lg:max-h-[380px]"
                 />
             </div>
@@ -47,7 +46,7 @@ export default function EventCard({ active, data, isLoading }) {
                         {data?.originalPrice}$
                     </h5>
                     <h5 className="font-Roboto text-[20px] font-bold text-[#333]">{data?.discountPrice}$</h5>
-                    <span className="font-[400] text-[17px] text-[#44a55e]">120 Sold</span>
+                    <span className="font-[400] text-[17px] text-[#44a55e]">{data.sold_out} Sold</span>
                 </div>
                 <div className="mt-6">
                     <CountDown data={data} />
