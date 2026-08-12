@@ -7,12 +7,12 @@ function ShopAllCoupons() {
   return (
     <div>
       <DashboardHeader />
-      <div className='flex justify-between w-full'>
-        <div className='w-[80px] md:w-[330px]'>
-          <DashboardSideBar active={9} />
+      <div className='flex w-full justify-between'>
+        <div className='w-full max-w-[260px] shrink-0'>
+          <DashboardSideBar activeHeading={9} />
         </div>
-        <div className='w-full justify-center flex'>
-          <ShopAllCoupons />
+        <div className='flex w-full justify-center'>
+          <AllCoupons />
         </div>
       </div>
     </div>
