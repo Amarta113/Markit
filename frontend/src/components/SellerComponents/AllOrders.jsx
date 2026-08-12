@@ -8,71 +8,73 @@ import Loader from '../Layout/Loader'
 import { getAllOrdersShop } from '../../../redux/actions/orderActions.js'
 
 const AllOrders = () => {
-    const { orders, isLoading } = useSelector((state) => state.order)
+    const { orders } = useSelector((state) => state.order)
     const { user } = useSelector((state) => state.user)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getAllOrdersShop(user._id))
+        dispatch(getAllOrdersShop(user?._id))
     }, [])
 
-   
     const columns = [
-        { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
-        { field: "name", headerName: "Name", minWidth: 180, flex: 1.4 },
-        { field: "price", headerName: "Price", minWidth: 100, flex: 0.6 },
         {
-            field: "stock",
-            headerName: "Stock",
-            type: "number",
-            minWidth: 80,
-            flex: 0.5,
+            field: "id",
+            headerName: "Order ID",
+            minWidth: 150,
+            flex: 0.7,
         },
         {
-            field: "sold",
-            headerName: "Sold out",
+            field: "status",
+            headerName: "Status",
+            minWidth: 130,
+            flex: 0.7,
+            cellClassName: params =>
+                params.row.status === "Delivered" ? "greenColor" : "redColor",
+        },
+        {
+            field: "itemsQty",
+            headerName: "Items Qty",
             type: "number",
             minWidth: 130,
-            flex: 0.6,
+            flex: 0.7,
         },
         {
-            field: "Preview",
-            headerName: "",
+            field: "total",
+            headerName: "Total",
             type: "number",
-            sortable: false,
-            minWidth: 100,
+            minWidth: 130,
             flex: 0.8,
-            renderCell: params => {
-                return (
-                    <>
-                        <Link to={`/user/order/${params.id}`}>
-                            <Button>
-                                <AiOutlineArrowRight size={20} />
-                            </Button>
-                        </Link>
-                    </>
-                );
-            },
         },
-        
+        {
+            field: "actions",
+            headerName: "",
+            sortable: false,
+            minWidth: 150,
+            flex: 1,
+            renderCell: params => (
+                <Link to={`/user/order/${params.id}`}>
+                    <Button>
+                        <AiOutlineArrowRight size={20} />
+                    </Button>
+                </Link>
+            ),
+        },
     ];
+
     const row = [];
     orders && orders.forEach(
         item => {
             row.push({
                 id: item._id,
-                name: item.name,
-                price: "US$" + item.discountPrice,
-                sold: 10
+                itemsQty: item?.cart?.length,
+                total: "US$" + item?.totalPrice,
+                status: item?.status,
             })
         }
     )
 
     return (
         <>
-            isLoading? (
-            <Loader />
-            ): (
             <div className='w-full mx-8 pt-1 bg-white flex flex-col min-h-[200px] max-h-[600px]'>
                 <DataGrid
                     rows={row}
@@ -84,7 +86,7 @@ const AllOrders = () => {
                     }}
                     sx={{ flexGrow: 1 }} />
             </div>
-            )
+            
         </>
     )
 }
