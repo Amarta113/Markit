@@ -89,14 +89,14 @@ io.on("connection", (socket) => {
     })
 })
 
-socket.on('disconnect', () => {
+io.on('disconnect', () => {
     console.log(`A user disconnected!`)
     removeUser(socket.id)
     io.emit("getUsers", users)
 })
 
 app.get('/', (req, res) => {
-    app.send("Hello socket")
+    console.log("Hello")
 })
 
 server.listen(process.env.PORT, () => {
