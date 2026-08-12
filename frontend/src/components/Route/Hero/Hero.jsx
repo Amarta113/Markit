@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from '../../../styles/styles'
-import studioImg from '../../../assets/free-stock.jpg'
+import studioImg from '../../../assets/walking-s.jpg'
 import { Link } from 'react-router-dom'
 
 export default function Hero() {
@@ -12,11 +12,11 @@ export default function Hero() {
             `url(${studioImg})`
         }}
       >
-      <div className={`${styles.section} w-[90%] 800px:w-[60%] bg-transparent`}>
-          <h1 className={`text-[35px] leading-[1.2] 800px:text-[60px] text-[#3d3a3a] font-[600] capitalize`}>
+      <div className={`${styles.section} w-[90%] md:w-[60%] bg-transparent`}>
+          <h1 className={`text-[35px] leading-[1.2] md:text-[60px] text-[#3d3a3a] font-[600] capitalize`}>
             Trending fashion Collection 
           </h1>
-          <p className='pt-5 text-[20px] font-[Poppins] font-[400] text-white w-[90%] 800px:w-[80%] bg-black/40 shadow-sm p-2 rounded'>
+          <p className='pt-5 text-[20px] font-[Poppins] font-[400] text-white w-[90%] md:w-[80%] bg-black/40 shadow-sm p-2 rounded'>
           Discover handpicked styles made for everyday confidence, from timeless essentials to
           fresh seasonal drops.
           </p>

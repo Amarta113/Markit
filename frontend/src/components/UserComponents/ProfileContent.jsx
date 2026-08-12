@@ -81,48 +81,48 @@ const ProfileContent = ({ active }) => {
                         </div>
                         <div className="w-full px-5">
                             <form onSubmit={handleSubmit} aria-required={true}>
-                                <div className="w-full 800px:flex block pb-5">
-                                    <div className="w-[100%] 800px:w-[50%]">
+                                <div className="w-full md:flex block pb-5">
+                                    <div className="w-[100%] md:w-[50%]">
                                         <label className='block pb-2'>
                                             Full name
                                         </label>
-                                        <input type="text" className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                                        <input type="text" className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                                             required
                                             value={user.name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
                                     </div>
-                                    <div className="w-[100%] 800px:w-[50%] mb-4 800px:mb-0">
+                                    <div className="w-[100%] md:w-[50%] mb-4 md:mb-0">
                                         <label className='block pb-2'>
                                             Email
                                         </label>
                                         <input
                                             type="email"
-                                            className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
+                                            className={`${styles.input} !w-[95%] mb-1 md:mb-0`}
                                             required
                                             value={user.email}
                                             onChange={(e) => setEmail(e.target.value)}
                                         />
                                     </div>
                                 </div>
-                                <div className="w-full 800px:flex block pb-5">
-                                    <div className="w-[100%] 800px:w-[50%]">
+                                <div className="w-full md:flex block pb-5">
+                                    <div className="w-[100%] md:w-[50%]">
                                         <label className='block pb-2'>
                                             Phone Number
                                         </label>
                                         <input type="number"
-                                            className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                                            className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                                             required
                                             value={phoneNumber}
                                             onChange={(e) => setPhoneNumber(e.target.value)}
                                         />
                                     </div>
-                                    <div className="w-[100%] 800px:w-[50%]">
+                                    <div className="w-[100%] md:w-[50%]">
                                         <label className='block pb-2'>
                                             Enter your Password
                                         </label>
                                         <input type="password"
-                                            className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                                            className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                                             required
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}

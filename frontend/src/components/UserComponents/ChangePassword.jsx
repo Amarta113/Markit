@@ -42,33 +42,33 @@ const ChangePassword = () => {
                     onSubmit={passwordChangeHandler}
                     onClick="flex flex-col items-center mt"
                 >
-                    <div className="w-[100%] 800px:w-[50%] mt-5">
+                    <div className="w-[100%] md:w-[50%] mt-5">
                         <label className='block pb-2'>
                             Enter your old password
                         </label>
                         <input 
                             type="password"
-                            className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                            className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                             required
                             value={oldPassword}
                             onChange={(e) => setOldPassword(e.target.value)} />
                     </div>
-                    <div className="w-[100%] 800px:w-[50%] mt-2">
+                    <div className="w-[100%] md:w-[50%] mt-2">
                         <label className='block pb-2'>
                             Enter your new password
                         </label>
                         <input type="password"
-                            className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                            className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                             required
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)} />
                     </div>
-                    <div className="w-[100%] 800px:w-[50%] mt-2">
+                    <div className="w-[100%] md:w-[50%] mt-2">
                         <label className='block pb-2'>
                             Confirm password
                         </label>
                         <input type="password"
-                            className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                            className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                             required
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)} />
