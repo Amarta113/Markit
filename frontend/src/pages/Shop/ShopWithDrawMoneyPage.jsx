@@ -7,11 +7,13 @@ const ShopWithDrawMoneyPage = () => {
     return (
         <div>
             <DashboardHeader />
-            <div className="flex items-start justify-between w-full">
-                <div className='w-[80px] width-at-800px'>
+            <div className='flex w-full items-start justify-between'>
+                <div className='w-full max-w-[260px] shrink-0'>
                     <DashboardSidebar activeHeading={7} />
                 </div>
-                <WithdrawMoney />
+                <div className='flex-1'>
+                    <WithdrawMoney />
+                </div>
             </div>
         </div>
     )
