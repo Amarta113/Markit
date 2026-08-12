@@ -7,7 +7,7 @@ import { HiOutlineMinus, HiPlus } from "react-icons/hi";
 import styles from '../../styles/styles';
 import { BsCartPlus } from "react-icons/bs";
 import { useDispatch, useSelector } from 'react-redux';
-import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlistActions';
+import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlistActions.js';
 import { backend_url } from '../../server';
 
 export default function Wishlist({ setOpenWishlist }) {
@@ -18,7 +18,7 @@ export default function Wishlist({ setOpenWishlist }) {
         dispatch(removeFromWishlist(data))
     }
 
-    const totalPrice = wishlist.reduce((acc, item) => acc + item.qty * item.discountPrice)
+    const totalPrice = wishlist.reduce((acc, item) => acc + item.qty * item.discountPrice , 0 )
 
     const addToCartHandler = (data) => {
         const newData = {...data, qty:1}
