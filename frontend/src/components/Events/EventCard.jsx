@@ -5,6 +5,7 @@ import CountDown from "./CountDown.jsx"
 import { backend_url } from '../../server.js'
 import {useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 export default function EventCard({ active, data, isLoading }) {
     const { cart } = useSelector((state) => state.cart)
