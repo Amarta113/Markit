@@ -214,8 +214,8 @@ const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating 
     const [active, setActive] = useState(1)
 
     return (
-        <div className='bg-[#f5f6fb] px-3 md:px-10 py-2 rounded'>
-            <div className="w-full flex justify-between-border-b pt-10 pb-2">
+        <div className='bg-[#f5f6fb] px-3 md:px-10 py-2 md:p4 rounded'>
+            <div className="w-full flex justify-between border-b pt-10 pb-3">
                 <div className='relative'>
                     <h5 className={'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer md:text-[20px]'}
                         onClick={() => setActive(1)}>
@@ -267,7 +267,7 @@ const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating 
                             data && data.reviews.map((item, index) => (
                                 <div className="w-full flex my-2">
                                     <div className='pl-2'>
-                                        <img src={`${backend_url}${item.user.avatar}`}
+                                        <img src={`${review?.user?.avatar?.url}`}
                                             className='w-[50px] h-[50px] rounded-full' />
                                         <div className="w-full flex">
                                             <h1 className='font-[500] mr-3'>{item.user.name}</h1>
