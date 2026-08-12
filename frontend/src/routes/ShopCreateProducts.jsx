@@ -7,11 +7,11 @@ const ShopCreateProducts = () => {
     return (
         <div>
             <DashboardHeader />
-            <div className="flex items-start justify-between w-full">
-                <div className='w-[80px] width-at-800px'>
-                    <DashboardSidebar activeHeading={1} />
+            <div className='flex w-full items-start justify-between'>
+                <div className='w-full max-w-[260px] shrink-0'>
+                    <DashboardSidebar activeHeading={4} />
                 </div>
-                <div className="w-full justify-center flex">
+                <div className='flex w-full justify-center'>
                     <CreateProduct />
                 </div>
             </div>
