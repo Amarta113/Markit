@@ -3,31 +3,32 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     addToWishlist,
     removeFromWishlist,
-} from "../../../redux/actions/wishlistActions"
-import { addToCart } from "../../../redux/actions/cartActions";
+} from "../../../redux/actions/wishlistActions.js"
+import { addToCart } from "../../../redux/actions/cartActions.js";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "../../styles/styles";
+import styles from "../../styles/styles.js";
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from 'react-icons/ai';
-import { backend_url } from '../../server';
-import { getAllProductsShop } from '../../../redux/actions/productActions';
+import { backend_url, server } from '../../server.js';
+import { getAllProductsShop } from '../../../redux/actions/productActions.js';
 import { toast } from 'react-toastify';
 import Ratings from '../UserComponents/Ratings'
+import axios from 'axios';
 
 const ProductDetails = ({ data }) => {
     const { products } = useSelector(state => state.products)
     const { seller } = useSelector(state => state.seller)
-    const {user, isAuthenticated} = useSelector(state => state.user)
+    const { user, isAuthenticated } = useSelector(state => state.user)
     const { wishlist } = useSelector(state => state.wishlist)
     const { cart } = useSelector(state => state.cart)
     const [count, setCount] = useState(1)
     const [click, setClick] = useState(false)
-    const [select, setSelect] = useState()
+    const [select, setSelect] = useState(0)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getAllProductsShop(data && data._id))
+        dispatch(getAllProductsShop(data?.shop?._id))
         if (wishlist && wishlist.find((i) => i._id === data._id)) {
             setClick(true)
         } else {
@@ -69,13 +70,16 @@ const ProductDetails = ({ data }) => {
     }
 
     const totalReviewsLength = products && products.reduce((acc, product) => acc + product.reviews.length, 0)
-    const totalRatings = products && products.reduce((acc, product) => acc + product.reviews.reduce((sum, review) => sum + review.rating, 0))
+    const totalRatings = products && products.reduce((acc, product) => acc + product.reviews.reduce(
+        (sum, review) => sum + review.rating, 0),
+        0)
     const averageRating = totalRatings / totalReviewsLength || 0
-    const handleMessageSubmit = async() => {
-        if(isAuthenticated){
-            const groupTitle = data._id + user._id 
-            const userId = user._id 
-            const sellerId = data.shop._id 
+
+    const handleMessageSubmit = async () => {
+        if (isAuthenticated) {
+            const groupTitle = data?._id + user._id
+            const userId = user._id
+            const sellerId = data?.shop._id
             await axios.post(`${server}/conversation/create-new-conversation`, {
                 groupTitle, userId, sellerId
             }).then((res) => {
@@ -83,7 +87,7 @@ const ProductDetails = ({ data }) => {
             }).catch((error) => {
                 toast.error(error.response.data.message)
             })
-        }else{
+        } else {
             toast.error("Please login to create a conversation")
         }
     }
@@ -92,10 +96,10 @@ const ProductDetails = ({ data }) => {
             {data ? (
                 <div className={`${styles.section} w-[90%] width-80per-800px`}>
                     <div className='w-full py-5'>
-                        <div className="block w-full flex-800px">
-                            <div className='w-full width-800px-50'>
+                        <div className="w-full md:flex">
+                            <div className='w-[80%] width-800px-50'>
                                 <img
-                                    src={`${backend_url}${data && data.images[select]}`}
+                                    src={`${data?.images[select]?.url}`}
                                     alt="img"
                                     className='w-[80%] cursor-pointer'
                                 />
@@ -104,27 +108,26 @@ const ProductDetails = ({ data }) => {
                                         data?.images.map((img, i) => (
                                             <div className={`cursor-pointer`} key={i}>
                                                 <img
-                                                    src={`${backend_url}${data.images && data.images[0]}`}
-                                                    alt="Images"
-                                                    className="h-[200px] overflow-hidden mr-3 mt-3"
+                                                    src={`${img?.url}`}
+                                                    alt={`Image ${i}`}
+                                                    className="h-[200px] object-contain overflow-hidden mr-3 mt-3"
                                                     onClick={() => setSelect(i)}
                                                 />
                                             </div>
                                         ))}
                                 </div>
-                                {/* closing dev*/}
                             </div>
                             <div className="w-full md:w-[50%] pt-5">
                                 <h1 className={`${styles.productTitle}`}>
-                                    {data.name}
+                                    {data?.name}
                                 </h1>
-                                <p>{data.description}</p>
+                                <p>{data?.description}</p>
                                 <div className="flex pt-3">
                                     <h4 className={`${styles.productDiscountPrice}`}>
-                                        {data.discountPrice}
+                                        {data?.discountPrice}
                                     </h4>
                                     <h3 className={`${styles.price}`}>
-                                        {data.originalPrice ? data.originalPrice + "$" : null}
+                                        {data?.originalPrice ? data.originalPrice + "$" : null}
                                     </h3>
                                 </div>
                                 <div className="flex items-center mt-12 justify-between pr-3">
@@ -160,39 +163,44 @@ const ProductDetails = ({ data }) => {
                                         )}
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}>
-                            <span className='text-white flex items-center'>
-                                Add to cart <AiOutlineShoppingCart className='ml-1' />
-                            </span>
-                        </div>
-                        <div className="flex items-center pt-8">
-                            <Link to={`/shop/preview/${data.shop._id}`}>
-                                <img
-                                    src={`${backend_url}${data?.shop?.avatar}`}
-                                    alt="shop avatar"
-                                    className='w-[50px] h-[50px] rounded-full mr-2' />
-                            </Link>
-                            <div className='pr-8'>
-                                <Link to={`/shop/preview/${data.shop._id}`}>
-                                <h3 className={`${styles.shop_name} pb-1 pt-1`}>
-                                    {data.shop.name}
-                                </h3>
-                                </Link>
-                                <h5 className='pb-3 text-[15px]'>
-                                    (4/5) Ratings
-                                </h5>
-                            </div>
-                            <div className={`${styles.button} !bg-[#6443d1] mt-4 !rounded !h-11`}
-                                onClick={handleMessageSubmit}>
-                                <span className='text-white flex items-center'>
-                                    Send Message <AiOutlineMessage className='ml-1' />
-                                </span>
+                                <div className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
+                                    onClick={() => addToCart(data._id)}>
+                                    <span className='text-white flex items-center cursor-pointer'>
+                                        Add to cart <AiOutlineShoppingCart className='ml-1 cursor-pointer' />
+                                    </span>
+                                </div>
+                                <div className="flex items-center pt-8">
+                                    <Link to={`/shop/preview/${data.shop._id}`}>
+                                        <img
+                                            src={`${backend_url}${data?.shop?.avatar?.url}`}
+                                            alt="shop avatar"
+                                            className='w-[50px] h-[50px] rounded-full mr-2' />
+                                    </Link>
+                                    <div className='pr-8'>
+                                        <Link to={`/shop/preview/${data.shop._id}`}>
+                                            <h3 className={`${styles.shop_name} pb-1 pt-1`}>
+                                                {data.shop.name}
+                                            </h3>
+                                        </Link>
+                                        <h5 className='pb-3 text-[15px]'>
+                                            (4/5) Ratings
+                                        </h5>
+                                    </div>
+                                    <div className={`${styles.button} !bg-[#6443d1] mt-4 !rounded !h-11`}
+                                        onClick={handleMessageSubmit}>
+                                        <span className='text-white flex items-center'>
+                                            Send Message <AiOutlineMessage className='ml-1' />
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <ProductDetailsInfo data={data} products={products} totalReviewsLength={totalReviewsLength} averageRating={averageRating} />
+                    <ProductDetailsInfo
+                        data={data}
+                        products={products}
+                        totalReviewsLength={totalReviewsLength}
+                        averageRating={averageRating} />
                     <br />
                     <br />
                 </div>)
@@ -202,14 +210,14 @@ const ProductDetails = ({ data }) => {
     )
 }
 
-const ProductDetailsInfo = (data, products, totalReviewsLength, averageRating) => {
+const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating }) => {
     const [active, setActive] = useState(1)
 
     return (
-        <div className='bg-[#f5f6fb] px-3 800px:px-10 py-2 rounded'>
+        <div className='bg-[#f5f6fb] px-3 md:px-10 py-2 rounded'>
             <div className="w-full flex justify-between-border-b pt-10 pb-2">
                 <div className='relative'>
-                    <h5 className={'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]'}
+                    <h5 className={'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer md:text-[20px]'}
                         onClick={() => setActive(1)}>
                         Product Details
                     </h5>
@@ -220,7 +228,7 @@ const ProductDetailsInfo = (data, products, totalReviewsLength, averageRating) =
                     }
                 </div>
                 <div className='relative'>
-                    <h5 className={'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]'}
+                    <h5 className={'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer md:text-[20px]'}
                         onClick={() => setActive(2)}>
                         Product Reviews
                     </h5>
@@ -231,7 +239,7 @@ const ProductDetailsInfo = (data, products, totalReviewsLength, averageRating) =
                     }
                 </div>
                 <div className='relative'>
-                    <h5 className={'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]'}
+                    <h5 className={'text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer md:text-[20px]'}
                         onClick={() => setActive(3)}>
                         Seller Information
                     </h5>
@@ -246,7 +254,7 @@ const ProductDetailsInfo = (data, products, totalReviewsLength, averageRating) =
                 active === 1 ? (
                     <>
                         <p className='py-2 text-[18px] leading-8 pb-10 whitespace-pre-line'>
-                            {data.description}
+                            {data?.description}
                         </p>
                     </>
                 ) : null
@@ -258,52 +266,52 @@ const ProductDetailsInfo = (data, products, totalReviewsLength, averageRating) =
                         {
                             data && data.reviews.map((item, index) => (
                                 <div className="w-full flex my-2">
-                                   <div className='pl-2'>
-                                    <img src={`${backend_url}/${item.user.avatar}`}
-                                        className='w-[50px] h-[50px] rounded-full'/>
-                                    <div className="w-full flex">
-                                    <h1 className='font-[500] mr-3'>{item.user.name}</h1>
-                                    <Ratings rating={data?.ratings}/>
+                                    <div className='pl-2'>
+                                        <img src={`${backend_url}${item.user.avatar}`}
+                                            className='w-[50px] h-[50px] rounded-full' />
+                                        <div className="w-full flex">
+                                            <h1 className='font-[500] mr-3'>{item.user.name}</h1>
+                                            <Ratings rating={data?.ratings} />
+                                        </div>
+                                        <p>{item.comment}</p>
                                     </div>
-                                    <p>{item.comment}</p>
-                                    </div> 
                                 </div>
                             ))
                         }
                         <div className="w-full flex justify-center">
-                        {
-                            data && data.reviews.length === 0 && (
-                                <h5>No Reviews have for this product! </h5>
-                            )
-                        }
+                            {
+                                data && data.reviews.length === 0 && (
+                                    <h5>No Reviews have for this product! </h5>
+                                )
+                            }
                         </div>
                     </div>
                 ) : null
             }
             {
                 active === 3 && (
-                    <div className="w-full block 800px:flex p-5">
-                        <div className="w-full 800px:w-[50%]">
+                    <div className="w-full block md:flex p-5">
+                        <div className="w-full md:w-[50%]">
                             <Link to={`/shop/preview/${data.shop._id}`}>
                                 <div className="flex items-center">
                                     <img
                                         src={`${backend_url}${data?.shop?.avatar}`}
                                         className="w-[50px] h-[50px] rounded"
                                         alt="" />
-                                <div className='pl-3'>
-                                    <h3 className={styles.shop_name}>{data.shop.name}</h3>
-                                    <h5 className='pb-2 text-[15px]'>
-                                        ({averageRating}/5) Ratings
-                                    </h5>
-                                </div>
+                                    <div className='pl-3'>
+                                        <h3 className={styles.shop_name}>{data.shop.name}</h3>
+                                        <h5 className='pb-2 text-[15px]'>
+                                            ({averageRating}/5) Ratings
+                                        </h5>
+                                    </div>
                                 </div>
                             </Link>
-                        <p className='pt-2'>{data.shop.description}</p>
+                            <p className='pt-2'>{data.shop.description}</p>
                         </div>
-                        <div className='w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end'>
+                        <div className='w-full md:w-[50%] mt-5 md:mt-0 md:flex flex-col items-end'>
                             <div className="text-left">
                                 <h5 className='font-[600]'>
-                                    Joined on: <span className='font-[500]'>{data.shop?.createAt.slice(0, 10)}</span>
+                                    Joined on: <span className='font-[500]'>{data.shop?.createdAt.slice(0, 10)}</span>
                                 </h5>
                                 <h5 className='font-[600] pt-3'>
                                     Total Products: <span className='font-[500]'>{products && products.length}</span>
