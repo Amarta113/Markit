@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllProductsShop, deleteProduct } from '../../../redux/actions/productActions.js'
 import { Link } from 'react-router-dom'
 import Button from '@mui/material/Button'
-import { AiOutlineEye } from 'react-icons/ai'
+import { AiOutlineEye, AiOutlineDelete } from 'react-icons/ai'
 import { DataGrid } from '@mui/x-data-grid'
 import Loader from '../Layout/Loader'
 
 const AllProducts = () => {
-    const { product, isLoading } = useSelector((state) => state.products)
+    const { products, isLoading } = useSelector((state) => state.products)
     const { seller } = useSelector((state) => state.seller)
     const dispatch = useDispatch()
 
@@ -49,7 +49,7 @@ const AllProducts = () => {
             renderCell: params => {
                 return (
                     <>
-                        <Link to={`/product/${params.id}`}>
+                        <Link to={`/products/${params.id}`}>
                             <Button>
                                 <AiOutlineEye size={20} />
                             </Button>
@@ -77,13 +77,13 @@ const AllProducts = () => {
         },
     ];
     const row = [];
-    product && product.forEach(
+    products && products.forEach(
         item => {
             row.push({
                 id: item._id,
                 name: item.name,
-                price: "US$" + item.discountPrice,
-                sold: 10
+                price: "US$ " + item.discountPrice,
+                sold: item.sold_out
             })
         }
     )
@@ -93,7 +93,7 @@ const AllProducts = () => {
             
             <div className='w-full mx-8 pt-1 bg-white flex flex-col min-h-[200px] max-h-[600px]'>
                 <DataGrid
-                    row={row}
+                    rows={row}
                     columns={columns}
                     pageSizeOptions={[10]}
                     disableRowSelectionOnClock
