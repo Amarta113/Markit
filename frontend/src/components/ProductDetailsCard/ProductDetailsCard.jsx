@@ -56,7 +56,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
         } else {
             setClick(false)
         }
-    }, [wishlist])
+    }, [wishlist, data._id])
 
     return (
         <div className='bg-[#fff]'>
@@ -68,7 +68,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                         />
                         <div className="block w-full md:flex">
                             <div className="w-full md:w-[50%]">
-                                <img src={data.image_Url[0].url} alt="" />
+                                <img src={data?.images[0].url} alt="" />
                                 <div className='flex'>
                                     <img src={data?.shop.shop_avatar.url} alt="shop-avatar"
                                         className='w-[50px] h-[50px] rounded-full mr-2'
