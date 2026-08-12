@@ -6,7 +6,7 @@ import { HiOutlineMinus, HiPlus } from "react-icons/hi";
 import styles from '../../styles/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { backend_url } from '../../server';
-import { addToCart, removeFromCart } from '../../../redux/actions/cartActions';
+import { addToCart, removeFromCart } from '../../../redux/actions/cartActions.js';
 import { toast } from 'react-toastify';
 
 export default function Cart({ setOpenCart }) {
@@ -17,7 +17,8 @@ export default function Cart({ setOpenCart }) {
         dispatch(removeFromCart(data))
     }
     const totalPrice = cart.reduce(
-        (acc, item) => acc + item.qty * item.discountPrice
+        (acc, item) => acc + item.qty * item.discountPrice ,
+        0
     )
     const quantityChangeHandler = (data) => {
         dispatch(addToCart(data))
