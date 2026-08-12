@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import styles from '../../styles/styles'
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useParams } from "react-router-dom";
-import { getAllProductsShop } from '../../../redux/actions/productActions'
-import { getAllEventShop } from '../../../redux/actions/eventActions'
+import { getAllProductsShop } from '../../../redux/actions/productActions.js'
+import { getAllEventShop } from '../../../redux/actions/eventActions.js'
 import Ratings from '../UserComponents/Ratings'
-import { backend_url } from '../../server';
+import { backend_url } from '../../server.js';
 import ProductCard from '../ProductCard/ProductCard'
 
 const ShopProfileData = ({ isOwner }) => {
@@ -59,7 +59,7 @@ const ShopProfileData = ({ isOwner }) => {
       <br />
       {
         active === 1 && (
-          <div className='grid grid-cols-1 gap-[20px] md:grid:cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0'>
+          <div className='grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0'>
             {
               products && products.map((i, index) => (
                 <ProductCard data={i} key={index} isShop={true} />
@@ -70,7 +70,7 @@ const ShopProfileData = ({ isOwner }) => {
       }
       {
         active === 2 && (
-          <div className='grid grid-cols-1 gap-[20px] md:grid:cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0'>
+          <div className='grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0'>
             {
               events && events.map((i, index) => (
                 <ProductCard data={i} key={index} isShop={true} isEvent={true} />
@@ -87,15 +87,15 @@ const ShopProfileData = ({ isOwner }) => {
               allReviews && allReviews.map((item, index) => (
                 <div className="w-full flex my-4">
                   <img 
-                  src={`${backend_url}/${item.user.avatar}`}
+                  src={`${backend_url}${item?.user?.avatar}`}
                   className='w-[50px] h-[50px] rounded-full'
                   alt="" />
                   <div className='pl-2'>
                     <div className='flex w-full items-center'>
-                        <h1 className='font-[600]'>{item.user.name}</h1>
-                        <Ratings rating={item.rating} />
+                        <h1 className='font-[600]'>{item?.user?.name}</h1>
+                        <Ratings rating={item?.rating} />
                     </div>
-                    <p className='text-[#000000a7] font-[14px]'>{item.createdAt}</p>
+                    <p className='text-[#000000a7] font-[14px]'>{item?.createdAt}</p>
                     <p className='font-[400] text-[#000000a7]'>{item?.comment}</p>
                   </div>
                 </div>
