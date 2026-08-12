@@ -7,11 +7,13 @@ const ShopSettingsPage = () => {
   return (
     <div>
       <DashboardHeader/>
-      <div className="flex items-start justify-between w-full">
-        <div className="w-[80%] md:w-[330px]">
-          <DashboardSidebar active={11}/>
+      <div className='flex w-full items-start justify-between'>
+        <div className='w-full max-w-[260px] shrink-0'>
+          <DashboardSidebar activeHeading={11}/>
         </div>
-        <ShopSettings />
+        <div className='flex-1'>
+          <ShopSettings />
+        </div>
       </div>
     </div>
   )
