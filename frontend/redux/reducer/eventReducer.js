@@ -29,7 +29,7 @@ export const eventReducer = createReducer(
         })
         .addCase(getAllEventShop.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.product = action.payload
+            state.events = action.payload
         })
         .addCase(getAllEventShop.rejected, (state, action) => {
             state.isLoading = false;
