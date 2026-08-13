@@ -3,20 +3,20 @@ import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import { AiOutlineArrowRight } from "react-icons/ai"; import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrdersShop } from '../../../redux/actions/orderActions';
+import {getAllOrdersUser } from '../../../redux/actions/orderActions';
 
 
 const AllRefundOrders = () => {
   const { orders, isLoading } = useSelector((state) => state.order)
-  const { seller } = useSelector((state) => state.seller)
+  const { user } = useSelector((state) => state.user)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getAllOrdersShop(seller._id))
+    dispatch(getAllOrdersUser(user?._id))
   }, [])
 
-  const refundOrders = orders && orders.filter((item) => item.status === "Processing refund" && item.status === "Refund Success")
+  const refundOrders = orders && orders.filter((item) => item.status === "Processing refund")
   
   const columns = [
     { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
@@ -62,9 +62,9 @@ const AllRefundOrders = () => {
     item => {
       row.push({
         id: item._id,
-        name: item.name,
-        price: "US$" + item.discountPrice,
-        sold: 10
+        itemsQty: item?.cart?.length,
+        total: "US$" + item?.totalPrice,
+        status: item?.status,
       })
     }
   )
