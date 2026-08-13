@@ -1,7 +1,5 @@
 import express from 'express'
-import { Shop } from "../models/shop.js";
 import cloudinary from "../config/cloudinary.js";
-import { catchAsyncError } from '../middleware/catchAsyncError.js'
 import Coupon from '../models/couponCode.js'
 
 export async function createCouponCode(req, res) {
@@ -18,10 +16,10 @@ export async function createCouponCode(req, res) {
     }
 }
 
-// get all coupons for a shop
+// Get all coupons for a shop
 export async function getAllCoupons(req, res) {
     try{
-        const couponCodes = await Coupon.find({shopId: req.seller.id})
+        const couponCodes = await Coupon.find({shopId: req.seller?.id})
         res.status(201).json({
             success: true,
             couponCodes
@@ -56,7 +54,7 @@ export async function deleteCoupon(req, res){
 
 export async function getCouponValue(req, res) {
     try{
-        const couponCode = await Coupon.findONe({name: req.params.name})
+        const couponCode = await Coupon.findOne({name: req.params.name})
         res.status(200).json({
             success: true,
             couponCode
