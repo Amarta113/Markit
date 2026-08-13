@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '@mui/material/Button'
-import { AiOutlineEye } from 'react-icons/ai'
+import { AiOutlineDelete, AiOutlineEye } from 'react-icons/ai'
 import { DataGrid } from '@mui/x-data-grid'
 import Loader from '../Layout/Loader'
 import { useState } from 'react'
 import axios from 'axios';
-import { server } from '../../server'
+import { server } from '../../server.js'
 import {toast} from 'react-toastify' 
+import styles from '../../styles/styles'
+import { RxCross1 } from "react-icons/rx";
+import { getAllProductsShop } from '../../../redux/actions/productActions.js'
 
 
 const AllCoupons = () => {
@@ -18,31 +21,35 @@ const AllCoupons = () => {
     const [coupons, setCoupons] = useState([])
     const [minAmount, setMinAmount] = useState(0)
     const [maxAmount, setMaxAmount] = useState()
-    const [selectedProducts, setSelectedProducts] = useState(null)
+    const [selectedProducts, setSelectedProducts] = useState("")
     const [value, setValue] = useState(null)
     const { products } = useSelector((state) => state.products)
     const { seller } = useSelector((state) => state.seller)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setIsLoading(true)
-        axios.get(`${server}/coupons/get-coupon/${seller._id}`,
-            {withCredentials: true}
-        ).then((res) => 
-            {
+        if (seller?._id) {
+            dispatch(getAllProductsShop(seller._id));
+            axios.get(`${server}/coupon/get-coupon/${seller._id}`,
+                {withCredentials: true}
+            ).then((res) => 
+                {
+                    setIsLoading(false)
+                    setCoupons(res?.data.couponCodes || [])
+                }
+            ).catch(error => {
                 setIsLoading(false)
-                setCoupons(res?.data.couponCode)
-                console.log(res)
-            }
-        ).catch(error => {
-            setIsLoading(false)
-            console.error(error)
-        })
-    }, [])
+                console.error(error)
+                setCoupons([])
+            })
+        }
+    }, [dispatch, seller?._id])
 
     async function handleDelete(id) {
         try{
             const {data, status} = await axios.delete(
-                `${server}/coupons/delete-coupon/${id}`,
+                `${server}/coupon/delete-coupon/${id}`,
                 { withCredentials: true }
             )
             if (status === 201){
@@ -75,7 +82,6 @@ const AllCoupons = () => {
                 toast.success("Coupon created for the product")
                 window.location.reload()
             }
-            console.log(data)
         }catch(error){
             toast.error(error?.response?.data.message)  
         }
@@ -112,7 +118,7 @@ const AllCoupons = () => {
                 const product_name = data.replace(/\s+/g, "-")
                 return (
                     <>
-                        <Link to={`/product/${product_name}`}>
+                        <Link to={`/products/${product_name}`}>
                             <Button>
                                 <AiOutlineEye size={20} />
                             </Button>
@@ -146,17 +152,14 @@ const AllCoupons = () => {
                 id: item._id,
                 name: item.name,
                 price: item.value + " %",
-                sold: 10
+                sold: item.sold_out
             })
         }
     )
 
     return (
         <>
-            isLoading? (
-            <Loader />
-            ): (
-            <div className='w-full mx-8 pt-1 bg-white flex flex-col min-h-[200px] max-h-[600px]'>
+        <div className='w-full mx-8 pt-1 mt-10 bg-white flex flex-col min-h-[200px] max-h-[800px]'>
                 <div className='w-full flex justify-end'>
                     <div 
                     className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3`}
@@ -177,19 +180,16 @@ const AllCoupons = () => {
                     sx={{ flexGrow: 1 }} />
                 {
                     open && (
-                        <div className='fixed top-0 left-0 w-full bg-[#00000062] z-[2000] flex items-center justify-center'>
-                            <div className='w-[90%] h-[80vh] bg-white rounded-md shadow p-4'>
+                        <div className='fixed inset-0 bg-[#00000062] z-[2000] flex items-center justify-center p-2 overflow-y-auto'>
+                            <div className='w-full max-w-[700px] max-h-[85vh] bg-white rounded-md shadow p-4 overflow-y-auto'>
                                 <div className='w-full flex justify-end'>
                                     <RxCross1
                                         size={30}
                                         className="cursor-pointer"
                                         onClick={() => setOpen(false)} />
                                 </div>
-                                <h5 className='text-[30px] font-[Poppins] text-center font-[600]'
-                                >Create Coupon Code</h5>
-                                { /* Create coupon code */}
-                                <form onSubmit={handleSubmit} aria-required = {true}>
-                                    <br />
+                                <h5 className='text-[30px] font-[Poppins] text-center font-[600]'>Create Coupon Code</h5>
+                                <form onSubmit={handleSubmit} aria-required={true} className='space-y-4'>
                                     <div>
                                         <label className='pb-2'>
                                             Name <span className='text-red-500'>*</span>
@@ -202,13 +202,12 @@ const AllCoupons = () => {
                                             onChange={(e) => setName(e.target.value)}
                                             placeholder='Enter your Coupon Code name...' />
                                     </div>
-                                    <br />
                                     <div>
                                         <label className='pb-2'>
                                             Discount Percentage <span className='text-red-500'>*</span>
                                         </label>
                                         <input 
-                                            type="numbar" 
+                                            type="number" 
                                             name='discount' 
                                             required
                                             value={value}
@@ -216,7 +215,6 @@ const AllCoupons = () => {
                                             onChange={(e) => setValue(e.target.value)}
                                             placeholder='Enter your Coupon Code value...' />
                                     </div>
-                                    <br />
                                     <div>
                                         <label className='pb-2'>
                                             Min Amount <span className='text-red-500'>*</span>
@@ -229,7 +227,6 @@ const AllCoupons = () => {
                                             onChange={(e) => setMinAmount(e.target.value)}
                                             placeholder='Enter your Coupon Code min amount' />
                                     </div>
-                                    <br />
                                     <div>
                                         <label className='pb-2'>
                                             Max Amount <span className='text-red-500'>*</span>
@@ -239,38 +236,35 @@ const AllCoupons = () => {
                                             onChange={(e) => setMaxAmount(e.target.value)}
                                             placeholder='Enter your Coupon Code max amount.' />
                                     </div>
-                                    <br />
                                     <div>
                                         <label className='pb-2'>
                                             Select Product
                                         </label>
-                                        <select className='w-full mt-2 border border-bray-300 h-[35px] rounded-[5px]'
+                                        <select className='w-full mt-2 border border-gray-300 h-[35px] rounded-[5px]'
                                             value={selectedProducts}
                                             onChange={(e) => setSelectedProducts(e.target.value)}
                                         >
-                                        <option value="Choose your selected product">
-                                            Choose a selected product
-                                        </option>
-                                        {
-                                            products && products.map((data, i) => (
-                                                <option value={data.name} key={i}>
-                                                    {data.name}
-                                                </option>
-                                            ))
-                                        }
+                                            <option value="Choose your selected product">
+                                                Choose a selected product
+                                            </option>
+                                            {
+                                                products && products.map((data, i) => (
+                                                    <option value={data.name} key={i}>
+                                                        {data.name}
+                                                    </option>
+                                                ))
+                                            }
                                         </select>
                                     </div>
-                                    <br />
                                     <input type="submit"
-                                    value="Create" 
-                                    className='mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm cursor-pointer'/>
+                                        value="Create" 
+                                        className='mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm cursor-pointer'/>
                                 </form>
                             </div>
                         </div>
                     )
                 }
             </div>
-            )
         </>
     )
 }
