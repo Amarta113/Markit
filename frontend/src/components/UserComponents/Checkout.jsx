@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import styles from '../../styles/styles'
 import { useSelector } from 'react-redux'
 import ShippingInfo from '../UserComponents/ShippingInfo.jsx'
+import axios from 'axios'
+import { server } from '../../server.js'
 
 function Checkout() {
     const { user } = useSelector(state => state.user)
@@ -57,7 +59,7 @@ function Checkout() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const name = couponCode
-        await axios.get(`{server}/coupon/get-coupon-value/${name}`).then(
+        await axios.get(`${server}/coupon/get-coupon-value/${name}`).then(
             (res) => {
                 const shopId = res.data.couponCode?.shopId
                 const couponCodeValue = res.data.couponCode?.value
