@@ -8,6 +8,7 @@ import styles from '../../styles/styles';
 import { BsCartPlus } from "react-icons/bs";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlistActions.js';
+import { addToCart } from '../../../redux/actions/cartActions.js';
 import { backend_url } from '../../server';
 
 export default function Wishlist({ setOpenWishlist }) {
@@ -76,7 +77,7 @@ export default function Wishlist({ setOpenWishlist }) {
 const WishlistCartSingle = ({ data, removeFromWishlistHandler, addToCartHandler }) => {
     const [value, setValue] = useState(1)
     const totalPrice = data.discountPrice * value;
-
+    console.log(`wishilist cart single data is : ${data}`)
     return (
         <div className="border-b p-4">
             <div className="w-full flex items-center relative">
@@ -85,11 +86,11 @@ const WishlistCartSingle = ({ data, removeFromWishlistHandler, addToCartHandler 
                 onClick={() => removeFromWishlistHandler(data)}
                 />
                 <img 
-                    src={`${backend_url}${data?.image[0]}`}
+                    src={`${data?.images[0]?.url}`}
                     alt="Image"
                     className="w-[130px] h-min ml-2 mr-2 rounded-[5px]" />
                 <div className="pl-[5px]">
-                    <h1>{data.name}</h1>
+                    <h1>{data?.name}</h1>
                     <h4 className='font-[600] text-[17px] pt-[3px] text-[#d02222] font-Roboto'>US${totalPrice}</h4>
                 </div>
                 <div className="absolute top-0 right-0 mt-10">
