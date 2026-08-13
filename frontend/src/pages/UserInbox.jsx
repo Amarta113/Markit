@@ -3,7 +3,10 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { io } from 'socket.io-client'
 import { format } from 'timeago.js'
-import { backend_url,server } from '../server.js'
+import { backend_url, server } from '../server.js'
+import Header from '../components/Layout/Header.jsx'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const ENDPOINT = 'http://localhost:4000/'
 const socketId = io(ENDPOINT, { transports: ["websocket"] })
@@ -12,13 +15,14 @@ const UserInbox = () => {
     const { user } = useSelector((state) => state.user)
     const [conversations, setConversations] = useState([])
     const [arrivalMessage, setArrivalMessage] = useState(null)
-    const [messages, setMessages] = useState(null)
+    const [messages, setMessages] = useState([])
     const [currentChat, setCurrentChat] = useState(null)
     const [newMessage, setNewMessage] = useState("")
     const [userData, setUserData] = useState(null)
     const [onlineUser, setOnlineUser] = useState([])
     const [activeStatus, setActiveStatus] = useState(false)
     const [open, setOpen] = useState(false)
+    const [images, setImages] = useState(null)
 
     useEffect(() => {
         socketId.on('getMessage', (data) => {
@@ -32,8 +36,8 @@ const UserInbox = () => {
 
     useEffect(() => {
         arrivalMessage &&
-            currentChat?.members.includes(arrivalMessage.sender) &&
-            setArrivalMessage((prev) => [...prev, arrivalMessage])
+            currentChat?.members?.includes(arrivalMessage.sender) &&
+            setMessages((prev) => [...prev, arrivalMessage])
     }, [arrivalMessage, currentChat])
 
     useEffect(() => {
@@ -47,8 +51,8 @@ const UserInbox = () => {
     }, [user])
 
     const onlineCheck = (chat) => {
-        const chatMembers = chat.members.find((member) => member !== user?._id)
-        const online = onlineUsers.find((user) => user.userId === chatMembers)
+        const chatMembers = chat?.members.find((member) => member !== user._id)
+        const online = onlineUser?.find((user) => user.userId === chatMembers)
         return online ? true : false
     }
 
@@ -66,18 +70,18 @@ const UserInbox = () => {
 
     useEffect(() => {
         const getConversation = async () => {
-            axios.get(`${server}/conversation/get-all-conversation-user/${user?._id}`, {
-                withCredentials: true,
-            })
-                .then((res) => {
-                    setConversations(res.data.conversations)
+            try {
+                const { data } = await axios.get(`${server}/conversation/get-all-conversation-user/${user?._id}`, {
+                    withCredentials: true,
                 })
-                .catch((error) => {
-                    console.log(error)
-                })
+                setConversations(data.conversations)
+            } catch (error) {
+                console.log(error)
+                toast.error(error?.response?.data?.message)
+            }
         }
         getConversation()
-    }, [user])
+    }, [user, messages])
 
     const sendMessageHandler = async (e) => {
         e.preventDefault()
@@ -100,6 +104,7 @@ const UserInbox = () => {
                     message
                 ).then((res) => {
                     setMessages([...messages, res.data.message])
+                    updateLastMessage()
                 }).catch((error) => {
                     console.log(error)
                 })
@@ -192,16 +197,15 @@ const MessageList = ({
         <div
             className={`w-full flex ${active === index ? 'bg-[#000000010]' : 'bg-transparent'} p-3 px-3 cursor-pointer`}
             onClick={() => {
-                setActive(index) ||
-                    handleClick(data._id) ||
-                    setCurrentChat(data)  ||
-                    setCurrentChat(data)  || 
-                    setUserData(user)     ||
-                    setActiveStatus(online)
+                setActive(index);
+                handleClick(data._id);
+                setCurrentChat(data);
+                setUserData(user);
+                setActiveStatus(online);
             }}
         >
             <div className='relative'>
-                <img src={`${backend_url}${userData?.avatar}`} alt='' className='w-[50%] h-[50%] rounded-full' />
+                <img src={`${backend_url}${user?.avatar}`} alt='' className='w-[50%] h-[50%] rounded-full' />
                 {
                     online ? (
                         <div className='w-[12px] h-[12px] bg-green-400 rounded-full absolute top-[2px] right-[2px]' />
@@ -211,9 +215,9 @@ const MessageList = ({
                 }
             </div>
             <div className='pl-3'>
-                <h1 className='text-[18px]'>{userData?.name}</h1>
+                <h1 className='text-[18px]'>{user?.name}</h1>
                 <p className='text-[16px] text-[#000c]'>{
-                    data?.lastMessageId !== userData?.id ? "You:" : userData?.name.split(" ")[0] + ": "}
+                    data?.lastMessageId !== user?.id ? "You:" : user?.name.split(" ")[0] + ": "}
                     {data?.lastMessage}
                 </p>
             </div>
