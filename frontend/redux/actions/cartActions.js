@@ -5,7 +5,7 @@ export const removeFromCartAction = createAction("removeFromCart")
 
 export const addToCart = createAsyncThunk(
     "cart/addToCartThunk",
-    async(navItems, {dispatch, getState, rejectWithValue}) => {
+    async(item, {dispatch, getState, rejectWithValue}) => {
         try{
             dispatch(addToCartAction(item))
             localStorage.setItem("cartItems",
@@ -15,7 +15,7 @@ export const addToCart = createAsyncThunk(
         }
         catch(error){
             return rejectWithValue(
-                error.reponse?.data?.message || "Failed to add items to cart"
+                error.response?.data?.message || "Failed to add items to cart"
             )
         }
     }
@@ -28,12 +28,13 @@ export const removeFromCart = createAsyncThunk(
             dispatch(removeFromCartAction(item._id))
             localStorage.setItem(
                 "cartItems",
-                JSON.stringify(getState().cart.cart)
+                JSON.stringify(getState().cart?.cart)
             )
             return item;
         } catch (error){
             return rejectWithValue(
-                error.reponse?.data?.message || "Failed to remove item from cart!"
+                error.response?.data?.message || "Failed to remove item from cart!"
             )
         }
-})
+    }
+)
