@@ -9,9 +9,12 @@ import axios from 'axios'
 import { server } from '../../server'
 import { toast } from 'react-toastify'
 import { RiLockPasswordLine } from "react-icons/ri";
+import { useSelector } from 'react-redux'
 
 const ProfileSidebar = ({ active,setActive }) => {
     const navigate = useNavigate()
+    const user = useSelector(state => state.user)
+    
     async function logoutHandler(){
         try {
             const res = await axios.get(`${server}/user/logout`, {
