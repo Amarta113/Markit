@@ -6,6 +6,7 @@ import { backend_url } from '../../server.js'
 import {useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { addToCart } from '../../../redux/actions/cartActions.js'
 
 export default function EventCard({ active, data, isLoading }) {
     const { cart } = useSelector((state) => state.cart)
