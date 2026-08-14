@@ -80,7 +80,7 @@ export default function Header({ activeHeading }) {
                                                 <Link to={`/products/${i._id}`} key={index}>
                                                     <div className="w-full flex items-start py-3">
                                                         <img
-                                                            src={`${backend_url}${i.images[0]}`}
+                                                            src={`${i.images[0].url}`}
                                                             alt='product image'
                                                             className='w-[40px] h-[40px] mr-[10px]'
                                                         />
@@ -253,7 +253,7 @@ export default function Header({ activeHeading }) {
                                                 return (
                                                     <Link to={`/products/${prod._id}`} key={prod._id || i}>
                                                         <div className="flex items-center cursor-pointer">
-                                                            <img src={prod?.images?.[0]?.url}
+                                                            <img src={prod?.images[0]?.url}
                                                                 alt="product img"
                                                                 className='w-[50px] mr-2' />
                                                             <h5>{prod.name}</h5>
