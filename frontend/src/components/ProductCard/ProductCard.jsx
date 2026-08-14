@@ -17,7 +17,7 @@ const ProductCard = ({ data , isEvent}) => {
     const [count, setCount] = useState(1)
     const [open, setOpen] = useState(false)
     const dispatch = useDispatch()
-
+    console.log(data)
     const addToCartHandler = (id) => {
             const isItemExist = cart && cart?.find((i) => i._id === id)
             if (isItemExist) {
@@ -77,7 +77,7 @@ const ProductCard = ({ data , isEvent}) => {
                             </h4>
                         </div>
                         <span className='font-[400] text-[17px] text-[#68d284]'>
-                            {data?.sold_out} Sold 
+                            {data?.soldOut} Sold 
                         </span>
                     </div>
                 </Link>
