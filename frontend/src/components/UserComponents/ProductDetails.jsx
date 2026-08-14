@@ -54,18 +54,19 @@ const ProductDetails = ({ data }) => {
         dispatch(addToWishlist(data))
     }
 
-    const addToCartHandler = (id) => {
-        const isItemExist = cart && cart.find((i) => i._id === id)
+    const addToCartHandler = (product = data) => {
+        const itemId = product?._id
+        const isItemExist = cart && cart.find((i) => i._id === itemId)
         if (!isItemExist) {
-            toast.error("Item already in cart!")
-        } else {
-            if (data.stock < count) {
+            if (product.stock < count) {
                 return toast.error("Product stock is limited")
             } else {
-                const cartData = { ...data, qty: count }
+                const cartData = { ...product, qty: count }
                 dispatch(addToCart(cartData))
                 toast.success("Item added to cart successfully.")
             }
+        } else {
+            toast.error("Item already in cart!")
         }
     }
 
@@ -164,7 +165,7 @@ const ProductDetails = ({ data }) => {
                                     </div>
                                 </div>
                                 <div className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
-                                    onClick={() => addToCart(data._id)}>
+                                    onClick={() => addToCartHandler(data)}>
                                     <span className='text-white flex items-center cursor-pointer'>
                                         Add to cart <AiOutlineShoppingCart className='ml-1 cursor-pointer' />
                                     </span>
