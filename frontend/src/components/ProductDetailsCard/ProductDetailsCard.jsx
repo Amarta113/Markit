@@ -3,8 +3,8 @@ import { RxCross1 } from "react-icons/rx"
 import styles from '../../styles/styles'
 import { AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from 'react-icons/ai'
 import { toast } from 'react-toastify'
-import { addToCart } from '../../../redux/actions/cartActions'
-import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlistActions'
+import { addToCart } from '../../../redux/actions/cartActions.js'
+import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlistActions.js'
 import { useDispatch, useSelector } from 'react-redux'
 
 const ProductDetailsCard = ({ setOpen, data }) => {
@@ -16,7 +16,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     const [select, setSelect] = useState(false)
 
     const handleMessageSubmit = () => {
-        return null
+        return 
     }
     const decrementCount = () => {
         if (count > 1) {
@@ -27,18 +27,19 @@ const ProductDetailsCard = ({ setOpen, data }) => {
         setCount(count + 1)
     }
 
-    const addToCartHandler = (id) => {
-        const isItemExist = cart && cart.find((i) => i._id === id)
+    const addToCartHandler = (product = data) => {
+        const itemId = product?._id
+        const isItemExist = cart && cart.find((i) => i._id === itemId)
         if (!isItemExist) {
-            toast.error("Item already in cart!")
-        } else {
-            if (data.stock < count) {
+            if (product.stock < count) {
                 return toast.error("Product stock is limited")
             } else {
-                const cartData = { ...data, qty: count }
+                const cartData = { ...product, qty: count }
                 dispatch(addToCart(cartData))
                 toast.success("Item added to cart successfully.")
             }
+        } else {
+            toast.error("Item already in cart!")
         }
     }
     const removeFromWishlisthandler = (data) => {
@@ -137,7 +138,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                                     </div>
                                 </div>
                                 <div className={`${styles.button} mt-6 rounded-[4px] h-11 flex items-center`}
-                                    onClick={() => addToCartHandler(data._id)}>
+                                    onClick={() => addToCartHandler(data)}>
                                     <span className='text-[#fff] flex items-center'>
                                         Add to cart <AiOutlineShoppingCart className='ml-1' />
                                     </span>
