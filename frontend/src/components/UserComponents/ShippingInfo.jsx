@@ -102,7 +102,7 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                     </div>
                 </div>
                 <div className="w-full flex pb-3">
-                    <div className="w-[50%]">
+                    <div className="w-[100%]">
                         <label className='block pb-2'>
                             Address1
                         </label>
@@ -112,8 +112,6 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                             required
                             className={`${styles.input}`}
                             onChange={(e) => setAddress1(e.target.value)} />
-                    </div>
-                    <div className="w-[50%]">
                         <label className='block pb-2'>
                             Address2
                         </label>
@@ -126,7 +124,6 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                         />
                     </div>
                 </div>
-                <div></div>
             </form>
             <h5
                 className='text-[18px] cursor-pointer inline-block'
@@ -153,9 +150,9 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                                 </div>
                             ))}
                     </div>
-                )
-            }
+                )}
         </div>
+        
     )
 }
 
