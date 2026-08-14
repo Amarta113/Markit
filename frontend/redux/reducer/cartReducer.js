@@ -1,29 +1,21 @@
 import {createReducer} from '@reduxjs/toolkit'
-import {addToCart, addToCartAction, removeFromCartAction} from '../actions/cartActions'
+import {addToCart, addToCartAction, removeFromCartAction} from '../actions/cartActions.js'
 
 
 const initialState = {
-    cart: localStorage.getItem("cartItems")? JSON.parse(localStorage.getItem("cartItems")) : []
+    cart: localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []
 }
 
 export const cartReducer = createReducer(initialState, builder => {
     builder
     .addCase(addToCartAction, (state, action) => {
-        const item = action.payload;
-        const isItemExist = state?.cart?.find(it => it?._id === item?._id)
-        if(isItemExist){
-            return {
-                ...state,
-                cart: state.cart.map(i => (i._id === isItemExist._id? item : i))
-            }
-        } else {
-            return {
-                ...state,
-                cart: [...state.cart, item]
-            }
+        const nextCart = Array.isArray(action.payload) ? action.payload : [action.payload]
+        return {
+            ...state,
+            cart: nextCart
         }
     })
-    .addCase(removeFromCartAction ,(state, action) => {
+    .addCase(removeFromCartAction, (state, action) => {
         return {
             ...state,
             cart: state.cart.filter(i => i._id !== action.payload)
