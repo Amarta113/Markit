@@ -1,12 +1,12 @@
 import React from 'react'
 import styles from '../../../styles/styles'
-import studioImg from '../../../assets/walking-s.jpg'
+import studioImg from '../../../assets/fashion-bags.jpg'
 import { Link } from 'react-router-dom'
 
 export default function Hero() {
     return (
       <div
-        className={`relative min-h-[75vh] min-800-h w-full bg-cover bg-center bg-no-repeat ${styles.normalFlex}`}
+        className={`relative min-h-[75vh] w-full bg-cover bg-center bg-no-repeat ${styles.normalFlex}`}
         style={{
           backgroundImage:
             `url(${studioImg})`
@@ -14,7 +14,7 @@ export default function Hero() {
       >
       <div className={`${styles.section} w-[90%] md:w-[60%] bg-transparent`}>
           <h1 className={`text-[35px] leading-[1.2] md:text-[60px] text-[#3d3a3a] font-[600] capitalize`}>
-            Trending fashion Collection 
+            Trending Shopping Collection 
           </h1>
           <p className='pt-5 text-[20px] font-[Poppins] font-[400] text-white w-[90%] md:w-[80%] bg-black/40 shadow-sm p-2 rounded'>
           Discover handpicked styles made for everyday confidence, from timeless essentials to
