@@ -5,10 +5,11 @@ import { useSelector } from 'react-redux'
 import ShippingInfo from '../UserComponents/ShippingInfo.jsx'
 import axios from 'axios'
 import { server } from '../../server.js'
+import {toast} from 'react-toastify'
 
 function Checkout() {
     const { user } = useSelector(state => state.user)
-    const { cart } = useSelector(state => state.user)
+    const { cart } = useSelector(state => state.cart)
     const [country, setCountry] = useState()
     const [city, setCity] = useState("")
     const [userInfo, setUserInfo] = useState(false)
@@ -45,7 +46,7 @@ function Checkout() {
                 user
             }
         // Update the local storage with updated orders arrays
-        localStorage.setItems("latestOrder", JSON.stringify(orderData))
+        localStorage.setItem("latestOrder", JSON.stringify(orderData))
         navigate("/payment")
         }
     }
@@ -61,12 +62,12 @@ function Checkout() {
         const name = couponCode
         await axios.get(`${server}/coupon/get-coupon-value/${name}`).then(
             (res) => {
-                const shopId = res.data.couponCode?.shopId
+                const shopId = res?.data?.couponCode?.shopId
                 const couponCodeValue = res.data.couponCode?.value
                 if (res.data.couponCode !== null) {
                     const isCouponValid = cart && cart.filter((item) => item.shopId === shopId)
                     if (isCouponValid.length === 0) {
-                        taost.error("Coupon code is not valid for this shop")
+                        toast.error("Coupon code is not valid for this shop")
                         setCouponCode("")
                     } else {
                         const eligiblePrice = isCouponValid.reduce((acc, item) => acc + item.qty * item.discountPrice, 0)
@@ -75,10 +76,12 @@ function Checkout() {
                         )
                         setDiscountPrice(discountPrice)
                         setCouponCodeData(res.data.couponCode)
+                        setCouponCode("");
+                        toast.success(`You have got ${couponCodeValue}% discount!!`);
                     }
                 }
 
-                if (res.data.couponCode === null) {
+                if (res.data?.couponCode === null) {
                     toast.error("Coupon code doesn't exists!")
                     setCouponCodeData("")
                 }
@@ -91,7 +94,7 @@ function Checkout() {
     return (
         <div className="w-full flex flex-col items-center py-8">
             <div className="w-[90%] lg:w-[70%] block md:flex">
-                <div className="w-full md:w-[65%]">
+                <div className="w-full md:w-[95%]">
                     <ShippingInfo
                         user={user}
                         country={country}
