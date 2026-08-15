@@ -1,100 +1,111 @@
 import React from 'react'
-import logo from '../../assets/markit-logo.jpg'
 import { Link } from "react-router-dom";
-import {AiFillFacebook, AiFillInstagram, AiFillYoutube, AiOutlineTwitter,} from "react-icons/ai";
-import {footerSupportLinks, footercompanyLinks, footerProductLinks } from "../../static/data.jsx";
+import {
+  AiFillFacebook,
+  AiFillInstagram,
+  AiFillYoutube,
+  AiOutlineTwitter,
+} from "react-icons/ai";
+import { footercompanyLinks, footerProductLinks } from "../../static/data.jsx";
 
-export default function Footer(){
-    return (
-        <div className="bg-[#000] text-white">
-            <div className="md:flex md:justify-between md:items-center sm:px-12 px-4 bg-[#ddd8ce] py-7">
-                <h1 className='lg:text-4xl text-3xl text-black md:mb-0 mb-6 lg:leading-normal font-semibold md:w-2/5'>
-                <span className='text-[#56d879]'>Subscribe</span> us to get news <br/> events and offers! 
-                </h1>
-                <div>
-                    <input type="text" required placeholder='Enter your email...'
-                    className='bg-white text-gray-800 sm:w-72 w-full sm:mr-5 mr-1 lg:mb-0 mb-4 py-2.5 rounded px-2 focus:outline-none'/>
-                    <button className='bg-[#56d879] hover:bg-teal-500 duration-300 px-5 py-2.5 rounded-md text-white md:w-auto w-full'>
-                        Submit
-                    </button>
-                </div>
-            </div>
-            <footer className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:px-8 py-16 sm:text-center">
-                <ul className='px-5 text-center sm:text-start flex sm:block flex-col items-center'>
-                    <h1 className='text-bold text-3xl text-heading tracking-widest font-bold bg-white/50 rounded px-4 py-4 font-italic'>Markit</h1>
-                    <br/>
-                    <p>The home and elements needed to create beautiful product.</p>
-                    <div className="flex items-center mt-[15px]">
-                        <AiFillFacebook
-                            size={25}
-                            style={{ marginLeft: "15px", cursor: "pointer" }}
-                            />
-                        <AiOutlineTwitter
-                            size={25}
-                            style={{ marginLeft: "15px", cursor: "pointer" }}
-                            />
-                        <AiFillInstagram
-                            size={25}
-                            style={{ marginLeft: "15px", cursor: "pointer" }}
-                            />
-                        <AiFillYoutube
-                            size={25}
-                            style={{ marginLeft: "15px", cursor: "pointer" }}
-                            />
-                        </div>
-                </ul>
-                <ul className='text-center sm:text-start'>
-                    <h1 className='mb-1 font-semibold'>Company</h1>
-                    {footerProductLinks.map((link, i) => (
-                        <li key={i}>
-                            <Link
-                                className='text-gray-400 hover:text-teal-400 duration-300 text-sm cursor-pointer leading-6'
-                                to={link.link || "#"}
-                            >
-                            {link.name}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-                <ul className='text-center sm:text-start'>
-                    <h1 className='mb-1 font-semibold'>Shop</h1>
-                    {footercompanyLinks.map((link, i) => (
-                        <li key={i}>
-                            <Link
-                                className='text-gray-400 hover:text-teal-400 duration-300 text-sm cursor-pointer leading-6'
-                                to={link.link || "#"}
-                            >
-                                {link.name}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-                <ul className='text-center sm:text-start'>
-                    <h1 className='mb-1 font-semibold'>Support</h1>
-                    {footerSupportLinks.map((link, i) => (
-                        <li key={i}>
-                            <Link
-                                className='text-gray-400 hover:text-teal-400 duration-300 text-sm cursor-pointer leading-6'
-                                to={link.link || "#"}
-                            >
-                                {link.name}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </footer>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 text-center pt-2 text-gray-400 text-md pb-8">
-                <span>
-                &copy; {new Date().getFullYear()}Markit. All rights reserved.
-                </span>
-                <span>Terms.Private Policy</span>
-                <div className="sm:block flex items-center justify-center w-full">
-                <img
-                    src="https://hamart-shop.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffooter-payment.a37c49ac.png&w=640&q=75"
-                    alt="Payment Options"
-                />
-                </div>
-            </div>
+const socialLinks = [
+  { icon: AiFillFacebook, href: "https://facebook.com" },
+  { icon: AiOutlineTwitter, href: "https://twitter.com" },
+  { icon: AiFillInstagram, href: "https://instagram.com" },
+  { icon: AiFillYoutube, href: "https://youtube.com" },
+];
+
+export default function Footer() {
+  return (
+    <footer className="bg-[#16164e] text-white">
+      {/* Link columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-10 sm:px-8 px-4 py-16 sm:text-left text-center">
+        <div className="flex flex-col items-center sm:items-start">
+          <h1 className="text-3xl font-bold italic bg-white/10 rounded px-4 py-3 tracking-widest">
+            Markit
+          </h1>
+          <p className="mt-4 text-gray-400 text-sm max-w-[220px]">
+            Trusted Market place for shops and customers. You exprience our priority.
+          </p>
+          <div className="flex items-center gap-4 mt-5">
+            {socialLinks.map(({ icon: Icon, href }, i) => (
+              <a
+                key={i}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-[#56d879] transition duration-300"
+              >
+                <Icon size={22} />
+              </a>
+            ))}
+          </div>
         </div>
-    )
+
+        <div>
+          <h1 className="mb-3 font-semibold">Company</h1>
+          <ul className="space-y-2">
+            {footerProductLinks.map((link, i) => (
+              <li key={i}>
+                <Link
+                  className="text-gray-400 hover:text-[#56d879] duration-300 text-sm"
+                  to={link.link || "#"}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h1 className="mb-3 font-semibold">Shop</h1>
+          <ul className="space-y-2">
+            {footercompanyLinks.map((link, i) => (
+              <li key={i}>
+                <Link
+                  className="text-gray-400 hover:text-[#56d879] duration-300 text-sm"
+                  to={link.link || "#"}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex flex-col items-center sm:items-start">
+          <h1 className="mb-3 font-semibold">
+            <span className="text-[#56d879]">Subscribe</span> to our newsletter
+          </h1>
+          <p className="text-gray-400 text-sm mb-4">
+            Get news, events and offers straight to your inbox.
+          </p>
+          <div className="flex flex-col w-full max-w-[260px] gap-3">
+            <input
+              type="email"
+              required
+              placeholder="Enter your email..."
+              className="bg-white text-gray-800 w-full py-2.5 rounded px-3 focus:outline-none focus:ring-2 focus:ring-[#56d879]"
+            />
+            <button className="bg-[#56d879] hover:bg-teal-500 duration-300 px-5 py-2.5 rounded-md text-white w-full">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="border-t border-white/10 px-4 sm:px-8 py-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-400 text-sm">
+          <span>&copy; {new Date().getFullYear()} Markit. All rights reserved.</span>
+          <div className="flex items-center gap-4">
+            <Link to="/terms" className="hover:text-[#56d879] duration-300">Terms</Link>
+            <span className="text-gray-600">|</span>
+            <Link to="/privacy" className="hover:text-[#56d879] duration-300">Privacy Policy</Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }
