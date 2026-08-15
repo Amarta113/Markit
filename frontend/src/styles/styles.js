@@ -1,6 +1,6 @@
 const styles = {
   custom_container: "w-11/12 hidden sm-black",
-  heading: "text-[27px] text-center md:text-start font-600 font-Roboto pb-20px",
+  heading: "text-[2rem] md:text-2xl font-bold text-gray-900 tracking-tight",
   section: "w-11/12 mx-auto",
   productTitle: "text-[25px] font-[600] font-Roboto text-[#333]",
   productDiscountPrice: "font-bold text-18px text-[#333] font-Roboto",
