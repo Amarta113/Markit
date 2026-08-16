@@ -21,7 +21,7 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: process.env.VERCEL_FRONTEND_URL,
+    origin: process.env.VERCEL,
     credentials: true
 }))
 app.use('/api/v1/user', userRouter)
