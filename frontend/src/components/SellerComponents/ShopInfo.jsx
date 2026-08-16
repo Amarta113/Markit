@@ -4,7 +4,6 @@ import { server } from '../../server.js'
 import { Link, useParams } from 'react-router-dom'
 import { getAllProductsShop } from '../../../redux/actions/productActions.js'
 import axios from 'axios'
-import logo from '../../assets/logo-img.png'
 import styles from '../../styles/styles.js'
 
 const ShopInfo = ({ isOwner }) => {
@@ -58,7 +57,7 @@ const ShopInfo = ({ isOwner }) => {
         <div>
             <div className='w-full py-4'>
                 <div className="w-full flex item-center justify-center">
-                    <img src={logo}
+                    <img src={`${data?.avatar?.url}`}
                         alt=""
                         className='w-[150px] h-[150px] object-cover rounded-full' />
                 </div>
