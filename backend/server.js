@@ -36,22 +36,27 @@ app.use('/api/v1/message', messageRouter)
 app.get('/', (req, res) => {res.json({success: true, message: "server is running"})})
 app.use(errorMiddleware)
 
+const PORT = process.env.PORT || 8000;
+let server;
 
+await connectDb();
 
-const PORT = process.env.PORT || 8000
-
-await connectDb(); 
-const server = app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`)
-})
-
+if (!process.env.VERCEL) {
+    server = app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`)
+    })
+}
 
 process.on("unhandledRejection", (err) => {
     console.log(`Shutting down the server for ${err.message}`)
     console.log(`Shutting down the server for unhandled promise rejection`)
-    server.close(() => {
-        process.exit(1)
-    })
+    if (server && typeof server.close === "function") {
+        server.close(() => {
+            process.exit(1)
+        })
+    }
 })
+
+export default app;
 
 
