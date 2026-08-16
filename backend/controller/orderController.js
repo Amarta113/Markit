@@ -1,6 +1,8 @@
 import { catchAsyncError } from '../middleware/catchAsyncError.js'
 import ErrorHandler from '../middleware/error.js';
 import Order from '../models/order.js';
+import Product from '../models/product.js';
+
 
 export const createOrder = catchAsyncError(async(req, res, next) => {
     try{
@@ -147,7 +149,6 @@ export const orderRefundSuccess = catchAsyncError(async(req, res, next) => {
 
             await product.save({validateBeforeSave: false})
         }
-        
         
     } catch(error){
         return next(new ErrorHandler(error.message, 500))
