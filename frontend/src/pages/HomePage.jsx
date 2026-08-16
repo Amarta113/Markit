@@ -13,6 +13,7 @@ export default function HomePage () {
         <div>
             <Header activeHeading={1}/>
             <Hero/> 
+            <br />
             <Categories/>   
             <BestDeals/> 
             <Events/>
