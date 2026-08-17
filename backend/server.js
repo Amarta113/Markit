@@ -14,7 +14,7 @@ import paymentRouter from "./routes/paymentRouter.js";
 import conversationRouter from './routes/conversationRouter.js'
 import messageRouter from "./routes/messageRouter.js";
 
-//dns.setServers(["1.1.1.1", "8.8.8.8"]);
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express()
 
@@ -26,7 +26,7 @@ const allowedOrigins = new Set([
     "https://markit-backend-tau.vercel.app",
     process.env.FRONTEND_URL?.trim(),
     process.env.CLIENT_URL?.trim(),
-    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null
+    process.env.VERCEL ? `https://${process.env.VERCEL}` : null
 ].filter(Boolean));
 
 app.use(express.json())
