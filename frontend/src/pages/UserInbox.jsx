@@ -3,12 +3,13 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { io } from 'socket.io-client'
 import { format } from 'timeago.js'
-import { backend_url, server } from '../server.js'
+import { backend_url, server, socket_url } from '../server.js'
 import Header from '../components/Layout/Header.jsx'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const ENDPOINT = 'http://localhost:4000/'
+//const ENDPOINT = 'http://localhost:4000/'
+const ENDPOINT = socket_url
 const socketId = io(ENDPOINT, { transports: ["websocket"] })
 
 const UserInbox = () => {
