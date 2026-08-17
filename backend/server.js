@@ -18,11 +18,33 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express()
 
+const allowedOrigins = new Set([
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "https://markit-rosy.vercel.app",
+    "https://hamart-shop.vercel.app",
+    "https://markit-backend-tau.vercel.app",
+    process.env.FRONTEND_URL?.trim(),
+    process.env.CLIENT_URL?.trim(),
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null
+].filter(Boolean));
+
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: process.env.VERCEL,
-    credentials: true
+    origin: (origin, callback) => {
+        const normalizedOrigin = origin?.replace(/\/$/, "");
+        if (!origin || allowedOrigins.has(normalizedOrigin) || normalizedOrigin?.includes(".vercel.app")) {
+            callback(null, true);
+            return;
+        }
+
+        callback(null, true);
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
 }))
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/seller', shopRouter)
