@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import PaymentInfo from '../UserComponents/PaymentInfo.jsx'
 import {server} from '../../server'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Payment = () => {
     const [orderData, setOrderData] = useState([])

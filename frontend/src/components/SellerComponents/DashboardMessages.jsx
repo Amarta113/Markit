@@ -5,11 +5,12 @@ import { AiOutlineArrowRight, AiOutlineSend } from 'react-icons/ai'
 import axios from 'axios'
 import styles from '../../styles/styles'
 import { TfiGallery } from "react-icons/tfi";
-import { backend_url, server } from '../../server'
+import { backend_url, server, socket_url } from '../../server'
 import { io } from 'socket.io-client'
 import { format } from 'timeago.js'
 
-const ENDPOINT = 'http://localhost:4000/'
+//const ENDPOINT = 'http://localhost:4000/'
+const ENDPOINT = socket_url
 
 const socketId = io(ENDPOINT, { transports: ["websocket"] })
 
