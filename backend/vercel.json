@@ -1,13 +1,70 @@
 {
-  "headers": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "http://localhost:5173" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" },
-        { "key": "Access-Control-Allow-Credentials", "value": "true" }
-      ]
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|eot|map|json))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(login|sign-up|products|best-selling|events|faq|checkout|payment|profile|inbox|shop-create|shop-login|dashboard|dashboard-create-products|dashboard-orders|dashboard-refunds|dashboard-settings|dashboard-products|dashboard-create-events|dashboard-events|dashboard-messages|dashboard-coupouns|dashboard-withdraw-money)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/activation/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/seller/activation/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/product/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/order/success/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/user/order/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/user/track/order/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/user/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/shop/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/order/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
