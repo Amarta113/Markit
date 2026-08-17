@@ -1,10 +1,11 @@
 const sendTokens = (user, statusCode, res) => {
     const token = user.getJwtToken()
+    const isProduction = process.env.NODE_ENV === "production"
     const options = {
         expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
         httpOnly: true,
-        sameSite: "none",
-        secure: true
+        sameSite: isProduction ? "none" : "lax",
+        secure: isProduction
     }
     return res.status(statusCode).cookie("token", token, options).json({
         success: true,
@@ -15,11 +16,12 @@ const sendTokens = (user, statusCode, res) => {
 
 const sendShopTokens = (seller, statusCode, res) => {
     const token = seller.getJwtToken()
+    const isProduction = process.env.NODE_ENV === "production"
     const options = {
         expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
         httpOnly: true,
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        secure: true
+        sameSite: isProduction ? "none" : "lax",
+        secure: isProduction
     }
     return res.status(statusCode).cookie("seller_token", token, options).json({
         success: true,
