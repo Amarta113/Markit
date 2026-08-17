@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'
 import styles from '../../styles/styles.js'
 import { toast } from 'react-toastify'
+import axios from 'axios'
+import { server } from '../../server.js'
 
 const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState("")
