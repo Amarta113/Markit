@@ -4,6 +4,7 @@ import { backend_url, server } from '../server'
 import { AiOutlineCamera } from 'react-icons/ai'
 import styles from '../styles/styles'
 import axios from 'axios'
+import {toast} from 'react-toastify'
 
 const ShopSettings = () => {
     const { seller } = useSelector(state => state.seller)
@@ -57,7 +58,7 @@ const ShopSettings = () => {
             <div className="flex w-full md:w-[80%] flex-col justify-center my-4">
                 <div className="w-full flex items-center justify-center">
                     <div className='relative'>
-                        <img src={avatar? URL.createObjectURL(avatar) : `${backend_url}/${seller.avatar}`}
+                        <img src={avatar? URL.createObjectURL(avatar) : `${seller.avatar?.url}`}
                             alt="seller avatar"
                             className='w-[200px] h-[200px] rounded-full cursor-pointer'
                         />
