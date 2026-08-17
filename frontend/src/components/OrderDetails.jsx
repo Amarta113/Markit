@@ -4,7 +4,9 @@ import { BsFillBagFill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getAllOrdersShop } from '../../redux/actions/orderActions.js'
-import { backend_url } from '../server'
+import { backend_url, server } from '../server'
+import {toast} from 'react-toastify'
+import axios from 'axios'
 
 const OrderDetails = () => {
     const { orders } = useSelector((state) => state.order)
