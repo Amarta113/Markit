@@ -36,9 +36,9 @@ export default function Login () {
 
     }
     return (
-        <div className="min-h-screen bg-slate-700 flex flex-col justify-center py-12 sm:px-6 lg-px-8">
+        <div className="min-h-screen bg-[#eff5fb] flex flex-col justify-center py-12 sm:px-6 lg-px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+                <h2 className="mt-6 text-center text-3xl font-extrabold text-[#16164e]">
                 Login to your account
                 </h2>
             </div>
@@ -81,7 +81,8 @@ export default function Login () {
                             </div>
                         </div>
                         <div>
-                            <button type="submit" className='group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-700 f'>Submit</button>
+                            <button type="submit" 
+                            className='group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#16164e] hover:bg-blue-900 f'>Submit</button>
                         </div>
                         <div className={`${styles.normalFlex} w-full`}>
                             <h4>Not have any account?</h4>
