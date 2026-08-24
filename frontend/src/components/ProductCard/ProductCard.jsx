@@ -8,25 +8,25 @@ import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishli
 import { addToCart } from '../../../redux/actions/cartActions.js';
 import { toast } from 'react-toastify';
 import Ratings from '../UserComponents/Ratings.jsx';
-import iphoneimg from '../../assets/mobile-img.jpg'
 
-const ProductCard = ({ data , isEvent}) => {
+const ProductCard = ({ data, isEvent}) => {
     const {wishlist} = useSelector((state) => state.wishlist)
     const { cart } = useSelector((state) => state.cart)
     const [click, setClick] = useState(false)
     const [count, setCount] = useState(1)
     const [open, setOpen] = useState(false)
     const dispatch = useDispatch()
-    console.log(data)
-    const addToCartHandler = (id) => {
-            const isItemExist = cart && cart?.find((i) => i._id === id)
+
+    const addToCartHandler = (product) => {
+            const itemId = product?._id
+            const isItemExist = cart && cart?.find((i) => i._id === itemId)
             if (isItemExist) {
                 toast.error("Item already in cart!")
             } else {
-                if (data.stock < count) {
+                if (product.stock < count) {
                     return toast.error("Product stock is limited")
                 } else {
-                    const cartData = { ...data, qty: 1 }
+                    const cartData = { ...product, qty: 1 }
                     dispatch(addToCart(cartData))
                     toast.success("Item added to cart successfully.")
                 }
@@ -77,7 +77,7 @@ const ProductCard = ({ data , isEvent}) => {
                             </h4>
                         </div>
                         <span className='font-[400] text-[17px] text-[#68d284]'>
-                            {data?.soldOut} Sold 
+                            {data?.sold_out} Sold 
                         </span>
                     </div>
                 </Link>
@@ -89,7 +89,6 @@ const ProductCard = ({ data , isEvent}) => {
                         onClick={(e) => {
                             e.preventDefault()
                             e.stopPropagation()
-                            setClick((c) => !c)
                         }}
                         title={click ? 'Remove from wishlist' : 'Add to wishlist'}
                         aria-pressed={click}
@@ -126,7 +125,7 @@ const ProductCard = ({ data , isEvent}) => {
                     <button
                         type="button"
                         className="cursor-pointer border-0 bg-transparent p-0 leading-none text-[#444]"
-                        onClick={() => addToCartHandler(data._id)}
+                        onClick={() => addToCartHandler(data)}
                         title="Add to cart"
                         aria-pressed={open}
                     >

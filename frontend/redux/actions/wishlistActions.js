@@ -5,7 +5,7 @@ export const removeFromWishlistAction = createAction("removeFromWishlist")
 
 export const addToWishlist = createAsyncThunk(
     "wishlist/addToWishlistThunk",
-    async (navItems, {dispatch, getState, rejectWithValue}) => {
+    async (item, {dispatch, getState, rejectWithValue}) => {
         try{
             dispatch(addToWishlistAction(item))
             localStorage.setItem(

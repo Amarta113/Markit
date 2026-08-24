@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { RxCross1 } from "react-icons/rx"
 import styles from '../../styles/styles'
-import { AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from 'react-icons/ai'
+import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 import { addToCart } from '../../../redux/actions/cartActions.js'
 import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlistActions.js'
@@ -16,7 +16,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     const [select, setSelect] = useState(false)
 
     const handleMessageSubmit = () => {
-        return 
+        return null
     }
     const decrementCount = () => {
         if (count > 1) {
