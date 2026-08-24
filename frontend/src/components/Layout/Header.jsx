@@ -1,17 +1,16 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import logoImg from '../../assets/markit-logo.jpg'
 import styles from '../../styles/styles'
-import { categoriesData, productData } from "../../static/data";
-import { AiOutlineSearch, AiOutlineHeart, AiOutlineShoppingCart, AiFillProduct } from 'react-icons/ai'
+import { categoriesData } from "../../static/data";
+import { AiOutlineSearch, AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai'
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
-import { LayoutGrid, TreeDeciduous } from 'lucide-react'
+import { LayoutGrid } from 'lucide-react'
 import { BiMenuAltLeft } from 'react-icons/bi'
 import { RxCross1 } from 'react-icons/rx'
 import DropDown from "./DropDown.jsx"
 import Navbar from "./Navbar.jsx"
 import { useSelector } from "react-redux"
-import { backend_url } from '../../server.js';
 import Cart from '../Cart/Cart.jsx';
 import Wishlist from '../Wishlist/Wishlist.jsx';
 
@@ -146,7 +145,7 @@ export default function Header({ activeHeading }) {
                                         className='cursor-pointer'
                                         color='rgb(255, 255, 255 / 83%)' />
                                     <span className="absolute -top-1 -right-1 rounded-full bg-[#40d132] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                                        {cart & cart.length}
+                                        {cart && cart.length}
                                     </span>
                                 </div>
                                 <div className="relative cursor-pointer mr-[15px]">
