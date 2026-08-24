@@ -8,7 +8,6 @@ import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishli
 import { addToCart } from '../../../redux/actions/cartActions.js';
 import { toast } from 'react-toastify';
 import Ratings from '../UserComponents/Ratings.jsx';
-import iphoneimg from '../../assets/mobile-img.jpg'
 
 const ProductCard = ({ data, isEvent}) => {
     const {wishlist} = useSelector((state) => state.wishlist)
@@ -90,7 +89,6 @@ const ProductCard = ({ data, isEvent}) => {
                         onClick={(e) => {
                             e.preventDefault()
                             e.stopPropagation()
-                            setClick((c) => !c)
                         }}
                         title={click ? 'Remove from wishlist' : 'Add to wishlist'}
                         aria-pressed={click}
