@@ -13,7 +13,7 @@ export const wishlistReducer = createReducer(initialState, builder => {
     builder
     .addCase(addToWishlistAction, (state, action) => {
         const item = action.payload;
-        const isItemExist = state?.wishlist?.fint(ite => ite?._id === item?._id)
+        const isItemExist = state?.wishlist?.find(ite => ite?._id === item?._id)
         if(isItemExist){
             return{
                 ...state,
