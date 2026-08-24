@@ -19,7 +19,7 @@ export default function BestSellingPage(){
     }, [allProducts])
 
     return (
-        <div className="text-black bg-white min-h-screen">
+        <div className="text-black bg-white-300 min-h-screen flex flex-col">
             <Header activeHeading={2} />
 
             {/* Page header */}
@@ -29,7 +29,7 @@ export default function BestSellingPage(){
                         <AiOutlineFire size={16} />
                         <span>TRENDING NOW</span>
                     </div>
-                    <h1 className="text-[28px] md:text-[34px] font-bold text-[#1a1a1a]">
+                    <h1 className="text-[28px] md:text-[34px] font-semibold text-[#1a1a1a]">
                         Best Selling Products
                     </h1>
                     <p className="text-[#00000073] text-[15px] mt-1">
@@ -40,7 +40,7 @@ export default function BestSellingPage(){
                 </div>
             </div>
 
-            <div className={`${styles.section} py-8`}>
+            <div className={`${styles.section} py-8 flex-1`}>
                 {isLoading ? (
                     // loading state
                     <div className="grid grid-cols-1 gap-[20px] md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
@@ -70,14 +70,6 @@ export default function BestSellingPage(){
                     <div className="grid grid-cols-1 gap-[20px] md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
                         {data?.map((i, index) => (
                             <div key={i._id || index} className="relative">
-                                {index < 3 && (
-                                    <span
-                                        className={`absolute top-2 left-2 z-10 flex items-center justify-center w-7 h-7 rounded-full text-white text-[13px] font-bold shadow-md
-                                            ${index === 0 ? 'bg-[#3eb489]' : index === 1 ? 'bg-[#3eb489]' : 'bg-[#C2793A]'}`}
-                                    >
-                                        {index + 1}
-                                    </span>
-                                )}
                                 <ProductCard data={i} />
                             </div>
                         ))}
