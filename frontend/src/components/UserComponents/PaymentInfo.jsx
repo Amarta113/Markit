@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {PayPalScriptProvider, PayPalButtons} from "@paypal/react-paypal-js"
+import styles from '../../styles/styles'
+import { CardCvcElement, CardExpiryElement, CardNumberElement } from '@stripe/react-stripe-js'
 
-const PaymentInfo = (
+const PaymentInfo = ({ 
   user,
   open,
   setOpen,
   onApprove,
   paymentHandler,
   cashOnDeliveryHandler
-) => {
+}) => {
   const [select, setSelect] = useState(1)
 
   return (
