@@ -13,7 +13,7 @@ export default function Sponsored() {
     ]
     return (<>
     
-        <div className={`${styles.section} hidden sm:block bg-white py-14 px-20 mb-12 cursor-pointer rounded-xl`}>
+        <div className={`${styles.section} hidden sm:block bg-white shadow py-14 px-20 mb-12 cursor-pointer rounded-xl`}>
             <div className="flex justify-between w-full">
                 {sponsors.map((sponsor) => (
                     <div key={sponsor.name} className="flex items-center justify-center">
