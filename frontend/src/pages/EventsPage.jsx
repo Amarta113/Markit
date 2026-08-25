@@ -15,7 +15,7 @@ export default function EventsPage() {
                 {allEvents?.length !== 0 &&
                     allEvents &&
                     allEvents.map((event, i) => (
-                        <EventCard data={event} key={i} active={true} isLoading={isLoading} />
+                        <EventCard data={event} key={event._id || i} active={true} isLoading={isLoading} />
                     ))}
                 {allEvents?.length === 0 && <h4>No Product Events Running!</h4>}
             </main>
