@@ -86,7 +86,8 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                             className='w-[95%] border h-[40px] rounded-[5px]'
                             value={city}
                             onChange={e => setCity(e.target.value)}>
-                            <option className='block pb-2'>
+                            <option className='block pb-2'
+                            value=''>
                                 Choose your City
                             </option>
                             {

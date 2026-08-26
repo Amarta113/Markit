@@ -17,9 +17,10 @@ import { toast } from 'react-toastify'
 const Payment = () => {
     const [orderData, setOrderData] = useState([])
     const [open, setOpen] = useState(false)
-    const { user } = useSelector((state) => state.user())
+    const { user } = useSelector((state) => state.user)
     const navigate = useNavigate()
-    const element = useElements()
+    const stripe = useStripe()
+    const elements = useElements()
 
     useEffect(() => {
         const orderData = JSON.parse(localStorage.getItem("latestOrder"))
@@ -117,7 +118,7 @@ const Payment = () => {
             } else {
                 if (result.paymentIntent.status == 'succeeded') {
                     order.paymentInfo = {
-                        if: result.paymentIntent.id,
+                        id: result.paymentIntent.id,
                         status: result.paymentIntent.status,
                         type: "Credit Card"
                     }

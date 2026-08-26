@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import logoImg from '../../assets/markit-logo.jpg'
+import logoImg from '../../assets/markit-logo.png'
 import styles from '../../styles/styles'
 import { categoriesData } from "../../static/data";
 import { AiOutlineSearch, AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai'
@@ -54,9 +54,9 @@ export default function Header({ activeHeading }) {
                 (<>
                     <div className={`${styles.section} hidden md:block`}>
                         <div className="h-[50px] my-[20px] flex items-center justify-between">
-                            <div>
+                            <div className='flex flex-col items-center'>
                                 <Link to='/'>
-                                    <img src={logoImg} alt='logo' className='w-[140px] bg-transparent' />
+                                    <img src={logoImg} alt='logo' className='w-[130px] h-auto' />
                                 </Link>
                             </div>
                             {/* search bar */}

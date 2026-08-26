@@ -1,8 +1,5 @@
-import React from 'react'
-import mobile from "../../assets/mobile-img.jpg"
 import styles from '../../styles/styles'
 import CountDown from "./CountDown.jsx"
-import { backend_url } from '../../server.js'
 import {useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -27,8 +24,8 @@ export default function EventCard({ active, data, isLoading }) {
         }
     }
     return (
-        <div className={`w-full block bg-white rounded-lg ${active ? "unset" : "mb-12"
-            } lg:flex p-14`}
+        <div className={`bg-white shadow w-full block rounded-lg ${active ? "unset" : "mb-10"
+            } lg:flex p-4 sm:p-8 lg:p-14`}
         >
             <div className="mb-8 flex w-full shrink-0 justify-center lg:mb-0 lg:w-[46%] lg:justify-end">
                 <img
@@ -53,13 +50,13 @@ export default function EventCard({ active, data, isLoading }) {
                     <CountDown data={data} />
                 </div>
                 <br />
-                <div className="flex items-center">
+                <div className="lg:flex items-center md:flex-row">
                     <Link to={`/product/${data._id}?isEvent=true`}>
                         <div className={`${styles.button} text-[#fff]`}>
                             See Details
                         </div>
                     </Link>
-                    <div className={`${styles.button} text-[#fff] ml-5`}
+                    <div className={`${styles.button} text-[#fff] lg:ml-5 `}
                         onClick={(e) => addToCartHandler(data)}>
                         Add to Cart
                     </div>

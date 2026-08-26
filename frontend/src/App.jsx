@@ -3,7 +3,6 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { LoginPage, SignupPage, ActivationPage, SellerActivationPage, HomePage, ProductsPage, ShopCreatePage, BestSellingPage, EventsPage, FaqPage, ProfilePage, ShopLoginPage, OrderDetailsPage, TrackOrderPage, UserInbox } from "./routes/Routes.jsx"
 import { ToastContainer, Bounce } from 'react-toastify';
 import { useEffect } from 'react';
-import store from '../redux/store.js';
 import { loadUser } from '../redux/actions/user.js';
 import ProductDetailsPage from "./pages/ProductDetailsPage.jsx";
 import CheckoutPage from './pages/CheckoutPage.jsx';
@@ -31,7 +30,7 @@ export default function App() {
   const dispatch = useDispatch()
   const [stripeApiKey, setStripeApiKey] = useState("")
   async function getStripeApikey() {
-    const { data } = await axios.get(`${server}/payment/stipeapikey`)
+    const { data } = await axios.get(`${server}/payment/stripeapikey`)
     setStripeApiKey(data.stripeApiKey)
   }
   useEffect(() => {
@@ -44,7 +43,7 @@ export default function App() {
   return (
     <>
       {stripeApiKey && (
-        <Elements stripeApiKey={loadStripe(stripeApiKey)}>
+        <Elements stripe={loadStripe(stripeApiKey)}>
           <Routes>
             <Route path='/payment'
               element={
