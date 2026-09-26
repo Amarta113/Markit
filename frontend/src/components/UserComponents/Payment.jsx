@@ -16,6 +16,7 @@ import { toast } from 'react-toastify'
 
 const Payment = () => {
     const [orderData, setOrderData] = useState([])
+    const [isLoading, setIsLoading] = useState(false);
     const [open, setOpen] = useState(false)
     const { user } = useSelector((state) => state.user)
     const navigate = useNavigate()
@@ -95,6 +96,7 @@ const Payment = () => {
     const paymentHandler = async (e) => {
         e.preventDefault()
         try {
+            setIsLoading(true);
             const config = {
                 headers: {
                     'Content-Type': 'application/json'
@@ -116,16 +118,18 @@ const Payment = () => {
             if (result.error) {
                 toast.error(result.error.message)
             } else {
-                if (result.paymentIntent.status == 'succeeded') {
+                if (result.paymentIntent.status === 'succeeded') {
                     order.paymentInfo = {
                         id: result.paymentIntent.id,
                         status: result.paymentIntent.status,
                         type: "Credit Card"
                     }
-                    await axios.post(`${server}/order/create-order`, order, config,
+                    await axios.post(`${server}/order/create-order`, order, {
+                        withCredentials: true,
+                    } ,config,
                     ).then((res) => {
                         setOpen(false)
-                        navigate("/order/success")
+                        navigate(`/order/success/${res.data.orders?.[0]?._id}`);
                         toast.success("Order Successful")
                         localStorage.setItem("cartItems", JSON.stringify([]))
                         localStorage.setItem("latestOrder", JSON.stringify([]))
@@ -135,6 +139,7 @@ const Payment = () => {
             }
         } catch (error) {
             toast.error(error)
+            setIsLoading(false);
         }
     }
 
@@ -151,7 +156,9 @@ const Payment = () => {
             type: "Cash on Delivery"
         }
 
-        await axios.post(`${server}/order/create-order`, order, config).then((res) => {
+        await axios.post(`${server}/order/create-order`, order, {
+            withCredentials: true
+        }, config).then((res) => {
                         setOpen(false)
                         navigate("/order/success")
                         toast.success("Order Successful")
@@ -162,11 +169,12 @@ const Payment = () => {
     }
     return (
         <div className='w-full flex flex-col items-center py-8'>
-            <div className="w-[90%] 1000px:w-[70%] block md:flex">
+            <div className="w-[90%] md:w-[70%] block md:flex">
                 <div className="w-full md:w-[65%]">
                     <PaymentInfo
                         user={user}
                         open={open}
+                        isLoading={isLoading}
                         setOpen={setOpen}
                         setApprove={onApprove}
                         createOrder={createOrder}
