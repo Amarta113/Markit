@@ -71,7 +71,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                             <div className="w-full md:w-[50%]">
                                 <img src={data?.images[0].url} alt="" />
                                 <div className='flex'>
-                                    <img src={data?.shop.shop_avatar.url} alt="shop-avatar"
+                                    <img src={data?.shop?.avatar.url} alt="shop-avatar"
                                         className='w-[50px] h-[50px] rounded-full mr-2'
                                     />
                                     <div>
@@ -79,7 +79,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                                             {data.shop.name}
                                         </h3>
                                         <h5 className='pb-3 text-[15px]'>
-                                            ({data.shop.ratings})Ratings
+                                            {data?.shop?.rating || 0} Ratings
                                         </h5>
                                     </div>
                                 </div>
@@ -90,10 +90,10 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                                     </span>
                                 </div>
                                 <h5 className='text-[16px] text-[red] mt-5'>
-                                    ({data.total_sell}) Sold out
+                                    {data.total_sell} Sold out
                                 </h5>
                             </div>
-                            <div className="w-full md:w-[50%] pt-5 pl-[5px] pr-[5px]">
+                            <div className="w-full md:w-[50%] pt-5 pl-[25px] pr-[25px]">
                                 <h1 className={`${styles.productTitle} text-[20px]`}>
                                     {data.name}
                                 </h1>
