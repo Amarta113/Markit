@@ -8,7 +8,9 @@ const PaymentInfo = ({
   user,
   open,
   setOpen,
+  isLoading,
   onApprove,
+  createOrder,
   paymentHandler,
   cashOnDeliveryHandler
 }) => {

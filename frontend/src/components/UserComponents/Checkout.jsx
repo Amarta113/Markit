@@ -10,7 +10,7 @@ import {toast} from 'react-toastify'
 function Checkout() {
     const { user } = useSelector(state => state.user)
     const { cart } = useSelector(state => state.cart)
-    const [country, setCountry] = useState()
+    const [country, setCountry] = useState("")
     const [city, setCity] = useState("")
     const [userInfo, setUserInfo] = useState(false)
     const [address1, setAddress1] = useState("")
@@ -29,6 +29,7 @@ function Checkout() {
         if (address1 === "" || address2 === "" || zipCode === null || country === "" || city === "") {
             toast.error("Please choose your delivery items!")
         } else {
+            console.log("your address is correct")
             const shippingAddress = {
                 address1,
                 address2,
@@ -36,6 +37,7 @@ function Checkout() {
                 country,
                 city
             }
+            console.log('going to order data')
             const orderData = {
                 cart,
                 totalPrice,
@@ -47,6 +49,7 @@ function Checkout() {
             }
         // Update the local storage with updated orders arrays
         localStorage.setItem("latestOrder", JSON.stringify(orderData))
+        console.log('your items are added in local storage')
         navigate("/payment")
         }
     }

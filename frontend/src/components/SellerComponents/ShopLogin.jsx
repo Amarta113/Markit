@@ -14,7 +14,7 @@ export default function ShopLogin () {
 
     const navigate = useNavigate()
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e) => {
         setIsLoading(true)
         e.preventDefault()
         await axios
@@ -40,9 +40,9 @@ export default function ShopLogin () {
         })
     }
     return (
-        <div className="min-h-screen bg-slate-700 flex flex-col justify-center py-12 sm:px-6 lg-px-8">
+        <div className="min-h-screen bg-[#eff5fb] flex flex-col justify-center py-12 sm:px-6 lg-px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+                <h2 className="mt-6 text-center text-3xl font-extrabold text-[#16164e]">
                 Login to your seller account
                 </h2>
             </div>

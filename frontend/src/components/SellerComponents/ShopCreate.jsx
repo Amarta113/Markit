@@ -72,9 +72,9 @@ export default function ShopCreate() {
         setAvatar(avatar)
     }
     return (
-        <div className="min-h-screen bg-slate-700 flex flex-col justify-center py-12 sm:px-6 lg-px-8">
+        <div className="min-h-screen bg-[#eff5fb] flex flex-col justify-center py-12 sm:px-6 lg-px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+                <h2 className="mt-6 text-center text-3xl font-extrabold text-[#16164e]">
                     Register as a Seller
                 </h2>
             </div>
