@@ -36,7 +36,7 @@ export const createShop = catchAsyncError(async (req, res, next) => {
         }
 
         const activationTokens = createActivationTokens(sellerData)
-        const activationURL = `http://localhost:5173/seller/activation/${activationTokens}`;
+        const activationURL = `${process.env.VERCEL}/seller/activation/${activationTokens}`;
         await sendEmail({
             email: sellerData.email,
             subject: "Activate your account",
