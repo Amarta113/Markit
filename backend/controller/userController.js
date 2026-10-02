@@ -39,7 +39,7 @@ export const register = catchAsyncError(async(req, res, next) => {
         }
 
         const activationTokens = createActivationTokens(userData)
-        const activationURL = `http://localhost:5173/activation/${activationTokens}`;
+        const activationURL = `${process.env.VERCEL}/activation/${activationTokens}`;
         await sendEmail({
                 email: userData.email,
                 subject: "Activate your account",
