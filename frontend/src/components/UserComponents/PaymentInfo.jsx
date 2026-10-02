@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {PayPalScriptProvider, PayPalButtons} from "@paypal/react-paypal-js"
 import styles from '../../styles/styles'
 import { CardCvcElement, CardExpiryElement, CardNumberElement } from '@stripe/react-stripe-js'
+import { RxCross1 } from "react-icons/rx";
 
 const PaymentInfo = ({ 
   user,
@@ -18,7 +19,7 @@ const PaymentInfo = ({
 
   return (
     <>
-      <div className='w-full md:w-[95%] bg-[#fff] rounded-md p-5 pb-8'>
+      <div className='w-full sm:w-[95%] bg-[#fff] rounded-md p-5 pb-8'>
         {/* select buttons */}
         <div className="flex w-full pb-5 border-b mb-2">
           <div
@@ -38,18 +39,18 @@ const PaymentInfo = ({
           select == 1 ? (
             <div className="w-full flex border-b">
               <form className='w-full' onSubmit={paymentHandler} >
-                <div className='w-full flex pb-3'>
-                  <div className='w-[50%]'>
+                <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-4 pb-3'>
+                  <div className='min-w-0'>
                     <label className='block pb-2'>Name On Card</label>
                     <input
                       required
                       placeholder={user && user.name}
-                      className={`${styles.input}!w-[95%] text-[#444]`}
+                      className={`${styles.input} h-[42px] text-[#444]`}
                       value={user && user.name} />
                   </div>
-                  <div className='w-[50%]'>
+                  <div className='min-w-0'>
                     <label className='block pb-2'>Exp Date</label>
-                    <CardExpiryElement className={`${styles.input}`}
+                    <CardExpiryElement className={`${styles.input} !h-[42px] flex items-center`}
                       options={{
                         style: {
                           base: {
@@ -68,10 +69,10 @@ const PaymentInfo = ({
                       }} />
                   </div>
                 </div>
-                <div className="w-full flex pb-3">
-                  <div className="w-[95%]">
+                <div className="w-full grid grid-cols-1 sm:grid-cols-[1.5fr_1fr] gap-4 pb-3">
+                  <div className="min-w-0">
                     <label className='block pb-2'>Card Number</label>
-                    <CardNumberElement className={`${styles.input} !h-[35px] !w-[95%]`}
+                    <CardNumberElement className={`${styles.input} !h-[42px]`}
                       options={{
                         style: {
                           base: {
@@ -89,10 +90,10 @@ const PaymentInfo = ({
                         }
                       }} />
                   </div>
-                  <div className="w-[50%]">
+                  <div className="min-w-0">
                     <label className="block pb-2">CVV</label>
                     <CardCvcElement
-                      className={`${styles.input}`}
+                      className={`${styles.input} !h-[42px] flex items-center`}
                       options={{
                         style: {
                           base: {
